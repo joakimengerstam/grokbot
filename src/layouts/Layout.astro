@@ -13,6 +13,9 @@ const {
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const siteName = 'grokbot.se';
+const ogImage = new URL('/favicon.svg', Astro.site).href;
 
 const nav = [
   { href: '/', label: 'Hem' },
@@ -21,24 +24,68 @@ const nav = [
   { href: '/exempel', label: 'Exempel' },
   { href: '/om', label: 'Om' },
 ];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: 'https://grokbot.se/',
+    inLanguage: 'sv-SE',
+    description,
+    publisher: { '@id': 'https://roore.se/#organization' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://roore.se/#organization',
+    name: 'Roore AB',
+    url: 'https://roore.se/',
+    email: 'joakim.engerstam@gmail.com',
+    founder: {
+      '@type': 'Person',
+      name: 'Joakim Engerstam',
+      email: 'joakim.engerstam@gmail.com',
+    },
+    sameAs: ['https://grokbot.se/', 'https://roore.se/'],
+  },
+];
 ---
 
 <!doctype html>
 <html lang="sv">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#f4f6f8" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sv_SE" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Instrument+Sans:ital,wght@0,400..600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="min-h-screen flex flex-col">
     <a

@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import Callout from '../components/Callout.astro';
 import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
 
 const bots = [
   {
@@ -122,7 +123,10 @@ const bots = [
 ];
 ---
 
-<Layout title="Exempel – Grok Bot" description="Konkreta bot-idéer du kan kopiera och anpassa">
+<Layout
+  title="Grok Bot exempel – 7 personas (inbox, sales, SEO m.fl.)"
+  description="Kopiera färdiga Grok Bot-personas: Chief of Staff, Inbox, Sales, SEO, Content, Research och Life Admin. Jobs, anti-jobs och triggers."
+>
   <PageHeader
     eyebrow="Exempel · 7 personas"
     title="Bots att kopiera och anpassa"
@@ -183,6 +187,7 @@ const bots = [
       heading="Inbox Bot och Sales Bot, i ert affärssystem"
       body="Roore bygger motsvarande flöden för företag: leverantörsfakturor in i Fortnox, order från mejl, svarsutkast som väntar på ert ja. Ett flöde först, fast pris, veckosiffror på vad som faktiskt körs."
       source="grokbot.se exempel"
+      href={ROORE_PAGES.mejlArenden}
     />
   </div>
 </Layout>

@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Callout from '../components/Callout.astro';
 import RooreCta from '../components/RooreCta.astro';
-import { rooreMailto, ROORE_URL, ROORE_MAIL } from '../lib/roore';
+import { rooreMailto, ROORE_URL, ROORE_MAIL, ROORE_PAGES } from '../lib/roore';
 
 const disclaimers = [
   {
@@ -33,7 +33,10 @@ const disclaimers = [
 ];
 ---
 
-<Layout title="Om – Grok Bot" description="Om projektet och viktig disclaimer-information">
+<Layout
+  title="Om grokbot.se – Joakim Engerstam / Roore AB"
+  description="Inofficiell svensk guide till Grok Bot (Cursor + xAI), driven av Roore AB. Disclaimer, kontakt och hur managed automation skiljer sig från att bygga själv."
+>
   <PageHeader
     eyebrow="Om projektet"
     title="Ett inofficiellt projekt om desktop-automation"
@@ -56,8 +59,11 @@ const disclaimers = [
             class="inline-flex items-center justify-center gap-2 bg-ink text-white px-4 py-2.5 rounded-full font-medium hover:bg-cobalt transition-colors"
             >Boka 15 minuter <span aria-hidden="true">→</span></a
           >
-          <a href={ROORE_URL} target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3 text-center"
-            >roore.se ↗</a
+          <a href={ROORE_PAGES.pilot} target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3 text-center"
+            >Starta pilot på roore.se ↗</a
+          >
+          <a href={ROORE_URL} target="_blank" rel="noopener" class="text-muted underline underline-offset-3 text-center text-xs"
+            >roore.se</a
           >
         </div>
       </div>
@@ -120,6 +126,6 @@ const disclaimers = [
   </div>
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
-    <RooreCta source="grokbot.se om" />
+    <RooreCta source="grokbot.se om" href={ROORE_PAGES.home} />
   </div>
 </Layout>

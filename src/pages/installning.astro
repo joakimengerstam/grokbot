@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import Callout from '../components/Callout.astro';
 import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
 
 const steps = [
   { id: 'cursor', label: 'Installera Cursor' },
@@ -22,7 +23,10 @@ const specialists = [
 ];
 ---
 
-<Layout title="Kom igång – Grok Bot" description="Steg-för-steg guide för att sätta upp din första Grok Bot">
+<Layout
+  title="Så sätter du upp Grok Bot – steg-för-steg (Cursor + xAI)"
+  description="Installera Cursor, koppla xAI-nyckel och skapa din första Grok Bot på ca 15 minuter. Svensk how-to från tom installation till schemalagd rutin."
+>
   <PageHeader
     eyebrow="Kom igång · 6 steg · ca 15 minuter"
     title="Sätt upp din första Grok Bot"
@@ -178,6 +182,7 @@ const specialists = [
       heading="Sex steg för dig. Noll steg för företaget."
       body="Det här är vad det tar att sätta upp en bot på din egen dator. För fakturor, ordrar och mejl i ert affärssystem bygger Roore flödet, i era system, med ert godkännande innan något går vidare."
       source="grokbot.se kom igång"
+      href={ROORE_PAGES.aiMedarbetare}
     />
   </div>
 </Layout>

@@ -1,6 +1,17 @@
 export const ROORE_URL = 'https://roore.se';
 export const ROORE_MAIL = 'joakim.engerstam@gmail.com';
 
+/** Real public pages on roore.se — do not invent paths. */
+export const ROORE_PAGES = {
+  home: 'https://roore.se/',
+  aiMedarbetare: 'https://roore.se/ai-medarbetare/',
+  mejlArenden: 'https://roore.se/mejl-arenden/',
+  leverantorsfakturor: 'https://roore.se/leverantorsfakturor-fortnox/',
+  orderFranMejl: 'https://roore.se/order-fran-mejl/',
+  bokforing: 'https://roore.se/bokforing/',
+  pilot: 'https://roore.se/pilot/',
+} as const;
+
 /** Mailto that identifies where the lead came from. */
 export const rooreMailto = (source = 'grokbot.se') =>
   `mailto:${ROORE_MAIL}?subject=${encodeURIComponent(`15 minuter – via ${source}`)}`;

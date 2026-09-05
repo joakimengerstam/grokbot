@@ -5,6 +5,7 @@ import PersonaCard from '../components/PersonaCard.astro';
 import Callout from '../components/Callout.astro';
 import Compare from '../components/Compare.astro';
 import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
 
 const principles = [
   { id: 'personas', label: 'Tighta personas' },
@@ -17,8 +18,8 @@ const principles = [
 ---
 
 <Layout
-  title="Best practices – Grok Bot"
-  description="Lär dig skriva tighta personas och undvik vanliga misstag"
+  title="Grok Bot best practices – personas, anti-jobs och rutiner"
+  description="Sex principer för Grok Bots som funkar: tighta personas, tydliga anti-jobs, on-demand vs rutiner, en bot per jobb. Undvik vanliga misstag."
 >
   <PageHeader
     eyebrow="Best practices · 6 principer"
@@ -205,6 +206,7 @@ const principles = [
       heading="Anti-jobs är exakt så vi bygger för företag"
       body="Deterministiskt där svaret ska bli likadant varje gång. Förberett underlag och ert ja där det inte ska. Om ni har ett faktura-, order- eller mejlflöde som görs för hand varje vecka kan vi bygga det först."
       source="grokbot.se best practices"
+      href={ROORE_PAGES.aiMedarbetare}
     />
   </div>
 </Layout>

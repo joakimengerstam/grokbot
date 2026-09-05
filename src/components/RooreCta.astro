@@ -3,12 +3,14 @@
  * The funnel step. Every guide page ends here: the reader has just seen how
  * much structure a good bot needs — Roore builds it in their systems instead.
  */
-import { rooreMailto, ROORE_URL } from '../lib/roore';
+import { rooreMailto, ROORE_URL, ROORE_PAGES } from '../lib/roore';
 
 interface Props {
   heading?: string;
   body?: string;
   source?: string;
+  /** Deep-link into a real roore.se page (managed build, not SaaS). */
+  href?: string;
   class?: string;
 }
 
@@ -16,10 +18,12 @@ const {
   heading = 'Vill du inte bygga själv?',
   body = 'Roore bygger flöden som förbereder fakturor, ordrar och mejl i de system ni redan har. Ni godkänner innan något bokförs eller skickas. Femton minuter räcker för att se om det finns ett första jobb.',
   source = 'grokbot.se',
+  href = ROORE_PAGES.pilot,
   class: className,
 } = Astro.props;
 
 const mailto = rooreMailto(source);
+const learnMore = href || ROORE_URL;
 ---
 
 <section
@@ -29,7 +33,7 @@ const mailto = rooreMailto(source);
   ]}
 >
   <div>
-    <p class="eyebrow text-white/60 mb-3">Roore AB · Stockholm</p>
+    <p class="eyebrow text-white/60 mb-3">Roore AB · Stockholm · vi bygger det åt er</p>
     <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">{heading}</h2>
     <p class="mt-4 text-white/80 max-w-xl leading-relaxed">{body}</p>
     <ul class="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/70 font-mono">
@@ -46,10 +50,11 @@ const mailto = rooreMailto(source);
       Boka 15 minuter <span aria-hidden="true">→</span>
     </a>
     <a
-      href={ROORE_URL}
+      href={learnMore}
       target="_blank"
       rel="noopener"
-      class="text-sm text-white/70 hover:text-white underline underline-offset-3 decoration-white/30">Läs mer på roore.se ↗</a
+      class="text-sm text-white/70 hover:text-white underline underline-offset-3 decoration-white/30"
+      >Läs mer på roore.se ↗</a
     >
   </div>
 </section>

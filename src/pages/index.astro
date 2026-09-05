@@ -3,28 +3,32 @@ import Layout from '../layouts/Layout.astro';
 import PersonaCard from '../components/PersonaCard.astro';
 import Callout from '../components/Callout.astro';
 import RooreCta from '../components/RooreCta.astro';
-import { rooreMailto } from '../lib/roore';
+import { rooreMailto, ROORE_PAGES } from '../lib/roore';
 
 const rooreFlows = [
   {
     bot: 'Inbox Bot',
     flow: 'Mejl & ärenden',
     body: 'Inkommande post sorteras, sammanfattas och får färdiga svarsutkast. Inget skickas utan er.',
+    href: ROORE_PAGES.mejlArenden,
   },
   {
     bot: 'Chief of Staff',
     flow: 'Fakturor & bokföring',
     body: 'Leverantörsfakturor tolkas och konteras, kontoutdrag blir verifikationer. Ni godkänner innan det bokförs.',
+    href: ROORE_PAGES.leverantorsfakturor,
   },
   {
     bot: 'Sales Bot',
     flow: 'Order & offert',
     body: 'Orderrader ur mejl och webbformulär läggs in i affärssystemet. Ni bekräftar.',
+    href: ROORE_PAGES.orderFranMejl,
   },
   {
     bot: 'Research Bot',
-    flow: 'Rapportering',
+    flow: 'Bokföring & rapporter',
     body: 'Dagliga siffror sammanställs och skickas dit de ska, utan att någon klipper och klistrar.',
+    href: ROORE_PAGES.bokforing,
   },
 ];
 
@@ -57,7 +61,10 @@ const reasons = [
 ];
 ---
 
-<Layout title="Grok Bot – Ge din AI en arbetsbeskrivning">
+<Layout
+  title="Sätt upp Grok Bot – guide på svenska (Cursor + xAI)"
+  description="Lär dig sätta upp Grok Bot med Cursor och xAI. Svensk steg-för-steg-guide: personas, jobs, anti-jobs och rutiner. Alternativt bygger Roore flödet åt er."
+>
   <!-- Hero -->
   <section class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
     <div class="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16 items-center">
@@ -225,14 +232,22 @@ const reasons = [
       <div class="grid sm:grid-cols-2 gap-px bg-line border border-line rounded-xl overflow-hidden">
         {
           rooreFlows.map((f) => (
-            <div class="bg-panel p-6 sm:p-8">
+            <a
+              href={f.href}
+              target="_blank"
+              rel="noopener"
+              class="bg-panel p-6 sm:p-8 block hover:bg-paper/80 transition-colors group"
+            >
               <p class="font-mono text-[0.7rem] text-muted mb-2">
                 <span class="text-ink-soft">{f.bot}</span> <span aria-hidden="true">→</span>{' '}
                 <span class="text-cobalt">{f.flow}</span>
               </p>
-              <h3 class="font-display text-lg font-semibold mb-2">{f.flow}</h3>
+              <h3 class="font-display text-lg font-semibold mb-2 group-hover:text-cobalt transition-colors">
+                {f.flow} <span class="text-muted font-normal text-sm" aria-hidden="true">↗</span>
+              </h3>
               <p class="text-[0.95rem] text-ink-soft leading-relaxed">{f.body}</p>
-            </div>
+              <p class="mt-3 text-sm text-cobalt">Vi bygger det åt er →</p>
+            </a>
           ))
         }
       </div>
@@ -245,6 +260,7 @@ const reasons = [
       heading="Femton minuter räcker för att se om det finns ett första jobb"
       body="Vi tittar på ert order-, faktura- eller mejlflöde. Finns det ett återkommande jobb ni gör för hand varje vecka bygger vi det först, till fast pris. Fungerar det tar vi nästa flöde. Annars stannar det där."
       source="grokbot.se start"
+      href={ROORE_PAGES.pilot}
     />
 
     <p class="mt-6 text-sm text-muted">
