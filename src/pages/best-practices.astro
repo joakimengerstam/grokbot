@@ -1,0 +1,179 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Best Practices - Grok Bot" description="Lär dig skriva tighta personas och undvik vanliga misstag">
+  <div class="prose prose-zinc max-w-none">
+    <h1 class="text-4xl font-bold mb-4">Best Practices</h1>
+    <p class="text-xl text-zinc-600 mb-8">Så sätter du upp Grok Bots som faktiskt funkar</p>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">1. Tight personas, inte fluffiga beskrivningar</h2>
+      <p class="mb-4">
+        Din bot-persona ska vara specifik nog att boten vet exakt vad den ska göra, 
+        och vad den INTE ska göra.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+          <h3 class="text-red-700 font-bold mb-2">❌ Dåligt exempel</h3>
+          <p class="font-mono text-sm">"Du är en hjälpsam assistent som hjälper mig med allt jag behöver."</p>
+          <p class="text-sm text-zinc-600 mt-2">För brett. Boten vet inte vad den är bra på.</p>
+        </div>
+        <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+          <h3 class="text-green-700 font-bold mb-2">✅ Bra exempel</h3>
+          <p class="font-mono text-sm">"Du är en inbox-triagerare. Varje morgon läser du senaste 20 mailen, 
+          kategoriserar dem efter prioritet (Akut/Normal/Kan vänta), och listar dem i ett markdown-dokument. 
+          Du svarar ALDRIG på mail åt mig."</p>
+          <p class="text-sm text-zinc-600 mt-2">Tydligt scope. Boten vet sitt jobb OCH sina gränser.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">2. Definiera anti-jobs tydligt</h2>
+      <p class="mb-4">
+        Anti-jobs är lika viktiga som jobs. De sätter gränser för vad boten INTE får göra. 
+        Det skyddar dig från oväntade "hjälpsamma" handlingar.
+      </p>
+
+      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
+        <h3 class="font-bold mb-3">Exempel: Sales Bot</h3>
+        <div class="mb-4">
+          <p class="font-semibold mb-2">Jobs:</p>
+          <ul class="list-disc list-inside space-y-1 text-sm">
+            <li>Följ upp leads som inte svarat inom 3 dagar</li>
+            <li>Uppdatera CRM med senaste interaktionen</li>
+            <li>Föreslå nästa steg baserat på leadens svar</li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-semibold mb-2">Anti-jobs:</p>
+          <ul class="list-disc list-inside space-y-1 text-sm">
+            <li>Skicka ALDRIG mail utan min godkännande</li>
+            <li>Radera ALDRIG leads från CRM</li>
+            <li>Erbjud ALDRIG rabatter eller specialpriser</li>
+            <li>Fatta INGA beslut som påverkar prissättning</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">3. On-demand vs rutiner</h2>
+      <p class="mb-4">Välj rätt triggmetod för rätt uppgift:</p>
+
+      <div class="space-y-4">
+        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
+          <h3 class="font-bold mb-2">On-demand (manuell trigger)</h3>
+          <p class="text-sm text-zinc-600 mb-2">Använd för:</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Uppgifter som kräver aktuell kontext (ex: "analysera denna konkurrents hemsida")</li>
+            <li>Saker du vill dubbelkolla innan de körs</li>
+            <li>Experimentella arbetsflöden du fortfarande testar</li>
+          </ul>
+        </div>
+
+        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
+          <h3 class="font-bold mb-2">Rutiner (schemalagda)</h3>
+          <p class="text-sm text-zinc-600 mb-2">Använd för:</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Repetitiva uppgifter som alltid ska hända (ex: morgonens inbox-triagering)</li>
+            <li>Rapporter som ska genereras regelbundet (ex: veckovis sales-sammanfattning)</li>
+            <li>Uppgifter där "glömma bort" är värre än "köra en gång för mycket"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-4">
+        <p class="text-sm"><strong>Tips:</strong> Börja alltid on-demand. När du kört samma uppgift 
+        manuellt 3-5 gånger och den funkar felfritt, flytta den till en rutin.</p>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">4. Undvik över-frågande</h2>
+      <p class="mb-4">
+        Ett vanligt misstag: be boten om bekräftelse hela tiden. Det dödar poängen med automation.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+          <h3 class="text-red-700 font-bold mb-2">❌ Över-frågande</h3>
+          <p class="font-mono text-sm mb-2">"Triagera min inbox. Fråga mig innan du kategoriserar varje mail. 
+          Fråga också om du ska inkludera mail från spamfoldern."</p>
+          <p class="text-sm text-zinc-600">Boten kan inte jobba självständigt. Du måste svara på massa frågor.</p>
+        </div>
+        <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+          <h3 class="text-green-700 font-bold mb-2">✅ Tydliga regler</h3>
+          <p class="font-mono text-sm mb-2">"Triagera min inbox. Ignorera spam-foldern. 
+          Använd dessa regler: mail från kunder = Akut, nyhetsbrev = Kan vänta, allt annat = Normal."</p>
+          <p class="text-sm text-zinc-600">Boten vet sina regler och kan jobba utan att fråga.</p>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg mt-4">
+        <p class="text-sm"><strong>När du INTE ska undvika frågor:</strong> Om uppgiften kan ha stora konsekvenser 
+        (t.ex. skicka mail till kunder, radera filer, eller hantera pengar), låt boten fråga innan den agerar.</p>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">5. En bot, ett jobb</h2>
+      <p class="mb-4">
+        Motstå frestelsen att bygga en superbot som gör allt. Det blir rörigt snabbt.
+      </p>
+
+      <div class="space-y-4 mt-6">
+        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
+          <h3 class="font-bold mb-2">Varför specialister funkar bättre</h3>
+          <ul class="list-disc list-inside text-sm space-y-2">
+            <li><strong>Lättare att debugga:</strong> När något går fel vet du vilken bot det är</li>
+            <li><strong>Enklare personas:</strong> Mindre kontext = tydligare instruktioner</li>
+            <li><strong>Skala smart:</strong> Du kan köra olika bots parallellt</li>
+            <li><strong>Iterera snabbt:</strong> Ändra en bots persona utan att påverka andra</li>
+          </ul>
+        </div>
+
+        <div class="bg-zinc-50 border border-zinc-200 p-4 rounded-lg">
+          <h3 class="font-bold mb-2">Exempel: Fleet-struktur</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><strong>Chief of Staff Bot:</strong> Triagerar allt, delegerar till specialister</li>
+            <li><strong>Inbox Bot:</strong> Hanterar bara mail</li>
+            <li><strong>Content Bot:</strong> Skriver och formaterar texter</li>
+            <li><strong>Research Bot:</strong> Letar data och sammanfattar</li>
+            <li><strong>SEO Bot:</strong> Optimerar innehåll för sökmotorer</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">6. Börja litet, iterera fort</h2>
+      <p class="mb-4">Bygg din bot-flotta steg för steg:</p>
+      
+      <ol class="list-decimal list-inside space-y-3">
+        <li><strong>Vecka 1:</strong> Sätt upp en Chief of Staff som triagerar inbox varje morgon</li>
+        <li><strong>Vecka 2:</strong> Identifiera en uppgift du gör manuellt minst 3 gånger/vecka. Skapa en specialist-bot för den.</li>
+        <li><strong>Vecka 3:</strong> Flytta fungerande on-demand-bots till rutiner</li>
+        <li><strong>Vecka 4:</strong> Lägg till en andra specialist baserat på vad du fortfarande gör manuellt</li>
+      </ol>
+
+      <div class="bg-green-50 border border-green-200 p-4 rounded-lg mt-4">
+        <p class="text-sm">Efter en månad har du en solid grund: en bot som triagerar, 2-3 specialister, 
+        och erfarenhet nog att veta vilka uppgifter som går att automatisera.</p>
+      </div>
+    </section>
+
+    <section class="bg-zinc-100 p-6 rounded-lg">
+      <h3 class="font-bold mb-2">Sammanfattning</h3>
+      <ul class="list-disc list-inside space-y-1 text-sm">
+        <li>Skriv tighta personas med tydliga jobs OCH anti-jobs</li>
+        <li>Välj rätt triggmetod (on-demand för nya saker, rutiner för beprövade)</li>
+        <li>Undvik över-frågande genom att ge tydliga regler</li>
+        <li>En bot per jobb, inte superbots</li>
+        <li>Iterera: börja litet, lägg till när du hittat mönster</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

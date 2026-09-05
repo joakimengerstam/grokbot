@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+/* Additional custom styles */
+body {
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth link transitions */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Better prose styling for content pages */
+.prose {
+  @apply leading-relaxed;
+}
+
+.prose h2 {
+  @apply mt-8 mb-4;
+}
+
+.prose h3 {
+  @apply mt-6 mb-3;
+}
+
+.prose p {
+  @apply mb-4;
+}
+
+.prose ul, .prose ol {
+  @apply mb-4;
+}
+
+.prose li {
+  @apply mb-2;
+}

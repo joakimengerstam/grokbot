@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Grok Bot är din desktop-assistent byggd på Cursor och xAI:s Grok. Lär dig sätta upp din egen bot-flotta.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-zinc-50 text-zinc-900">
+    <nav class="border-b border-zinc-200 bg-white">
+      <div class="max-w-5xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-xl font-bold text-zinc-900">Grok Bot</a>
+          <div class="flex gap-6">
+            <a href="/" class="text-sm hover:text-zinc-600">Hem</a>
+            <a href="/installning" class="text-sm hover:text-zinc-600">Installning</a>
+            <a href="/best-practices" class="text-sm hover:text-zinc-600">Best Practices</a>
+            <a href="/exempel" class="text-sm hover:text-zinc-600">Exempel</a>
+            <a href="/om" class="text-sm hover:text-zinc-600">Om</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main class="max-w-5xl mx-auto px-4 py-12">
+      <slot />
+    </main>
+    <footer class="border-t border-zinc-200 mt-20 py-8 text-center text-sm text-zinc-600">
+      <div class="max-w-5xl mx-auto px-4">
+        <p>Grok Bot är ett inofficiellt projekt av <a href="https://roore.se" class="underline">Joakim Engerstam / roore.se</a></p>
+        <p class="mt-2 text-xs">Ej affilierad med xAI eller Cursor. Grok och Grok Bot är varumärken tillhörande sina respektive ägare.</p>
+      </div>
+    </footer>
+  </body>
+</html>
