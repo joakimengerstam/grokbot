@@ -1,0 +1,55 @@
+---
+/**
+ * The funnel step. Every guide page ends here: the reader has just seen how
+ * much structure a good bot needs — Roore builds it in their systems instead.
+ */
+import { rooreMailto, ROORE_URL } from '../lib/roore';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  source?: string;
+  class?: string;
+}
+
+const {
+  heading = 'Vill du inte bygga själv?',
+  body = 'Roore bygger flöden som förbereder fakturor, ordrar och mejl i de system ni redan har. Ni godkänner innan något bokförs eller skickas. Femton minuter räcker för att se om det finns ett första jobb.',
+  source = 'grokbot.se',
+  class: className,
+} = Astro.props;
+
+const mailto = rooreMailto(source);
+---
+
+<section
+  class:list={[
+    'bg-ink text-white rounded-2xl px-6 py-10 sm:px-12 sm:py-14 grid lg:grid-cols-[1fr_auto] gap-8 items-center',
+    className,
+  ]}
+>
+  <div>
+    <p class="eyebrow text-white/60 mb-3">Roore AB · Stockholm</p>
+    <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">{heading}</h2>
+    <p class="mt-4 text-white/80 max-w-xl leading-relaxed">{body}</p>
+    <ul class="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/70 font-mono">
+      <li>Fortnox · Visma · Bokio</li>
+      <li>Ett flöde först, fast pris</li>
+      <li>Ni godkänner innan det går vidare</li>
+    </ul>
+  </div>
+  <div class="flex flex-col items-start lg:items-end gap-3">
+    <a
+      href={mailto}
+      class="inline-flex items-center gap-2 bg-white text-ink px-5 py-3 rounded-full text-sm font-medium hover:bg-cobalt hover:text-white transition-colors"
+    >
+      Boka 15 minuter <span aria-hidden="true">→</span>
+    </a>
+    <a
+      href={ROORE_URL}
+      target="_blank"
+      rel="noopener"
+      class="text-sm text-white/70 hover:text-white underline underline-offset-3 decoration-white/30">Läs mer på roore.se ↗</a
+    >
+  </div>
+</section>

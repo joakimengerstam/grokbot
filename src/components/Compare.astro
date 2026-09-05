@@ -1,0 +1,31 @@
+---
+/** Side-by-side bad/good prompt comparison. */
+interface Props {
+  bad: string;
+  badWhy: string;
+  good: string;
+  goodWhy: string;
+  badLabel?: string;
+  goodLabel?: string;
+}
+const { bad, badWhy, good, goodWhy, badLabel = 'Undvik', goodLabel = 'Gör så här' } = Astro.props;
+---
+
+<div class="not-prose grid md:grid-cols-2 gap-4 my-6">
+  <figure class="bg-panel border border-line rounded-lg overflow-hidden">
+    <figcaption class="px-4 py-2 border-b border-line-soft flex items-center gap-2">
+      <span class="w-3 h-[2px] bg-signal" aria-hidden="true"></span>
+      <span class="eyebrow text-signal">{badLabel}</span>
+    </figcaption>
+    <blockquote class="px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink-soft">“{bad}”</blockquote>
+    <p class="px-4 pb-4 text-sm text-muted">{badWhy}</p>
+  </figure>
+  <figure class="bg-panel border border-cobalt/40 rounded-lg overflow-hidden">
+    <figcaption class="px-4 py-2 border-b border-line-soft flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-cobalt" aria-hidden="true"></span>
+      <span class="eyebrow text-cobalt">{goodLabel}</span>
+    </figcaption>
+    <blockquote class="px-4 py-4 font-mono text-[0.82rem] leading-relaxed text-ink">“{good}”</blockquote>
+    <p class="px-4 pb-4 text-sm text-muted">{goodWhy}</p>
+  </figure>
+</div>

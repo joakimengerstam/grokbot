@@ -1,0 +1,27 @@
+---
+interface Props {
+  kind?: 'tip' | 'warn' | 'ok' | 'note';
+  title?: string;
+  class?: string;
+}
+
+const { kind = 'note', title, class: className } = Astro.props;
+
+const styles = {
+  tip: { bar: 'bg-cobalt', label: 'text-cobalt', fallback: 'Tips' },
+  warn: { bar: 'bg-signal', label: 'text-signal', fallback: 'Observera' },
+  ok: { bar: 'bg-moss', label: 'text-moss', fallback: 'Klart' },
+  note: { bar: 'bg-ink', label: 'text-ink', fallback: 'Notera' },
+}[kind];
+---
+
+<aside
+  class:list={[
+    'relative bg-panel border border-line rounded-lg pl-6 pr-5 py-4 text-[0.9375rem] leading-relaxed text-ink-soft not-prose',
+    className,
+  ]}
+>
+  <span class:list={['absolute left-0 top-3 bottom-3 w-[3px] rounded-r', styles.bar]} aria-hidden="true"></span>
+  <p class:list={['eyebrow mb-1.5', styles.label]}>{title ?? styles.fallback}</p>
+  <div class="[&>p]:mb-0 [&>ul]:mb-0 [&>ul]:mt-2 [&>ul]:space-y-1"><slot /></div>
+</aside>
