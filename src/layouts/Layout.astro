@@ -1,12 +1,26 @@
 ---
 import '../styles/global.css';
+import { rooreMailto, ROORE_URL } from '../lib/roore';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Grok Bot är din desktop-assistent byggd på Cursor och xAI:s Grok. Lär dig sätta upp din egen bot-flotta.' } = Astro.props;
+const {
+  title,
+  description = 'Guide till Grok Bots: desktop-assistenter med tydliga jobs och anti-jobs, byggda på Cursor och xAI:s Grok. Från Roore AB, som bygger samma flöden för fakturor, ordrar och mejl i era system.',
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const nav = [
+  { href: '/', label: 'Hem' },
+  { href: '/installning', label: 'Kom igång' },
+  { href: '/best-practices', label: 'Best practices' },
+  { href: '/exempel', label: 'Exempel' },
+  { href: '/om', label: 'Om' },
+];
 ---
 
 <!doctype html>
@@ -14,33 +28,124 @@ const { title, description = 'Grok Bot är din desktop-assistent byggd på Curso
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f4f6f8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Instrument+Sans:ital,wght@0,400..600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen bg-zinc-50 text-zinc-900">
-    <nav class="border-b border-zinc-200 bg-white">
-      <div class="max-w-5xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <a href="/" class="text-xl font-bold text-zinc-900">Grok Bot</a>
-          <div class="flex gap-6">
-            <a href="/" class="text-sm hover:text-zinc-600">Hem</a>
-            <a href="/installning" class="text-sm hover:text-zinc-600">Installning</a>
-            <a href="/best-practices" class="text-sm hover:text-zinc-600">Best Practices</a>
-            <a href="/exempel" class="text-sm hover:text-zinc-600">Exempel</a>
-            <a href="/om" class="text-sm hover:text-zinc-600">Om</a>
-          </div>
-        </div>
+  <body class="min-h-screen flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-3 focus:py-2 focus:rounded"
+      >Hoppa till innehåll</a
+    >
+
+    <header class="sticky top-0 z-40 bg-paper/85 backdrop-blur border-b border-line">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-6">
+        <a href="/" class="flex items-center gap-2.5 group">
+          <span
+            class="inline-block w-2.5 h-2.5 rounded-full bg-cobalt group-hover:bg-signal transition-colors"
+            aria-hidden="true"></span>
+          <span class="font-display text-[1.15rem] font-semibold tracking-tight">grokbot.se</span>
+        </a>
+
+        <nav aria-label="Huvudmeny" class="hidden md:flex items-center gap-1">
+          {
+            nav.map((item) => {
+              const active = path === item.href;
+              return (
+                <a
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  class:list={[
+                    'px-3 py-1.5 text-sm rounded-full transition-colors',
+                    active ? 'bg-ink text-white' : 'text-ink-soft hover:bg-line-soft hover:text-ink',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              );
+            })
+          }
+          <a
+            href={rooreMailto('grokbot.se header')}
+            class="ml-3 px-3.5 py-1.5 text-sm rounded-full bg-cobalt text-white hover:bg-ink transition-colors whitespace-nowrap"
+          >
+            Boka 15 min
+          </a>
+        </nav>
+
+        <details class="md:hidden relative">
+          <summary
+            class="list-none cursor-pointer text-sm px-3 py-1.5 rounded-full border border-line bg-panel select-none"
+            >Meny</summary
+          >
+          <nav
+            aria-label="Huvudmeny"
+            class="absolute right-0 mt-2 w-52 bg-panel border border-line rounded-lg shadow-lg p-1.5 flex flex-col"
+          >
+            {
+              nav.map((item) => {
+                const active = path === item.href;
+                return (
+                  <a
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    class:list={[
+                      'px-3 py-2 text-sm rounded-md',
+                      active ? 'bg-ink text-white' : 'text-ink-soft hover:bg-line-soft',
+                    ]}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })
+            }
+            <a
+              href={rooreMailto('grokbot.se meny')}
+              class="mt-1 px-3 py-2 text-sm rounded-md bg-cobalt text-white text-center"
+            >
+              Boka 15 min med Roore
+            </a>
+          </nav>
+        </details>
       </div>
-    </nav>
-    <main class="max-w-5xl mx-auto px-4 py-12">
+    </header>
+
+    <main id="main" class="flex-1">
       <slot />
     </main>
-    <footer class="border-t border-zinc-200 mt-20 py-8 text-center text-sm text-zinc-600">
-      <div class="max-w-5xl mx-auto px-4">
-        <p>Grok Bot är ett inofficiellt projekt av <a href="https://roore.se" class="underline">Joakim Engerstam / roore.se</a></p>
-        <p class="mt-2 text-xs">Ej affilierad med xAI eller Cursor. Grok och Grok Bot är varumärken tillhörande sina respektive ägare.</p>
+
+    <footer class="border-t border-line mt-24">
+      <div
+        class="max-w-6xl mx-auto px-5 sm:px-8 py-10 grid gap-8 md:grid-cols-[1fr_auto] items-start text-sm text-muted"
+      >
+        <div class="max-w-xl space-y-3">
+          <p class="font-display text-ink text-base font-semibold">grokbot.se</p>
+          <p>
+            En guide från
+            <a href={ROORE_URL} class="text-ink underline underline-offset-3 decoration-line hover:decoration-ink"
+              >Roore AB</a
+            >, Stockholm. Vi bygger flöden som förbereder fakturor, ordrar och mejl i era system – ni godkänner
+            innan något går vidare.
+            <a href={rooreMailto('grokbot.se footer')} class="text-cobalt underline underline-offset-3">Boka 15 minuter</a>.
+          </p>
+          <p class="text-xs">
+            Inofficiellt projekt. Ej affilierat med xAI eller Cursor. Grok och Cursor är varumärken tillhörande sina
+            respektive ägare.
+          </p>
+        </div>
+        <nav aria-label="Sidfot" class="flex flex-wrap gap-x-5 gap-y-2 md:justify-end">
+          {nav.map((item) => <a href={item.href} class="hover:text-ink">{item.label}</a>)}
+          <a href={ROORE_URL} class="hover:text-ink">roore.se ↗</a>
+        </nav>
       </div>
     </footer>
   </body>

@@ -1,39 +1,174 @@
 @import 'tailwindcss';
 
-/* Additional custom styles */
+@theme {
+  --color-paper: #f4f6f8;
+  --color-panel: #ffffff;
+  --color-ink: #0b1220;
+  --color-ink-soft: #2a3342;
+  --color-muted: #5b6472;
+  --color-line: #d8dee6;
+  --color-line-soft: #e8ecf1;
+  --color-cobalt: #1e3fe0;
+  --color-cobalt-soft: #e6eafc;
+  --color-signal: #d8321e;
+  --color-signal-soft: #fbe9e6;
+  --color-moss: #1f7a4d;
+  --color-moss-soft: #e4f3ea;
+
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
-  font-feature-settings: "kern";
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-feature-settings: 'kern', 'ss01';
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: radial-gradient(circle at 1px 1px, rgb(11 18 32 / 0.06) 1px, transparent 0);
+  background-size: 28px 28px;
 }
 
-/* Smooth link transitions */
-a {
-  transition: color 0.2s ease;
+::selection {
+  background: var(--color-cobalt);
+  color: white;
 }
 
-/* Better prose styling for content pages */
-.prose {
-  @apply leading-relaxed;
+:focus-visible {
+  outline: 2px solid var(--color-cobalt);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-.prose h2 {
-  @apply mt-8 mb-4;
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.02em;
 }
 
-.prose h3 {
-  @apply mt-6 mb-3;
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-.prose p {
-  @apply mb-4;
+/* Long-form content — in the components layer so utilities can override */
+@layer components {
+.prose-guide {
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+.prose-guide h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 600;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 6rem;
+}
+.prose-guide h2:first-child {
+  margin-top: 0;
+}
+.prose-guide h3 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.prose-guide p {
+  margin-bottom: 1rem;
+  color: var(--color-ink-soft);
+}
+.prose-guide a {
+  color: var(--color-cobalt);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.prose-guide a:hover {
+  text-decoration-thickness: 2px;
+}
+.prose-guide ol,
+.prose-guide ul {
+  margin: 0 0 1rem 0;
+  padding-left: 1.5rem;
+  color: var(--color-ink-soft);
+}
+.prose-guide ol {
+  list-style: decimal;
+}
+.prose-guide ul {
+  list-style: disc;
+}
+.prose-guide li {
+  margin-bottom: 0.4rem;
+}
+.prose-guide li::marker {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+.prose-guide strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+.prose-guide code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-line-soft);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
 }
 
-.prose ul, .prose ol {
-  @apply mb-4;
+/* Hero card entrance */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise-1 { animation-delay: 0.05s; }
+.rise-2 { animation-delay: 0.15s; }
+.rise-3 { animation-delay: 0.25s; }
+.rise-4 { animation-delay: 0.35s; }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1.1s steps(1) infinite;
 }
 
-.prose li {
-  @apply mb-2;
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .cursor-blink {
+    animation: none;
+  }
 }

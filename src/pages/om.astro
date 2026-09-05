@@ -1,142 +1,125 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+import { rooreMailto, ROORE_URL, ROORE_MAIL } from '../lib/roore';
+
+const disclaimers = [
+  {
+    title: 'Inofficiellt, ej affilierat',
+    body: 'Projektet är inte affilierat med, godkänt av eller på något sätt kopplat till xAI, Cursor eller deras moderbolag. Det är en privat guide skriven av en tredjepartsutvecklare.',
+  },
+  {
+    title: 'Varumärken',
+    body: '"Grok" och "Grok Bot" är varumärken tillhörande xAI och/eller deras licenstagare. "Cursor" är ett varumärke tillhörande Anysphere Inc. Övriga varumärken tillhör sina ägare. Namnen används enbart beskrivande.',
+  },
+  {
+    title: 'Ingen garanti',
+    body: 'Informationen tillhandahålls i befintligt skick utan garantier. Vi garanterar inte att guiderna fungerar felfritt, är kompletta eller passar ditt användningsfall. Använd på egen risk.',
+  },
+  {
+    title: 'Ansvar för automation',
+    body: 'När du sätter upp automatiserade bots är du ansvarig för vad de gör. Skriv tydliga anti-jobs och förstå konsekvenserna innan du kör bots i produktion. Vi tar inget ansvar för skador, dataförlust eller andra problem.',
+  },
+  {
+    title: 'API-kostnader',
+    body: 'xAI:s Grok API kostar pengar. Du ansvarar själv för att övervaka användning och kostnader. Sätt budgetgränser i xAI Console.',
+  },
+  {
+    title: 'Dataskydd',
+    body: 'När du använder AI-modeller via API skickas din data till externa servrar. Läs xAI:s och Cursors integritetspolicyer och villkor. Skicka aldrig känslig data utan att förstå hur den hanteras.',
+  },
+];
 ---
 
-<Layout title="Om - Grok Bot" description="Om projektet och viktig disclaimer-information">
-  <div class="prose prose-zinc max-w-none">
-    <h1 class="text-4xl font-bold mb-4">Om Grok Bot</h1>
-    <p class="text-xl text-zinc-600 mb-8">Ett inofficiellt projekt om desktop-automation</p>
+<Layout title="Om – Grok Bot" description="Om projektet och viktig disclaimer-information">
+  <PageHeader
+    eyebrow="Om projektet"
+    title="Ett inofficiellt projekt om desktop-automation"
+    lede="Skriven av Roore AB för att dela en struktur som fungerar i praktiken – och för att visa vad vi bygger åt företag."
+  />
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Vad är detta?</h2>
-      <p class="mb-4">
-        Grok Bot är en webbplats och guide för att sätta upp desktop-assistenter ("bots") 
-        med Cursor och xAI:s Grok-modell. Projektet skapades av 
-        <a href="https://roore.se" class="underline" target="_blank">Joakim Engerstam</a>, 
-        svensk systemutvecklare som bygger custom automation och använder en flotta av Grok Bots 
-        för att automatisera repetitiva uppgifter.
-      </p>
-      <p class="mb-4">
-        Målet är att hjälpa andra sätta upp sina egna bots på ett strukturerat sätt: 
-        tighta personas, tydliga jobs och anti-jobs, och smart användning av on-demand vs rutiner.
-      </p>
-    </section>
-
-    <section class="mb-12 bg-amber-50 border-2 border-amber-300 p-6 rounded-lg">
-      <h2 class="text-2xl font-bold mb-4">⚠️ Viktig disclaimer</h2>
-      
-      <div class="space-y-4">
-        <div>
-          <h3 class="font-bold mb-2">Ej officiell, ej affilierad</h3>
-          <p class="text-sm">
-            Detta projekt är <strong>INTE</strong> affilierat med, endorsat av, eller på något sätt 
-            kopplat till xAI, Cursor, eller deras moderbolag/ägare. Detta är en privat guide 
-            skapad av en tredjepartsutvecklare.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-bold mb-2">Varumärken</h3>
-          <p class="text-sm">
-            "Grok" och "Grok Bot" är varumärken tillhörande xAI och/eller deras licenstagare. 
-            "Cursor" är ett varumärke tillhörande Anysphere Inc. Alla andra nämnda varumärken 
-            tillhör sina respektive ägare. Användningen av dessa namn på denna webbplats är 
-            enbart för deskriptiva ändamål och innebär ingen affiliering eller endorsement.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-bold mb-2">Ingen garanti</h3>
-          <p class="text-sm">
-            Informationen på denna webbplats tillhandahålls "as is" utan garantier av något slag. 
-            Vi garanterar inte att guiderna kommer att fungera felfritt, att de är kompletta, 
-            eller att de passar ditt specifika användningsfall. Använd informationen på egen risk.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-bold mb-2">Ansvar för automation</h3>
-          <p class="text-sm">
-            När du sätter upp automatiserade bots är DU ansvarig för vad de gör. Se till att dina 
-            anti-jobs är tydliga och att du förstår konsekvenserna av automation innan du kör bots 
-            i produktion. Vi tar inget ansvar för skador, dataförlust, eller andra problem som 
-            uppstår från användning av dessa guider.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-bold mb-2">API-kostnader</h3>
-          <p class="text-sm">
-            Att använda xAI:s Grok API kostar pengar. Du är själv ansvarig för att övervaka din 
-            användning och hantera kostnader. Sätt upp budgetgränser i xAI Console för att undvika 
-            oväntade räkningar.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-bold mb-2">Dataskydd och integritet</h3>
-          <p class="text-sm">
-            När du använder AI-modeller genom API:er skickas din data till externa servrar. 
-            Läs och förstå xAI:s och Cursors privacy policies och terms of service innan du 
-            använder deras tjänster. Skicka aldrig känslig eller konfidentiell data utan att 
-            först förstå hur den hanteras.
-          </p>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[1fr_2fr] gap-12">
+    <aside class="lg:sticky lg:top-24 self-start">
+      <div class="bg-panel border border-line rounded-xl p-6">
+        <p class="eyebrow mb-3">Bakom sajten</p>
+        <p class="font-display text-xl font-semibold">Roore AB</p>
+        <p class="text-sm text-muted mt-1">Joakim Engerstam · Stockholm</p>
+        <p class="text-[0.95rem] text-ink-soft mt-4 leading-relaxed">
+          Vi bygger flöden som förbereder fakturor, ordrar och mejl i de system ni redan har – Fortnox, Visma, Bokio
+          eller ert affärssystem. Ni godkänner innan något bokförs eller skickas.
+        </p>
+        <div class="mt-5 flex flex-col gap-2 text-sm">
+          <a
+            href={rooreMailto('grokbot.se om')}
+            class="inline-flex items-center justify-center gap-2 bg-ink text-white px-4 py-2.5 rounded-full font-medium hover:bg-cobalt transition-colors"
+            >Boka 15 minuter <span aria-hidden="true">→</span></a
+          >
+          <a href={ROORE_URL} target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3 text-center"
+            >roore.se ↗</a
+          >
         </div>
       </div>
-    </section>
+    </aside>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Om skaparen</h2>
-      <p class="mb-4">
-        <strong>Joakim Engerstam</strong> är en svensk systemutvecklare och grundare av 
-        <a href="https://roore.se" class="underline" target="_blank">roore.se</a>. 
-        Han bygger custom automation och använder själv en flotta av Grok Bots för att hantera 
-        allt från inbox-triagering till content-optimering och life admin-projekt.
+    <div class="prose-guide max-w-2xl">
+      <h2 class="!mt-0">Vad är detta?</h2>
+      <p>
+        Grok Bot är en guide för att sätta upp desktop-assistenter med Cursor och xAI:s Grok-modell. Målet är att
+        hjälpa dig sätta upp egna bots på ett strukturerat sätt: tighta personas, tydliga jobs och anti-jobs, och
+        rätt val mellan on-demand och rutiner.
       </p>
-      <p class="mb-4">
-        Denna webbplats skapades för att dela den struktur och de best practices som visat sig 
-        fungera i praktiken, inte för att sälja något eller hypa AI.
+      <p>
+        Guiden drivs av <a href={ROORE_URL} target="_blank" rel="noopener">Roore AB</a>. Strukturen här är samma som
+        vi använder när vi bygger flöden åt företag: ett tydligt jobb, tydliga gränser, och en människa som godkänner
+        innan något går vidare. Gillar du upplägget men vill inte bygga själv, är det det vi gör.
       </p>
-    </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Kontakt och feedback</h2>
-      <p class="mb-4">
-        För frågor om denna webbplats eller guiderna, kontakta Joakim via 
-        <a href="https://roore.se" class="underline" target="_blank">roore.se</a>.
-      </p>
-      <p class="mb-4">
-        För frågor om Cursor, besök <a href="https://cursor.sh" class="underline" target="_blank">cursor.sh</a>. 
-        För frågor om xAI eller Grok API, besök <a href="https://x.ai" class="underline" target="_blank">x.ai</a>.
-      </p>
-    </section>
+      <h2 id="disclaimer">Disclaimer</h2>
+      <div class="not-prose grid sm:grid-cols-2 gap-px bg-line border border-line rounded-xl overflow-hidden my-6">
+        {
+          disclaimers.map((d) => (
+            <div class="bg-panel p-5">
+              <h3 class="font-display font-semibold mb-1.5 flex items-center gap-2">
+                <span class="w-3 h-[2px] bg-signal shrink-0" aria-hidden="true" />
+                {d.title}
+              </h3>
+              <p class="text-sm text-ink-soft leading-relaxed">{d.body}</p>
+            </div>
+          ))
+        }
+      </div>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Källkod</h2>
-      <p class="mb-4">
-        Denna webbplats är byggd med Astro och Tailwind CSS. Källkoden finns tillgänglig 
-        på GitHub (länk kommer läggas till när repon är publikt).
+      <h2>Kontakt</h2>
+      <p>
+        Frågor om webbplatsen, guiderna eller Roore: <a href={`mailto:${ROORE_MAIL}`}>{ROORE_MAIL}</a>. Frågor om Cursor:
+        <a href="https://cursor.sh" target="_blank" rel="noopener">cursor.sh</a>. Frågor om xAI eller Grok API:
+        <a href="https://x.ai" target="_blank" rel="noopener">x.ai</a>.
       </p>
-    </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Ändringar och uppdateringar</h2>
-      <p class="mb-4">
-        Vi förbehåller oss rätten att uppdatera, ändra, eller ta bort innehåll på denna 
-        webbplats när som helst utan förvarning. Guiderna uppdateras baserat på nya 
-        funktioner i Cursor och Grok API, men vi garanterar inte att de alltid är 100% aktuella.
+      <h2>Källkod</h2>
+      <p>Webbplatsen är byggd med Astro och Tailwind CSS. Källkoden publiceras på GitHub när repot blir publikt.</p>
+
+      <h2>Ändringar</h2>
+      <p>
+        Innehållet kan uppdateras, ändras eller tas bort utan förvarning. Guiderna följer nya funktioner i Cursor och
+        Grok API, men är inte garanterat aktuella.
       </p>
-    </section>
 
-    <section class="bg-green-50 border border-green-200 p-6 rounded-lg">
-      <h3 class="font-bold mb-2">✅ Sammanfattning</h3>
-      <ul class="list-disc list-inside space-y-1 text-sm">
-        <li>Grok Bot är ett inofficiellt projekt, ej kopplat till xAI eller Cursor</li>
-        <li>Guiderna tillhandahålls "as is" utan garantier</li>
-        <li>Du är själv ansvarig för vad dina bots gör och eventuella kostnader</li>
-        <li>Läs och förstå xAI:s och Cursors policies innan du använder deras tjänster</li>
-        <li>Skicka aldrig känslig data till externa API:er utan att förstå konsekvenserna</li>
-      </ul>
-    </section>
+      <Callout kind="note" title="Kort version" class="mt-10">
+        <ul class="list-disc pl-4">
+          <li>Inofficiellt projekt, ej kopplat till xAI eller Cursor</li>
+          <li>Guiderna ges i befintligt skick utan garantier</li>
+          <li>Du ansvarar för vad dina bots gör och vad de kostar</li>
+          <li>Läs xAI:s och Cursors policyer innan du börjar</li>
+          <li>Skicka aldrig känslig data till externa API:er utan att förstå konsekvenserna</li>
+        </ul>
+      </Callout>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta source="grokbot.se om" />
   </div>
 </Layout>

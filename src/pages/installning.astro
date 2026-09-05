@@ -1,133 +1,183 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PersonaCard from '../components/PersonaCard.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+
+const steps = [
+  { id: 'cursor', label: 'Installera Cursor' },
+  { id: 'nyckel', label: 'Skaffa API-nyckel' },
+  { id: 'bot', label: 'Skapa första boten' },
+  { id: 'uppgift', label: 'Ge en första uppgift' },
+  { id: 'rutin', label: 'Sätt upp rutiner' },
+  { id: 'specialister', label: 'Lägg till specialister' },
+];
+
+const specialists = [
+  { name: 'SEO Bot', body: 'Optimerar blogginlägg, analyserar keywords, föreslår meta-descriptions.' },
+  { name: 'Sales Bot', body: 'Följer upp leads, uppdaterar CRM, föreslår nästa steg.' },
+  { name: 'Content Bot', body: 'Skriver första utkast, anpassar ton, formaterar per plattform.' },
+  { name: 'Research Bot', body: 'Samlar data, sammanfattar artiklar, bygger konkurrentanalyser.' },
+];
 ---
 
-<Layout title="Installning - Grok Bot" description="Steg-för-steg guide för att sätta upp din första Grok Bot">
-  <div class="prose prose-zinc max-w-none">
-    <h1 class="text-4xl font-bold mb-4">Installning</h1>
-    <p class="text-xl text-zinc-600 mb-8">Sätt upp din första Grok Bot på 15 minuter</p>
+<Layout title="Kom igång – Grok Bot" description="Steg-för-steg guide för att sätta upp din första Grok Bot">
+  <PageHeader
+    eyebrow="Kom igång · 6 steg · ca 15 minuter"
+    title="Sätt upp din första Grok Bot"
+    lede="Från tom Cursor-installation till en bot som triagerar din inbox varje morgon."
+  />
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 1: Installera Cursor Desktop</h2>
-      <ol class="list-decimal list-inside space-y-3">
-        <li>Gå till <a href="https://cursor.sh" class="underline" target="_blank">cursor.sh</a></li>
-        <li>Ladda ner och installera Cursor för ditt operativsystem</li>
-        <li>Starta Cursor och logga in (skapa konto om du inte har ett)</li>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
+    <nav aria-label="Steg" class="hidden lg:block">
+      <ol class="sticky top-24 space-y-1 text-sm">
+        {
+          steps.map((s, i) => (
+            <li>
+              <a
+                href={`#${s.id}`}
+                class="flex items-baseline gap-3 py-1.5 text-muted hover:text-ink transition-colors"
+              >
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span>{s.label}</span>
+              </a>
+            </li>
+          ))
+        }
       </ol>
-      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-4">
-        <p class="text-sm"><strong>Tips:</strong> Cursor Free funkar, men Cursor Pro ger mer token-utrymme för längre sessioner.</p>
-      </div>
-    </section>
+    </nav>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 2: Skaffa xAI API-nyckel</h2>
-      <ol class="list-decimal list-inside space-y-3">
-        <li>Gå till <a href="https://console.x.ai" class="underline" target="_blank">console.x.ai</a></li>
-        <li>Logga in med ditt X-konto (tidigare Twitter)</li>
-        <li>Navigera till API Keys och skapa en ny nyckel</li>
-        <li>Kopiera nyckeln (den visas bara en gång)</li>
-        <li>I Cursor: gå till Settings → Models → Add Custom Model</li>
-        <li>Välj xAI och klistra in din API-nyckel</li>
-      </ol>
-      <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg mt-4">
-        <p class="text-sm"><strong>Observera:</strong> xAI API kostar pengar baserat på användning. Börja med en låg budget och se hur mycket dina bots använder.</p>
-      </div>
-    </section>
+    <div class="prose-guide max-w-2xl">
+      <section id="cursor">
+        <p class="eyebrow mb-2">Steg 1</p>
+        <h2 class="!mt-0">Installera Cursor Desktop</h2>
+        <ol>
+          <li>Gå till <a href="https://cursor.sh" target="_blank" rel="noopener">cursor.sh</a></li>
+          <li>Ladda ner och installera Cursor för ditt operativsystem</li>
+          <li>Starta Cursor och logga in (skapa konto om du inte har ett)</li>
+        </ol>
+        <Callout kind="tip">
+          <p>Cursor Free funkar, men Cursor Pro ger mer token-utrymme för längre sessioner.</p>
+        </Callout>
+      </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 3: Skapa din första bot</h2>
-      <ol class="list-decimal list-inside space-y-3">
-        <li>I Cursor: öppna Composer (Cmd/Ctrl + I)</li>
-        <li>Välj Grok-modellen (t.ex. grok-3) i modellväljaren</li>
-        <li>Skapa en ny bot-profil genom att skriva: "Jag vill skapa en Grok Bot med följande persona..."</li>
-      </ol>
+      <section id="nyckel">
+        <p class="eyebrow mb-2 mt-14">Steg 2</p>
+        <h2 class="!mt-0">Skaffa xAI API-nyckel</h2>
+        <ol>
+          <li>Gå till <a href="https://console.x.ai" target="_blank" rel="noopener">console.x.ai</a></li>
+          <li>Logga in med ditt X-konto</li>
+          <li>Gå till API Keys och skapa en ny nyckel</li>
+          <li>Kopiera nyckeln – den visas bara en gång</li>
+          <li>I Cursor: Settings → Models → Add Custom Model</li>
+          <li>Välj xAI och klistra in nyckeln</li>
+        </ol>
+        <Callout kind="warn">
+          <p>
+            xAI API kostar pengar baserat på användning. Sätt en låg budgetgräns i xAI Console innan du börjar och
+            se hur mycket dina bots faktiskt drar.
+          </p>
+        </Callout>
+      </section>
 
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg mt-6">
-        <h3 class="font-bold mb-3">Exempel: Chief of Staff Bot</h3>
-        <div class="bg-zinc-50 p-4 rounded font-mono text-sm">
-          <p class="mb-2"><strong>Namn:</strong> CoS Bot</p>
-          <p class="mb-2"><strong>Job:</strong></p>
-          <ul class="list-disc list-inside ml-4 mb-2">
-            <li>Triagera inkommande mail varje morgon</li>
-            <li>Sammanfatta viktiga trådar i Slack</li>
-            <li>Flagga deadlines inom 48h</li>
-          </ul>
-          <p class="mb-2"><strong>Anti-jobs:</strong></p>
-          <ul class="list-disc list-inside ml-4">
-            <li>Svara ALDRIG på mail åt mig</li>
-            <li>Radera ALDRIG något</li>
-            <li>Fatta INGA beslut som kostar pengar</li>
-          </ul>
+      <section id="bot">
+        <p class="eyebrow mb-2 mt-14">Steg 3</p>
+        <h2 class="!mt-0">Skapa din första bot</h2>
+        <ol>
+          <li>I Cursor: öppna Composer (<code>Cmd/Ctrl + I</code>)</li>
+          <li>Välj Grok-modellen i modellväljaren</li>
+          <li>Beskriv personan: "Jag vill skapa en Grok Bot med följande persona …"</li>
+        </ol>
+        <div class="not-prose my-6">
+          <PersonaCard
+            name="Chief of Staff"
+            role="Ett bra första jobb: triagera, delegera, sammanfatta."
+            trigger="Varje morgon"
+            jobs={[
+              'Triagera inkommande mail varje morgon',
+              'Sammanfatta viktiga trådar i Slack',
+              'Flagga deadlines inom 48 timmar',
+            ]}
+            antiJobs={['Svara ALDRIG på mail åt mig', 'Radera ALDRIG något', 'Fatta INGA beslut som kostar pengar']}
+          />
         </div>
-        <p class="text-sm text-zinc-600 mt-3">
-          Anti-jobs är lika viktiga som jobs. De sätter gränser för vad boten INTE får göra.
+        <p>
+          Anti-jobs är lika viktiga som jobs. De sätter gränser för vad boten <strong>inte</strong> får göra, och
+          skyddar dig från oväntat "hjälpsamma" handlingar.
         </p>
-      </div>
-    </section>
+      </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 4: Definiera en första uppgift</h2>
-      <p class="mb-4">Ge din bot en konkret, begränsad uppgift att börja med:</p>
-      <div class="bg-zinc-50 border border-zinc-200 p-4 rounded-lg">
-        <p class="font-mono text-sm">
-          "Kolla min inbox (senaste 10 mailen). Lista dem i tre kategorier: Akut (svar idag), 
-          Normal (svar inom veckan), Kan vänta. Inkludera avsändare, ämne och varför du kategoriserar så."
+      <section id="uppgift">
+        <p class="eyebrow mb-2 mt-14">Steg 4</p>
+        <h2 class="!mt-0">Ge en första uppgift</h2>
+        <p>Börja konkret och begränsat:</p>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Kolla min inbox (senaste 10 mailen). Lista dem i tre kategorier: Akut (svar idag), Normal (svar inom
+          veckan), Kan vänta. Inkludera avsändare, ämne och varför du kategoriserar så.”
+        </blockquote>
+        <Callout kind="tip">
+          <p>Låt inte boten göra för mycket första gången. Se hur den presterar innan du skalar upp.</p>
+        </Callout>
+      </section>
+
+      <section id="rutin">
+        <p class="eyebrow mb-2 mt-14">Steg 5</p>
+        <h2 class="!mt-0">Sätt upp rutiner <span class="text-muted font-normal">(valfritt)</span></h2>
+        <p>När boten fungerar väl on-demand kan du schemalägga den:</p>
+        <ul class="not-prose !pl-0 space-y-2 my-5">
+          {
+            [
+              ['Varje dag 08:00', 'Triagera inbox'],
+              ['Fredag 17:00', 'Sammanfatta veckans sales-aktivitet'],
+              ['1:a varje månad', 'Uppdatera content-kalendern'],
+            ].map(([when, what]) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.75rem] text-cobalt whitespace-nowrap w-32">{when}</span>
+                <span class="text-[0.95rem]">{what}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p>
+          Använd Cursors automation-funktioner eller externa verktyg som <code>cron</code> (Linux/Mac) eller Task
+          Scheduler (Windows) för att trigga boten vid bestämda tider.
         </p>
-      </div>
-      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-4">
-        <p class="text-sm"><strong>Tips:</strong> Börja litet. Låt inte boten göra för mycket första gången. 
-        Se hur den presterar innan du skalar upp.</p>
-      </div>
-    </section>
+      </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 5: Sätt upp rutiner (valfritt)</h2>
-      <p class="mb-4">
-        När din bot fungerar väl on-demand, kan du schemalägga den att köra automatiskt:
-      </p>
-      <ul class="list-disc list-inside space-y-2 mb-4">
-        <li><strong>Varje morgon kl 08:00:</strong> Triagera inbox</li>
-        <li><strong>Varje fredag kl 17:00:</strong> Sammanfatta veckans sales-aktivitet</li>
-        <li><strong>Första dagen varje månad:</strong> Uppdatera content-kalender</li>
-      </ul>
-      <p class="mb-4">
-        Använd Cursor's automation-funktioner eller externa verktyg som cron (Linux/Mac) eller 
-        Task Scheduler (Windows) för att trigga din bot vid specifika tider.
-      </p>
-    </section>
+      <section id="specialister">
+        <p class="eyebrow mb-2 mt-14">Steg 6</p>
+        <h2 class="!mt-0">Lägg till specialister</h2>
+        <p>När du hittat mönster som går att automatisera, skapa en bot per mönster:</p>
+        <div class="not-prose grid sm:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden my-6">
+          {
+            specialists.map((s) => (
+              <div class="bg-panel p-5">
+                <h3 class="font-display font-semibold mb-1">{s.name}</h3>
+                <p class="text-sm text-ink-soft leading-relaxed">{s.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Steg 6: Lägg till specialister</h2>
-      <p class="mb-4">
-        När du hittat mönster som går att automatisera, skapa specialiserade bots:
-      </p>
-      <div class="grid md:grid-cols-2 gap-4">
-        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
-          <h4 class="font-bold mb-2">SEO Bot</h4>
-          <p class="text-sm text-zinc-600">Optimerar blogginlägg, analyserar keywords, föreslår meta-descriptions</p>
-        </div>
-        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
-          <h4 class="font-bold mb-2">Sales Bot</h4>
-          <p class="text-sm text-zinc-600">Följer upp leads, uppdaterar CRM, föreslår nästa steg</p>
-        </div>
-        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
-          <h4 class="font-bold mb-2">Content Bot</h4>
-          <p class="text-sm text-zinc-600">Skriver första utkast, anpassar ton, formaterar för olika plattformar</p>
-        </div>
-        <div class="bg-white border border-zinc-200 p-4 rounded-lg">
-          <h4 class="font-bold mb-2">Research Bot</h4>
-          <p class="text-sm text-zinc-600">Samlar data, sammanfattar artiklar, bygger kompetitoranalyser</p>
-        </div>
-      </div>
-    </section>
+      <Callout kind="ok" title="Nästa steg" class="mt-14">
+        <p>Du har en fungerande Grok Bot. Fortsätt med:</p>
+        <ul>
+          <li><a href="/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – skriv bättre personas</li>
+          <li><a href="/exempel" class="text-cobalt underline underline-offset-3">Exempel</a> – sju bots att kopiera</li>
+        </ul>
+      </Callout>
+    </div>
+  </div>
 
-    <section class="bg-green-50 border border-green-200 p-6 rounded-lg">
-      <h3 class="font-bold mb-2">✅ Nästa steg</h3>
-      <p class="mb-3">Nu har du en fungerande Grok Bot! Fortsätt med:</p>
-      <ul class="list-disc list-inside space-y-1">
-        <li><a href="/best-practices" class="underline">Best Practices</a> - Lär dig skriva bättre personas</li>
-        <li><a href="/exempel" class="underline">Exempel</a> - Se konkreta bot-idéer du kan kopiera</li>
-      </ul>
-    </section>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta
+      heading="Sex steg för dig. Noll steg för företaget."
+      body="Det här är vad det tar att sätta upp en bot på din egen dator. För fakturor, ordrar och mejl i ert affärssystem bygger Roore flödet, i era system, med ert godkännande innan något går vidare."
+      source="grokbot.se kom igång"
+    />
   </div>
 </Layout>

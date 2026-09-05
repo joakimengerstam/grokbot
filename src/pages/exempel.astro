@@ -1,250 +1,188 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PersonaCard from '../components/PersonaCard.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+
+const bots = [
+  {
+    id: 'chief-of-staff',
+    name: 'Chief of Staff',
+    role: 'Din första bot. Triagerar och delegerar till specialister, eller flaggar vad du behöver göra själv.',
+    trigger: 'Varje dag 08:00',
+    jobs: [
+      'Läs de senaste 20 mailen varje morgon',
+      'Kategorisera: Akut (svar idag), Normal (svar inom veckan), Kan vänta',
+      'Flagga deadlines inom 48 timmar',
+      'Sammanfatta viktiga Slack-trådar från senaste 24 timmarna',
+      'Skriv en daglig sammanfattning i Markdown',
+    ],
+    antiJobs: [
+      'Svara ALDRIG på mail åt mig',
+      'Radera ALDRIG något',
+      'Markera ALDRIG mail som läst',
+      'Fatta INGA beslut som involverar pengar',
+    ],
+    output: '~/daily-briefs/YYYY-MM-DD.md',
+  },
+  {
+    id: 'inbox',
+    name: 'Inbox Bot',
+    role: 'Specialist på mail. Triagerar djupare än Chief of Staff.',
+    trigger: 'Varje dag 08:15',
+    jobs: [
+      'Sortera alla olästa mail efter prioritet och typ',
+      'Identifiera nyhetsbrev och föreslå filterregler',
+      'Hitta mail som behöver uppföljning ("väntar på svar")',
+      'Lista mail där jag är CC:ad men inte behöver agera',
+      'Föreslå utkast på standardfrågor',
+    ],
+    antiJobs: ['Skicka ALDRIG mail', 'Flytta ALDRIG mail till papperskorgen', 'Avprenumerera ALDRIG från listor'],
+  },
+  {
+    id: 'sales',
+    name: 'Sales Bot',
+    role: 'Följer upp leads och håller CRM uppdaterat.',
+    trigger: 'Fredag 17:00',
+    jobs: [
+      'Kolla CRM: vilka leads har inte fått uppföljning på 3+ dagar?',
+      'Föreslå nästa steg per lead baserat på senaste interaktionen',
+      'Skriv utkast till uppföljningsmail',
+      'Uppdatera status: Väntar på uppföljning / Behöver offert / Gått vidare',
+      'Flagga leads som inte svarat på 2+ uppföljningar som Cold',
+    ],
+    antiJobs: [
+      'Skicka ALDRIG mail utan mitt godkännande',
+      'Radera ALDRIG leads',
+      'Erbjud ALDRIG rabatter eller pris',
+      'Boka ALDRIG möten åt mig',
+    ],
+  },
+  {
+    id: 'seo',
+    name: 'SEO Bot',
+    role: 'Optimerar innehåll för sökmotorer.',
+    trigger: 'On-demand',
+    jobs: [
+      'Analysera en given text för SEO',
+      'Föreslå meta-title och meta-description',
+      'Identifiera primära och sekundära keywords',
+      'Ge konkreta förbättringar: heading-struktur, keyword-densitet, interna länkar',
+      'Skriv SEO-optimerad slug/URL',
+    ],
+    antiJobs: ['Ändra ALDRIG texten automatiskt', 'Publicera ALDRIG något direkt', 'Offra ALDRIG läsbarhet för keywords'],
+  },
+  {
+    id: 'content',
+    name: 'Content Bot',
+    role: 'Skriver första utkast och anpassar texter för olika kanaler.',
+    trigger: 'On-demand',
+    jobs: [
+      'Skriv första utkast utifrån keywords eller ämne',
+      'Anpassa text för blogg, LinkedIn, X och nyhetsbrev',
+      'Matcha företagets tone of voice (ge exempel vid setup)',
+      'Formatera med rubriker, listor och fetstil för läsbarhet',
+      'Föreslå bilder eller diagram som förbättrar texten',
+    ],
+    antiJobs: [
+      'Publicera ALDRIG direkt – ge alltid utkast',
+      'Uppfinn ALDRIG fakta eller statistik',
+      'Använd ALDRIG andras upphovsrättsskyddade material',
+    ],
+  },
+  {
+    id: 'research',
+    name: 'Research Bot',
+    role: 'Samlar data och sammanfattar information.',
+    trigger: 'On-demand',
+    jobs: [
+      'Sök information om ett givet ämne, företag eller person',
+      'Sammanfatta längre artiklar och papers i punktform',
+      'Bygg konkurrentanalyser (vad gör de? vad saknas?)',
+      'Leta trender inom ett specifikt område',
+      'Citera alltid källor med länkar',
+    ],
+    antiJobs: ['Uppfinn ALDRIG information', 'Påstå ALDRIG något utan källa', 'Bryt ALDRIG mot upphovsrätt'],
+  },
+  {
+    id: 'life-admin',
+    name: 'Life Admin Bot',
+    role: 'Hanterar stora livsprojekt med många rörliga delar. Exemplet: köksrenovering.',
+    trigger: 'Måndag 07:00',
+    jobs: [
+      'Håll koll på alla leverantörer (snickare, elektriker, VVS)',
+      'Spåra deadlines och beroenden ("VVS måste vara klart innan kakel")',
+      'Flagga förseningar tidigt',
+      'Sammanfatta status varje vecka: klart, väntar, försenat',
+      'Påminn om betalningar och fakturor',
+    ],
+    antiJobs: ['Boka ALDRIG leverantörer utan mitt godkännande', 'Betala ALDRIG något', 'Fatta INGA beslut om material eller design'],
+  },
+];
 ---
 
-<Layout title="Exempel - Grok Bot" description="Konkreta bot-idéer du kan kopiera och anpassa">
-  <div class="prose prose-zinc max-w-none">
-    <h1 class="text-4xl font-bold mb-4">Exempel</h1>
-    <p class="text-xl text-zinc-600 mb-8">Konkreta bot-idéer du kan kopiera och anpassa</p>
+<Layout title="Exempel – Grok Bot" description="Konkreta bot-idéer du kan kopiera och anpassa">
+  <PageHeader
+    eyebrow="Exempel · 7 personas"
+    title="Bots att kopiera och anpassa"
+    lede="Samma struktur varje gång: jobs, anti-jobs, output. Byt ut detaljerna mot din situation."
+  />
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Chief of Staff Bot</h2>
-      <p class="mb-4">
-        Din första bot. Triagerar och delegerar till specialister (eller flaggar vad du behöver göra själv).
-      </p>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
+    <nav aria-label="Bots" class="hidden lg:block">
+      <ul class="sticky top-24 space-y-1 text-sm">
+        {
+          bots.map((b) => (
+            <li>
+              <a href={`#${b.id}`} class="flex items-baseline justify-between gap-3 py-1.5 text-muted hover:text-ink transition-colors">
+                <span>{b.name}</span>
+                <span class="font-mono text-[0.65rem] text-muted/70 whitespace-nowrap">{b.trigger === 'On-demand' ? 'on-dem.' : 'rutin'}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
 
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Läs senaste 20 mailen varje morgon kl 08:00</li>
-              <li>Kategorisera: Akut (svar idag), Normal (svar inom veckan), Kan vänta</li>
-              <li>Flagga deadlines inom 48h</li>
-              <li>Sammanfatta viktiga Slack-trådar från senaste 24h</li>
-              <li>Skapa en daglig sammanfattning i Markdown</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Svara ALDRIG på mail åt mig</li>
-              <li>Radera ALDRIG något</li>
-              <li>Markera ALDRIG mail som läst</li>
-              <li>Fatta INGA beslut som involverar pengar</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Output:</p>
-            <p class="text-sm">Markdown-fil sparad i ~/daily-briefs/YYYY-MM-DD.md</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="max-w-3xl space-y-10">
+      {
+        bots.map((b) => (
+          <section id={b.id} class="scroll-mt-24">
+            <PersonaCard
+              name={b.name}
+              role={b.role}
+              trigger={b.trigger}
+              jobs={b.jobs}
+              antiJobs={b.antiJobs}
+              output={b.output}
+            />
+            {b.id === 'life-admin' && (
+              <Callout kind="tip" class="mt-4">
+                <p>
+                  Samma koncept funkar för flytt, bröllop, rekrytering, event – vilket projekt som helst med många
+                  beroenden.
+                </p>
+              </Callout>
+            )}
+          </section>
+        ))
+      }
 
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Inbox Bot</h2>
-      <p class="mb-4">
-        Specialist på att sortera mail. Triagerar djupare än Chief of Staff.
-      </p>
+      <Callout kind="note" title="Anpassa till ditt behov" class="mt-14">
+        <p>
+          Kopiera strukturen (jobs + anti-jobs + output) och byt ut detaljerna. Testa varje bot on-demand 3–5 gånger
+          innan du flyttar den till en rutin. Lägg till specialister när du hittat mönster som går att automatisera.
+        </p>
+      </Callout>
+    </div>
+  </div>
 
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Sortera alla olästa mail efter prioritet och typ</li>
-              <li>Identifiera nyhetsbrev och föreslå filter-regler</li>
-              <li>Hitta mail som behöver uppföljning (ex: "väntar på svar")</li>
-              <li>Lista mail där jag är CC:ad men inte behöver agera</li>
-              <li>Föreslå draft-svar på standardfrågor (men skicka ALDRIG)</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Skicka ALDRIG mail</li>
-              <li>Flytta ALDRIG mail till papperskorgen</li>
-              <li>Avprenumerera ALDRIG från listor</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Sales Bot</h2>
-      <p class="mb-4">
-        Följer upp leads och håller CRM uppdaterat.
-      </p>
-
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Kolla CRM: vilka leads har inte fått uppföljning på 3+ dagar?</li>
-              <li>Föreslå nästa steg för varje lead baserat på senaste interaktionen</li>
-              <li>Skriv draft för uppföljningsmail (men skicka ALDRIG)</li>
-              <li>Uppdatera CRM med status: "Väntar på uppföljning", "Behöver offert", "Gått vidare"</li>
-              <li>Flagga leads som inte svarat på 2+ uppföljningar som "Cold"</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Skicka ALDRIG mail utan min godkännande</li>
-              <li>Radera ALDRIG leads</li>
-              <li>Erbjud ALDRIG rabatter eller pris</li>
-              <li>Boka ALDRIG möten åt mig</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">SEO Bot</h2>
-      <p class="mb-4">
-        Optimerar content för sökmotorer.
-      </p>
-
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Analysera en given text/artikel för SEO</li>
-              <li>Föreslå meta-title och meta-description</li>
-              <li>Identifiera primary och secondary keywords</li>
-              <li>Ge konkreta förbättringar: heading-struktur, keyword-density, interna länkar</li>
-              <li>Skriva SEO-optimerade slug/URL</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Ändra ALDRIG texten automatiskt</li>
-              <li>Publicera ALDRIG något direkt</li>
-              <li>Offra ALDRIG läsbarhet för keywords</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Content Bot</h2>
-      <p class="mb-4">
-        Skriver första utkast och anpassar texter för olika kanaler.
-      </p>
-
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Skriv första utkast baserat på givna keywords/ämne</li>
-              <li>Anpassa text för olika plattformar (blogg, LinkedIn, Twitter, nyhetsbrev)</li>
-              <li>Matcha företagets tone of voice (ge exempel vid setup)</li>
-              <li>Formatera med headers, listor, bold för läsbarhet</li>
-              <li>Föreslå bilder/diagram som skulle förbättra texten</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Publicera ALDRIG direkt (ge alltid utkast)</li>
-              <li>Uppfinn ALDRIG fakta eller statistik</li>
-              <li>Använd ALDRIG andras copywrited material</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Research Bot</h2>
-      <p class="mb-4">
-        Samlar data och sammanfattar information.
-      </p>
-
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Sök information om givet ämne/företag/person</li>
-              <li>Sammanfatta längre artiklar/papers i bullet points</li>
-              <li>Bygg kompetitoranalyser (vad gör de? vad saknas?)</li>
-              <li>Leta efter trender inom specifikt område</li>
-              <li>Citera alltid källor med länkar</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Uppfinn ALDRIG information</li>
-              <li>Påstå ALDRIG något utan källa</li>
-              <li>Bryt ALDRIG mot copyrightlagar</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">Life Admin Bot ("Köksrenovering-style")</h2>
-      <p class="mb-4">
-        Hanterar stora livsprojekt som kräver mycket koordinering.
-      </p>
-
-      <div class="bg-white border border-zinc-200 p-6 rounded-lg">
-        <h3 class="font-bold mb-3">Persona (exempel: Köksrenovering)</h3>
-        <div class="space-y-4">
-          <div>
-            <p class="font-semibold mb-2">Job:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Håll koll på alla leverantörer (snickare, elektriker, VVS)</li>
-              <li>Spåra deadlines och beroenden ("VVS måste vara klart innan kakel")</li>
-              <li>Flagga förseningar tidigt</li>
-              <li>Sammanfatta veckovis status (vad är klart, vad väntar, vad är försenat)</li>
-              <li>Påminn om betalningar och fakturor</li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold mb-2">Anti-jobs:</p>
-            <ul class="list-disc list-inside text-sm space-y-1">
-              <li>Boka ALDRIG leverantörer utan min godkännande</li>
-              <li>Betala ALDRIG något</li>
-              <li>Fatta INGA beslut om material/design</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-4">
-        <p class="text-sm"><strong>Tips:</strong> Samma koncept funkar för: Flytt, Bröllopsplanering, 
-        Rekrytering, Event-organisering, eller vilket komplext projekt som helst med många rörliga delar.</p>
-      </div>
-    </section>
-
-    <section class="bg-zinc-100 p-6 rounded-lg">
-      <h3 class="font-bold mb-2">Anpassa till ditt behov</h3>
-      <p class="text-sm mb-3">
-        Dessa exempel är utgångspunkter. Kopiera persona-strukturen (Job + Anti-jobs + Output) 
-        och anpassa till din situation.
-      </p>
-      <p class="text-sm">
-        Kom ihåg: börja litet. Testa en bot on-demand 3-5 gånger innan du flyttar den till en rutin. 
-        Lägg till specialister när du hittat mönster som går att automatisera.
-      </p>
-    </section>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta
+      heading="Inbox Bot och Sales Bot, i ert affärssystem"
+      body="Roore bygger motsvarande flöden för företag: leverantörsfakturor in i Fortnox, order från mejl, svarsutkast som väntar på ert ja. Ett flöde först, fast pris, veckosiffror på vad som faktiskt körs."
+      source="grokbot.se exempel"
+    />
   </div>
 </Layout>
