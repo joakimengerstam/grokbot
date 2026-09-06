@@ -174,10 +174,10 @@ Båda ska visa din site med grönt hänglås (HTTPS).
 
 ## Innehåll
 
-Siten innehåller:
+Sidan innehåller:
 - **Hem**: Vad är en Grok Bot och varför sätta upp en
-- **Installning**: Steg-för-steg guide från installation till första boten
-- **Best Practices**: Hur man skriver tighta personas, väljer triggmetoder, undviker misstag
+- **Inställning**: Steg-för-steg guide från installation till första boten
+- **Best Practices**: Hur man skriver specialiserade roller, väljer triggmetoder, undviker misstag
 - **Exempel**: Konkreta bot-idéer (Chief of Staff, Inbox, Sales, SEO, Content, Research, Life Admin)
 - **Om/Disclaimer**: Viktig info om att projektet är inofficiellt och ej affilierat med xAI/Cursor
 
