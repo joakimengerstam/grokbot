@@ -87,7 +87,7 @@ const pitfalls = [
         <Compare
           bad="Du är en hjälpsam assistent som hjälper mig med allt jag behöver."
           badWhy="För brett. Boten vet inte vad den är bra på."
-          good="Du är en inbox-triagerare. Varje morgon läser du de senaste 20 mailen, kategoriserar dem efter prioritet (Akut/Normal/Kan vänta) och listar dem i ett markdown-dokument. Du svarar ALDRIG på mail åt mig."
+          good="Du hanterar min inbox och gör prioritering. Varje morgon läser du de senaste 20 mailen, kategoriserar dem efter prioritet (Akut/Normal/Kan vänta) och listar dem i ett markdown-dokument. Du svarar ALDRIG på mail åt mig."
           goodWhy="Tydligt scope. Boten vet sitt jobb och sina gränser."
         />
       </section>
@@ -154,10 +154,10 @@ const pitfalls = [
         <p>Ett vanligt misstag: be boten om bekräftelse hela tiden. Det dödar poängen med automation.</p>
         <Compare
           badLabel="Över-frågande"
-          bad="Triagera min inbox. Fråga mig innan du kategoriserar varje mail. Fråga också om du ska inkludera mail från spamfoldern."
+          bad="Kör prioritering på mejlen i min inbox. Fråga mig innan du kategoriserar varje mail. Fråga också om du ska inkludera mail från spamfoldern."
           badWhy="Boten kan inte jobba självständigt. Du får svara på en massa frågor."
           goodLabel="Tydliga regler"
-          good="Triagera min inbox. Ignorera spam-foldern. Regler: mail från kunder = Akut, nyhetsbrev = Kan vänta, allt annat = Normal."
+          good="Kör prioritering på mejlen i min inbox. Ignorera spam-foldern. Regler: mail från kunder = Akut, nyhetsbrev = Kan vänta, allt annat = Normal."
           goodWhy="Boten vet reglerna och jobbar utan att fråga."
         />
         <Callout kind="warn" title="När boten ska fråga">
@@ -310,7 +310,7 @@ const pitfalls = [
         </ol>
         <Callout kind="ok" title="Efter en månad">
           <p>
-            En bot som triagerar, 2–3 specialister, och tillräckligt med erfarenhet för att veta vilka uppgifter som
+            En bot som kör prioritering, 2–3 specialister, och tillräckligt med erfarenhet för att veta vilka uppgifter som
             går att automatisera.
           </p>
         </Callout>
