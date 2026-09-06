@@ -1,5 +1,5 @@
 export const ROORE_URL = 'https://roore.se';
-export const ROORE_MAIL = 'joakim.engerstam@gmail.com';
+export const ROORE_MAIL = 'joakim.engerstam@roore.se';
 
 /** Real public pages on roore.se — do not invent paths. */
 export const ROORE_PAGES = {
