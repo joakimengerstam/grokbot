@@ -23,19 +23,32 @@ const disclaimers = [
     body: 'När du sätter upp automatiserade bots är du ansvarig för vad de gör. Skriv tydliga anti-jobs och förstå konsekvenserna innan du kör bots i produktion. Vi tar inget ansvar för skador, dataförlust eller andra problem.',
   },
   {
-    title: 'API-kostnader',
-    body: 'xAI:s Grok API kostar pengar. Du ansvarar själv för att övervaka användning och kostnader. Sätt budgetgränser i xAI Console.',
+    title: 'Kvot och kostnad',
+    body: 'Grok Bot ingår i betalda Cursor-, SuperGrok- och X Premium+-planer och har en egen veckokvot. När den tar slut kan on-demand-debitering ta över om du slagit på det. Du ansvarar själv för att följa Usage & Billing. Länk av SuperGrok/X Premium+ till ett Cursor-konto är permanent.',
   },
   {
     title: 'Dataskydd',
-    body: 'När du använder AI-modeller via API skickas din data till externa servrar. Läs xAI:s och Cursors integritetspolicyer och villkor. Skicka aldrig känslig data utan att förstå hur den hanteras.',
+    body: 'Grok Bot kräver molnlagring (Legacy Privacy Mode måste vara av). Alla dina Bots delar en molndator med inloggningar, cookies och filer. Läs xAI:s och Cursors integritetspolicyer. Lägg aldrig känslig data eller lösenord där du inte förstår hur de hanteras.',
   },
+];
+
+const sources = [
+  ['Get started', 'https://docs.x.ai/grok-bot/get-started'],
+  ['Create and manage Bots', 'https://docs.x.ai/grok-bot/bots'],
+  ['Skills, routines and automations', 'https://docs.x.ai/grok-bot/skills-routines-and-automations'],
+  ['Computer and apps', 'https://docs.x.ai/grok-bot/computer-and-apps'],
+  ['Approvals, security and privacy', 'https://docs.x.ai/grok-bot/approvals-security-and-privacy'],
+  ['FAQ', 'https://docs.x.ai/grok-bot/faq'],
+  ['Plans and billing (Cursor)', 'https://cursor.com/help/grok-bot/plans'],
+  ['Access breddad 26 aug 2026', 'https://x.ai/news/grok-bot-more-plans'],
+  ['x.ai/bot', 'https://x.ai/bot'],
+  ['@bot på X', 'https://x.com/bot'],
 ];
 ---
 
 <Layout
   title="Om grokbot.se – Joakim Engerstam / Roore AB"
-  description="Inofficiell svensk guide till Grok Bot (Cursor + xAI), driven av Roore AB. Disclaimer, kontakt och hur managed automation skiljer sig från att bygga själv."
+  description="Inofficiell svensk guide till Grok Bot (xAI + Cursor), driven av Roore AB. Källor, disclaimer, kontakt och hur managed automation skiljer sig från att bygga själv."
 >
   <PageHeader
     eyebrow="Om projektet"
@@ -72,9 +85,14 @@ const disclaimers = [
     <div class="prose-guide max-w-2xl">
       <h2 class="!mt-0">Vad är detta?</h2>
       <p>
-        Grok Bot är en guide för att sätta upp desktop-assistenter med Cursor och xAI:s Grok-modell. Målet är att
-        hjälpa dig sätta upp egna bots på ett strukturerat sätt: tighta personas, tydliga jobs och anti-jobs, och
-        rätt val mellan on-demand och rutiner.
+        grokbot.se är en svensk guide till Grok Bot, xAI:s app för namngivna AI-kollegor med egen molndator, inloggad
+        via Cursor-konto. Målet är att hjälpa dig sätta upp egna Bots på ett strukturerat sätt: tighta personas,
+        tydliga jobs och anti-jobs, skills före routines, och godkännanden där det spelar roll.
+      </p>
+      <p>
+        Innehållet bygger på officiella docs (docs.x.ai/grok-bot, cursor.com/help/grok-bot) och vad det officiella
+        kontot @bot har släppt på X. Senast uppdaterad <strong>6 september 2026</strong>. Produkten ändras vecka för
+        vecka, så kolla <a href="/nyheter">nyheter</a> och källorna nedan om något inte stämmer.
       </p>
       <p>
         Guiden drivs av <a href={ROORE_URL} target="_blank" rel="noopener">Roore AB</a>. Strukturen här är samma som
@@ -97,11 +115,16 @@ const disclaimers = [
         }
       </div>
 
+      <h2 id="kallor">Källor</h2>
+      <ul>
+        {sources.map(([label, href]) => <li><a href={href} target="_blank" rel="noopener">{label}</a></li>)}
+      </ul>
+
       <h2>Kontakt</h2>
       <p>
-        Frågor om webbplatsen, guiderna eller Roore: <a href={`mailto:${ROORE_MAIL}`}>{ROORE_MAIL}</a>. Frågor om Cursor:
-        <a href="https://cursor.sh" target="_blank" rel="noopener">cursor.sh</a>. Frågor om xAI eller Grok API:
-        <a href="https://x.ai" target="_blank" rel="noopener">x.ai</a>.
+        Frågor om webbplatsen, guiderna eller Roore: <a href={`mailto:${ROORE_MAIL}`}>{ROORE_MAIL}</a>. Frågor om
+        planer och fakturering: <a href="https://cursor.com/help/grok-bot/plans" target="_blank" rel="noopener">cursor.com/help</a>.
+        Frågor om appen: <a href="https://docs.x.ai/grok-bot/faq" target="_blank" rel="noopener">docs.x.ai</a>.
       </p>
 
       <h2>Källkod</h2>
@@ -109,17 +132,17 @@ const disclaimers = [
 
       <h2>Ändringar</h2>
       <p>
-        Innehållet kan uppdateras, ändras eller tas bort utan förvarning. Guiderna följer nya funktioner i Cursor och
-        Grok API, men är inte garanterat aktuella.
+        Innehållet kan uppdateras, ändras eller tas bort utan förvarning. Guiderna följer nya funktioner i Grok Bot,
+        men är inte garanterat aktuella.
       </p>
 
       <Callout kind="note" title="Kort version" class="mt-10">
         <ul class="list-disc pl-4">
           <li>Inofficiellt projekt, ej kopplat till xAI eller Cursor</li>
           <li>Guiderna ges i befintligt skick utan garantier</li>
-          <li>Du ansvarar för vad dina bots gör och vad de kostar</li>
+          <li>Du ansvarar för vad dina bots gör och vad de förbrukar</li>
           <li>Läs xAI:s och Cursors policyer innan du börjar</li>
-          <li>Skicka aldrig känslig data till externa API:er utan att förstå konsekvenserna</li>
+          <li>Alla Bots delar en molndator. Lägg aldrig dit något en annan Bot inte får använda</li>
         </ul>
       </Callout>
     </div>

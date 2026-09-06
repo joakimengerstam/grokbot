@@ -7,30 +7,63 @@ import RooreCta from '../components/RooreCta.astro';
 import { ROORE_PAGES } from '../lib/roore';
 
 const steps = [
-  { id: 'cursor', label: 'Installera Cursor' },
-  { id: 'nyckel', label: 'Skaffa API-nyckel' },
-  { id: 'bot', label: 'Skapa första boten' },
-  { id: 'uppgift', label: 'Ge en första uppgift' },
-  { id: 'rutin', label: 'Sätt upp rutiner' },
-  { id: 'specialister', label: 'Lägg till specialister' },
+  { id: 'krav', label: 'Krav och plan' },
+  { id: 'installera', label: 'Ladda ner appen' },
+  { id: 'logga-in', label: 'Logga in' },
+  { id: 'bot', label: 'Skapa Chief of Staff' },
+  { id: 'uppgift', label: 'Första uppgiften' },
+  { id: 'verktyg', label: 'Koppla in verktyg' },
+  { id: 'skills', label: 'Skills, sedan routines' },
+  { id: 'checklista', label: 'Checklista' },
 ];
 
-const specialists = [
-  { name: 'SEO Bot', body: 'Optimerar blogginlägg, analyserar keywords, föreslår meta-descriptions.' },
-  { name: 'Sales Bot', body: 'Följer upp leads, uppdaterar CRM, föreslår nästa steg.' },
-  { name: 'Content Bot', body: 'Skriver första utkast, anpassar ton, formaterar per plattform.' },
-  { name: 'Research Bot', body: 'Samlar data, sammanfattar artiklar, bygger konkurrentanalyser.' },
+const plans = [
+  ['Cursor', 'Pro, Pro+, Ultra, Teams Standard/Premium', true],
+  ['SuperGrok', 'SuperGrok, Plus, Heavy (länkas till Cursor-kontot)', true],
+  ['X Premium+', 'Kan länkas som usage-grant', true],
+  ['Enterprise', 'Rullas ut. Två veckor gratis för Grok/Cursor Enterprise från 3 sep 2026', true],
+  ['Ingår inte', 'SuperGrok Lite, SuperGrok Team/Enterprise-länkning, Cursor Hobby/gratis', false],
+] as const;
+
+const platforms = [
+  ['macOS (Apple silicon + Intel)', 'Ja'],
+  ['Windows (x64 + Arm64)', 'Ja'],
+  ['Linux (deb / rpm / AppImage)', 'Ja'],
+  ['iPhone (iOS 18+)', 'Ja'],
+  ['Android 9+', 'Ja, sedan 2 sep'],
+  ['iPad', 'Nej'],
+];
+
+const fiveParts = [
+  ['Resultat', 'Vad är klart när jobbet är gjort?'],
+  ['Källor', 'Vilka appar, sajter, filer?'],
+  ['Gränser', 'Vad får den inte göra?'],
+  ['Leverans', 'Vilket format ska du få tillbaka?'],
+  ['Review', 'När ska den stanna och fråga dig?'],
+];
+
+const checklist = [
+  'Betald Cursor-plan, SuperGrok eller X Premium+ (eller trial)',
+  'Stäng av Legacy Privacy Mode i Cursor',
+  'Installera från x.ai/bot',
+  'Logga in med rätt Cursor-konto',
+  'Skapa en Chief of Staff, pinna den, skriv staket i beskrivningen',
+  'En femdelad uppgift mot ett dokument',
+  'Koppla Gmail + Calendar när du behöver dem',
+  'En till uppgift i ett riktigt verktyg, drafts only',
+  'Spara som skill när flödet sitter',
+  'Routine på vardagsmorgon, med test run, först därefter',
 ];
 ---
 
 <Layout
-  title="Så sätter du upp Grok Bot – steg-för-steg (Cursor + xAI)"
-  description="Installera Cursor, koppla xAI-nyckel och skapa din första Grok Bot på ca 15 minuter. Svensk how-to från tom installation till schemalagd rutin."
+  title="Så sätter du upp Grok Bot – steg-för-steg (appen från x.ai)"
+  description="Installera Grok Bot-appen, logga in med Cursor-kontot, skapa en Chief of Staff, koppla plugins och gå från skill till routine. Svensk how-to, uppdaterad september 2026."
 >
   <PageHeader
-    eyebrow="Kom igång · 6 steg · ca 15 minuter"
+    eyebrow="Kom igång · 8 steg · första kvällen"
     title="Sätt upp din första Grok Bot"
-    lede="Från tom Cursor-installation till en bot som triagerar din inbox varje morgon."
+    lede="Från tom installation till en Bot med egen molndator, ett sparat arbetsflöde och en routine på vardagsmorgon."
   />
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
@@ -53,125 +86,261 @@ const specialists = [
     </nav>
 
     <div class="prose-guide max-w-2xl">
-      <section id="cursor">
-        <p class="eyebrow mb-2">Steg 1</p>
-        <h2 class="!mt-0">Installera Cursor Desktop</h2>
-        <ol>
-          <li>Gå till <a href="https://cursor.sh" target="_blank" rel="noopener">cursor.sh</a></li>
-          <li>Ladda ner och installera Cursor för ditt operativsystem</li>
-          <li>Starta Cursor och logga in (skapa konto om du inte har ett)</li>
-        </ol>
-        <Callout kind="tip">
-          <p>Cursor Free funkar, men Cursor Pro ger mer token-utrymme för längre sessioner.</p>
-        </Callout>
-      </section>
-
-      <section id="nyckel">
-        <p class="eyebrow mb-2 mt-14">Steg 2</p>
-        <h2 class="!mt-0">Skaffa xAI API-nyckel</h2>
-        <ol>
-          <li>Gå till <a href="https://console.x.ai" target="_blank" rel="noopener">console.x.ai</a></li>
-          <li>Logga in med ditt X-konto</li>
-          <li>Gå till API Keys och skapa en ny nyckel</li>
-          <li>Kopiera nyckeln – den visas bara en gång</li>
-          <li>I Cursor: Settings → Models → Add Custom Model</li>
-          <li>Välj xAI och klistra in nyckeln</li>
-        </ol>
-        <Callout kind="warn">
-          <p>
-            xAI API kostar pengar baserat på användning. Sätt en låg budgetgräns i xAI Console innan du börjar och
-            se hur mycket dina bots faktiskt drar.
-          </p>
-        </Callout>
-      </section>
-
-      <section id="bot">
-        <p class="eyebrow mb-2 mt-14">Steg 3</p>
-        <h2 class="!mt-0">Skapa din första bot</h2>
-        <ol>
-          <li>I Cursor: öppna Composer (<code>Cmd/Ctrl + I</code>)</li>
-          <li>Välj Grok-modellen i modellväljaren</li>
-          <li>Beskriv personan: "Jag vill skapa en Grok Bot med följande persona …"</li>
-        </ol>
-        <div class="not-prose my-6">
-          <PersonaCard
-            name="Chief of Staff"
-            role="Ett bra första jobb: triagera, delegera, sammanfatta."
-            trigger="Varje morgon"
-            jobs={[
-              'Triagera inkommande mail varje morgon',
-              'Sammanfatta viktiga trådar i Slack',
-              'Flagga deadlines inom 48 timmar',
-            ]}
-            antiJobs={['Svara ALDRIG på mail åt mig', 'Radera ALDRIG något', 'Fatta INGA beslut som kostar pengar']}
-          />
-        </div>
+      <Callout kind="note" title="Vad du sätter upp">
         <p>
-          Anti-jobs är lika viktiga som jobs. De sätter gränser för vad boten <strong>inte</strong> får göra, och
-          skyddar dig från oväntade "hjälpsamma" handlingar.
+          Grok Bot är <strong>inte</strong> chatten på grok.com och inte en modell i Cursor. Det är en egen app:
+          namngivna AI-kollegor med en delad molndator (webbläsare, filsystem, terminal), som loggar in i dina
+          verktyg, kör schemalagda jobb och bara stör dig när något behöver godkännas.
         </p>
-      </section>
+      </Callout>
 
-      <section id="uppgift">
-        <p class="eyebrow mb-2 mt-14">Steg 4</p>
-        <h2 class="!mt-0">Ge en första uppgift</h2>
-        <p>Börja konkret och begränsat:</p>
-        <blockquote
-          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
-        >
-          “Kolla min inbox (senaste 10 mailen). Lista dem i tre kategorier: Akut (svar idag), Normal (svar inom
-          veckan), Kan vänta. Inkludera avsändare, ämne och varför du kategoriserar så.”
-        </blockquote>
-        <Callout kind="tip">
-          <p>Låt inte boten göra för mycket första gången. Se hur den presterar innan du skalar upp.</p>
-        </Callout>
-      </section>
-
-      <section id="rutin">
-        <p class="eyebrow mb-2 mt-14">Steg 5</p>
-        <h2 class="!mt-0">Sätt upp rutiner <span class="text-muted font-normal">(valfritt)</span></h2>
-        <p>När boten fungerar väl on-demand kan du schemalägga den:</p>
-        <ul class="not-prose !pl-0 space-y-2 my-5">
+      <section id="krav">
+        <p class="eyebrow mb-2 mt-14">Steg 1</p>
+        <h2 class="!mt-0">Krav och plan</h2>
+        <p>Ingen separat Grok Bot-prenumeration. Access ingår i:</p>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
           {
-            [
-              ['Varje dag 08:00', 'Triagera inbox'],
-              ['Fredag 17:00', 'Sammanfatta veckans sales-aktivitet'],
-              ['1:a varje månad', 'Uppdatera content-kalendern'],
-            ].map(([when, what]) => (
-              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
-                <span class="font-mono text-[0.75rem] text-cobalt whitespace-nowrap w-32">{when}</span>
-                <span class="text-[0.95rem]">{what}</span>
-              </li>
+            plans.map(([name, body, ok]) => (
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 px-4 py-3">
+                <span class:list={['font-display font-semibold w-28 shrink-0', ok ? '' : 'text-signal']}>{name}</span>
+                <span class="text-[0.95rem] text-ink-soft">{body}</span>
+              </div>
             ))
           }
-        </ul>
+        </div>
         <p>
-          Använd Cursors automation-funktioner eller externa verktyg som <code>cron</code> (Linux/Mac) eller Task
-          Scheduler (Windows) för att trigga boten vid bestämda tider.
+          Det finns en <strong>gratis trial</strong> (usage-kredit + 7-dagarsfönster). Krediten äts av agentsteg och
+          tokens, inte av antal meddelanden. Ett långt jobb kan tömma den på en körning.
         </p>
-      </section>
-
-      <section id="specialister">
-        <p class="eyebrow mb-2 mt-14">Steg 6</p>
-        <h2 class="!mt-0">Lägg till specialister</h2>
-        <p>När du hittat mönster som går att automatisera, skapa en bot per mönster:</p>
-        <div class="not-prose grid sm:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden my-6">
+        <p>
+          Grok Bot har <strong>egen veckokvot</strong>, skild från vanlig Cursor- och Grok-användning. Har du både
+          Cursor och SuperGrok används den som ger mest. När kvoten tar slut kan arbetet fortsätta på on-demand om
+          det är påslaget.
+        </p>
+        <Callout kind="warn" title="Två saker som inte går att ångra">
+          <ul>
+            <li>
+              <strong>Länk av SuperGrok / X Premium+ är permanent.</strong> Den kan inte flyttas till ett annat
+              Cursor-konto. Logga in med rätt konto först.
+            </li>
+            <li>
+              <strong>Legacy Privacy Mode</strong> i Cursor måste stängas av. Grok Bot kräver molnlagring och startar
+              annars inte.
+            </li>
+          </ul>
+        </Callout>
+        <h3>Plattformar (september 2026)</h3>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
           {
-            specialists.map((s) => (
-              <div class="bg-panel p-5">
-                <h3 class="font-display font-semibold mb-1">{s.name}</h3>
-                <p class="text-sm text-ink-soft leading-relaxed">{s.body}</p>
+            platforms.map(([p, status]) => (
+              <div class="flex items-baseline justify-between gap-4 px-4 py-2.5 text-[0.95rem]">
+                <span>{p}</span>
+                <span class:list={['font-mono text-[0.75rem]', status === 'Nej' ? 'text-signal' : 'text-cobalt']}>{status}</span>
               </div>
             ))
           }
         </div>
       </section>
 
+      <section id="installera">
+        <p class="eyebrow mb-2 mt-14">Steg 2</p>
+        <h2 class="!mt-0">Ladda ner appen</h2>
+        <ol>
+          <li>Gå till <a href="https://x.ai/bot" target="_blank" rel="noopener">x.ai/bot</a></li>
+          <li>Välj rätt build</li>
+        </ol>
+        <p><strong>macOS.</strong> Apple silicon eller Intel (Apple-meny → Om den här datorn: <em>Chip</em> = Apple silicon, <em>Processor</em> = Intel). Öppna dmg:en, dra Grok Bot till Program. Om macOS frågar: <strong>Öppna</strong>.</p>
+        <p><strong>Windows.</strong> Kör installern (x64 eller Arm64), öppna från Start.</p>
+        <p><strong>Linux.</strong> Under <em>More downloads</em> på x.ai/bot. <code>uname -m</code> → <code>x86_64</code> = x64, <code>aarch64</code> = Arm64.</p>
+        <p><strong>iPhone / Android.</strong> App Store / Play. Samma Bots och konversationer synkas.</p>
+      </section>
+
+      <section id="logga-in">
+        <p class="eyebrow mb-2 mt-14">Steg 3</p>
+        <h2 class="!mt-0">Logga in</h2>
+        <ol>
+          <li><strong>Get started</strong> på välkomstskärmen (eller <strong>Sign In with Cursor</strong> under Settings)</li>
+          <li>Slutför inloggningen i webbläsarfönstret som öppnas</li>
+          <li>Gå tillbaka till Grok Bot</li>
+        </ol>
+        <p>
+          Inloggningen är ditt <strong>Cursor-konto</strong>, inte ett separat Grok Bot-konto. Företag med SSO går
+          den vanliga organisations-inloggningen.
+        </p>
+        <p>
+          Första gången frågar appen vilka verktyg du använder. Det formar förslag på första teammate, men kopplar
+          inte in verktygen åt dig. Har du bara SuperGrok eller X Premium+ (ingen Cursor-plan): länka kontot från
+          Grok Bots planskärm efter inloggning.
+        </p>
+      </section>
+
+      <section id="bot">
+        <p class="eyebrow mb-2 mt-14">Steg 4</p>
+        <h2 class="!mt-0">Skapa första Boten: Chief of Staff</h2>
+        <p>
+          Mönstret tutorials och X-användare landar på: <strong>en pinnad koordinator som du pratar med</strong>, som
+          delegerar till specialister.
+        </p>
+        <ol>
+          <li>Välj en föreslagen teammate, eller <strong>New</strong> (<code>Cmd/Ctrl+N</code>) → <strong>Create new agent</strong></li>
+          <li><strong>Bot actions → Edit Profile:</strong> namn, titel, beskrivning, avatar</li>
+          <li>Pinna den</li>
+        </ol>
+        <p>Beskrivningen är systemprompten. Skriv den som ett jobb, inte som en personlighet.</p>
+        <div class="not-prose my-6">
+          <PersonaCard
+            name="Chief of Staff"
+            role="Din enda generalist. Pinnad. Den du pratar med."
+            trigger="On-demand"
+            jobs={[
+              'Prata med mig, bryt ner arbete, delegera till specialist-Bots',
+              'Håll svar korta',
+              'Om inget har ändrats sedan senast: skicka ingenting',
+            ]}
+            antiJobs={[
+              'Skicka, publicera, köp, radera eller ändra ALDRIG produktion utan mitt godkännande',
+              'Skapa INGA nya Bots utan att fråga först',
+            ]}
+          />
+        </div>
+        <Callout kind="tip" title="Onboarding-tricket">
+          <p>
+            Dumpa vem du är och hur du jobbar, fråga sedan <em>"hur skulle du sätta upp Grok Bot för mig?"</em> och
+            godkänn planen. Skapa inte tio Bots dag ett. Max 50 Bots + gruppchattar per konto.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="uppgift">
+        <p class="eyebrow mb-2 mt-14">Steg 5</p>
+        <h2 class="!mt-0">Första uppgiften: fem delar</h2>
+        <p>Officiella get-started och X-användare är överens om vad en bra första fråga innehåller:</p>
+        <ol class="not-prose !pl-0 space-y-2 my-5">
+          {
+            fiveParts.map(([label, what], i) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums">{i + 1}</span>
+                <span class="font-display font-semibold w-20 shrink-0">{label}</span>
+                <span class="text-[0.95rem] text-ink-soft">{what}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p><strong>Första testet, ingen inloggning.</strong> Bifoga ett dokument:</p>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Sammanfatta dokumentet i fem punkter. Lista datum, beslut och öppna frågor i egna sektioner. Ange
+          sida/avsnitt för varje punkt. Ändra inte källfilen.”
+        </blockquote>
+        <p><strong>Andra testet, i ett riktigt verktyg:</strong></p>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Öppna vår analytics-dashboard och jämför nya användares aktivering den här veckan med de fyra föregående.
+          Peka ut det största steget som ändrats och skriv en kort undersökningsplan med länkar till graferna. Ändra
+          inga dashboards. Be mig logga in om det behövs.”
+        </blockquote>
+      </section>
+
+      <section id="verktyg">
+        <p class="eyebrow mb-2 mt-14">Steg 6</p>
+        <h2 class="!mt-0">Koppla in verktyg</h2>
+        <h3>Plugins (förstahandsval)</h3>
+        <ol>
+          <li><strong>Settings → Plugins</strong></li>
+          <li><strong>Add</strong> på det du behöver</li>
+          <li>Autentisera i webbläsaren</li>
+          <li>I chatten: <code>@</code> för connector, <code>/</code> för skill</li>
+        </ol>
+        <p>
+          Börja med mail + kalender. X-pluginet skapar automatiskt ett developer-konto med startkrediter när du
+          kopplar din X-profil. Microsoft-plugin finns för Outlook, Calendar och OneDrive.
+        </p>
+        <p>Plugins är <strong>konto-vida</strong>. En inloggning gäller alla Bots.</p>
+        <h3>Webbläsaren (när det inte finns plugin)</h3>
+        <p>När Boten når en inloggning ber den dig ta över:</p>
+        <ol>
+          <li>Öppna <strong>Agent Computer</strong> i konversationen</li>
+          <li>Ta över kontrollen</li>
+          <li>Skriv lösenord / 2FA / CAPTCHA själv</li>
+          <li>Lämna tillbaka kontrollen</li>
+        </ol>
+        <Callout kind="warn">
+          <p>
+            Klistra <strong>inte</strong> in lösenord eller engångskoder i chatten. Sessionen sparas på molndatorn.
+            Alla dina Bots delar den datorn: inloggningar, cookies och filer. Skärmarna är inte en säkerhetsgräns.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="skills">
+        <p class="eyebrow mb-2 mt-14">Steg 7</p>
+        <h2 class="!mt-0">Skills, sedan routines</h2>
+        <p>Ordningen i docs, och det builders på X upprepar:</p>
+        <p class="not-prose font-mono text-[0.85rem] text-cobalt bg-cobalt-soft rounded-lg px-4 py-3 my-5">
+          en gång → gör den pålitlig → spara som skill → testa → först då schema
+        </p>
+        <p>
+          En routine ärver varje outtalat antagande i uppgiften den byggdes av. En felaktig morgonrutin kan köra fyra
+          dagar innan du märker det.
+        </p>
+        <h3>Spara en skill</h3>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Spara processen vi just använde som en skill som heter "Veckovis kontohälsa". Ta med källsystem,
+          riskdefinitioner, outputformat och regeln att kundkontakt alltid kräver godkännande.”
+        </blockquote>
+        <p>
+          En bra skill säger: när den ska användas, vilka inputs, stegordning, hur resultatet valideras, vad som ska
+          tillbaka, vad som kräver godkännande.
+        </p>
+        <p>
+          <strong>Teach a task</strong> (om knappen syns): öppna datorvyn, spela in max 10 minuter, granska
+          draft-skillen, testa på ett säkert exempel. Inget mikroljud. Visa inte hemligheter i inspelningen.
+        </p>
+        <h3>Skapa en routine</h3>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Varje vardag kl 08:00, kör skillen X mot listan Y. Posta resultatet i den här tråden. Kontakta ingen. Om
+          källan är nere: rapportera felet, hitta inte på data.”
+        </blockquote>
+        <p>
+          Bekräfta: ägande Bot, tidzon, input, förväntat resultat, godkännandegräns, vad som händer när källan saknas.
+          Sedan <strong>Test run</strong>. Ett test gör riktigt arbete, så håll skrivåtgärder bakom approval.
+        </p>
+        <p>
+          Hantera routines via Boten → <strong>View conversation details → Routines</strong> (pausa, testa, redigera,
+          historik). En Bot kan äga 50 routines. 20 senaste körningarna sparas. Borttagning har ingen ångra.
+        </p>
+        <Callout kind="tip">
+          <p>Håll scheman på <strong>kontorstid</strong>, inte dygnet runt. Det är det vanligaste rådet mot att bränna veckokvoten.</p>
+        </Callout>
+      </section>
+
+      <section id="checklista">
+        <p class="eyebrow mb-2 mt-14">Steg 8</p>
+        <h2 class="!mt-0">Checklista första kvällen</h2>
+        <ol class="not-prose !pl-0 space-y-2 my-5">
+          {
+            checklist.map((item, i) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums w-5">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-[0.95rem]">{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
       <Callout kind="ok" title="Nästa steg" class="mt-14">
         <p>Du har en fungerande Grok Bot. Fortsätt med:</p>
         <ul>
-          <li><a href="/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – skriv bättre personas</li>
+          <li><a href="/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – godkännanden, förbrukning, säkerhet</li>
           <li><a href="/exempel" class="text-cobalt underline underline-offset-3">Exempel</a> – sju bots att kopiera</li>
+          <li><a href="/nyheter" class="text-cobalt underline underline-offset-3">Nyheter</a> – vad som släppts senaste veckorna</li>
         </ul>
       </Callout>
     </div>
@@ -179,7 +348,7 @@ const specialists = [
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
     <RooreCta
-      heading="Sex steg för dig. Noll steg för företaget."
+      heading="Åtta steg för dig. Noll steg för företaget."
       body="Det här är vad det tar att sätta upp en bot på din egen dator. För fakturor, ordrar och mejl i ert affärssystem bygger Roore flödet, i era system, med ert godkännande innan något går vidare."
       source="grokbot.se kom igång"
       href={ROORE_PAGES.aiMedarbetare}

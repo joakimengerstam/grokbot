@@ -9,7 +9,7 @@ interface Props {
 
 const {
   title,
-  description = 'Guide till Grok Bots: desktop-assistenter med tydliga jobs och anti-jobs, byggda på Cursor och xAI:s Grok. Från Roore AB, som bygger samma flöden för fakturor, ordrar och mejl i era system.',
+  description = 'Svensk guide till Grok Bot, xAI:s app för AI-kollegor med egen molndator, plugins, skills och routines. Från Roore AB, som bygger samma flöden för fakturor, ordrar och mejl i era system.',
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -22,6 +22,7 @@ const nav = [
   { href: '/installning', label: 'Kom igång' },
   { href: '/best-practices', label: 'Best practices' },
   { href: '/exempel', label: 'Exempel' },
+  { href: '/nyheter', label: 'Nyheter' },
   { href: '/om', label: 'Om' },
 ];
 
