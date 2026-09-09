@@ -1,30 +1,42 @@
 ---
 import '../styles/global.css';
 import { rooreMailto, ROORE_URL } from '../lib/roore';
+import {
+  type Lang,
+  detectLang,
+  alternatePath,
+  normalizePath,
+  NAV_EN,
+  NAV_SV,
+  COPY,
+} from '../lib/i18n';
 
 interface Props {
   title: string;
   description?: string;
+  lang?: Lang;
 }
+
+const path = normalizePath(Astro.url.pathname);
+const lang: Lang = Astro.props.lang ?? detectLang(Astro.url.pathname);
+const copy = COPY[lang];
+const nav = lang === 'en' ? [...NAV_EN] : [...NAV_SV];
+const homeHref = lang === 'en' ? '/' : '/sv';
+const altPath = alternatePath(Astro.url.pathname);
 
 const {
   title,
-  description = 'Svensk guide till Grok Bot, xAI:s app för AI-kollegor med egen molndator, plugins, skills och routines. Från Roore AB, som bygger samma flöden för fakturor, ordrar och mejl i era system.',
+  description = copy.defaultDescription,
 } = Astro.props;
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const siteOrigin = Astro.site ?? new URL('https://grokbot.se');
+const abs = (p: string) => new URL(p === '/' ? '/' : p, siteOrigin).href.replace(/\/$/, '') || new URL('/', siteOrigin).href;
+const canonicalURL = abs(path === '/' ? '/' : path);
+const enUrl = abs(lang === 'en' ? path : altPath);
+const svUrl = abs(lang === 'sv' ? path : altPath);
+const xDefaultUrl = abs('/');
 const siteName = 'grokbot.se';
-const ogImage = new URL('/favicon.svg', Astro.site).href;
-
-const nav = [
-  { href: '/', label: 'Hem' },
-  { href: '/installning', label: 'Kom igång' },
-  { href: '/best-practices', label: 'Best practices' },
-  { href: '/exempel', label: 'Exempel' },
-  { href: '/nyheter', label: 'Nyheter' },
-  { href: '/om', label: 'Om' },
-];
+const ogImage = new URL('/favicon.svg', siteOrigin).href;
 
 const jsonLd = [
   {
@@ -32,7 +44,7 @@ const jsonLd = [
     '@type': 'WebSite',
     name: siteName,
     url: 'https://grokbot.se/',
-    inLanguage: 'sv-SE',
+    inLanguage: copy.inLanguage,
     description,
     publisher: { '@id': 'https://roore.se/#organization' },
   },
@@ -54,7 +66,7 @@ const jsonLd = [
 ---
 
 <!doctype html>
-<html lang="sv">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -62,12 +74,15 @@ const jsonLd = [
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="BkvsO6pVPVMpFb_GkXzYcHMI2X5Ipt0N1L4PI9Ucuzs" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="sv" href={svUrl} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
     <meta name="robots" content="index, follow" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#f4f6f8" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="sv_SE" />
+    <meta property="og:locale" content={copy.ogLocale} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -93,22 +108,23 @@ const jsonLd = [
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-white focus:px-3 focus:py-2 focus:rounded"
-      >Hoppa till innehåll</a
+      >{copy.skipToContent}</a
     >
 
     <header class="sticky top-0 z-40 bg-paper/85 backdrop-blur border-b border-line">
       <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-6">
-        <a href="/" class="flex items-center gap-2.5 group">
+        <a href={homeHref} class="flex items-center gap-2.5 group">
           <span
             class="inline-block w-2.5 h-2.5 rounded-full bg-cobalt group-hover:bg-signal transition-colors"
             aria-hidden="true"></span>
           <span class="font-display text-[1.15rem] font-semibold tracking-tight">grokbot.se</span>
         </a>
 
-        <nav aria-label="Huvudmeny" class="hidden md:flex items-center gap-1">
+        <nav aria-label={copy.mainNav} class="hidden md:flex items-center gap-1">
           {
             nav.map((item) => {
-              const active = path === item.href;
+              const itemPath = normalizePath(item.href);
+              const active = path === itemPath;
               return (
                 <a
                   href={item.href}
@@ -123,26 +139,50 @@ const jsonLd = [
               );
             })
           }
+          <span class="ml-2 flex items-center gap-0.5 text-sm" aria-label="Language">
+            <a
+              href={lang === 'en' ? (path === '/' ? '/' : path) : altPath}
+              hreflang="en"
+              lang="en"
+              class:list={[
+                'px-2 py-1 rounded-full font-medium',
+                lang === 'en' ? 'bg-line-soft text-ink' : 'text-muted hover:text-ink',
+              ]}
+              aria-current={lang === 'en' ? 'true' : undefined}
+            >EN</a>
+            <span class="text-muted/50" aria-hidden="true">·</span>
+            <a
+              href={lang === 'sv' ? path : altPath}
+              hreflang="sv"
+              lang="sv"
+              class:list={[
+                'px-2 py-1 rounded-full font-medium',
+                lang === 'sv' ? 'bg-line-soft text-ink' : 'text-muted hover:text-ink',
+              ]}
+              aria-current={lang === 'sv' ? 'true' : undefined}
+            >SV</a>
+          </span>
           <a
-            href={rooreMailto('grokbot.se header')}
-            class="ml-3 px-3.5 py-1.5 text-sm rounded-full bg-cobalt text-white hover:bg-ink transition-colors whitespace-nowrap"
+            href={rooreMailto('grokbot.se header', lang)}
+            class="ml-2 px-3.5 py-1.5 text-sm rounded-full bg-cobalt text-white hover:bg-ink transition-colors whitespace-nowrap"
           >
-            Boka 15 min
+            {copy.book15}
           </a>
         </nav>
 
         <details class="md:hidden relative">
           <summary
             class="list-none cursor-pointer text-sm px-3 py-1.5 rounded-full border border-line bg-panel select-none"
-            >Meny</summary
+            >{copy.menu}</summary
           >
           <nav
-            aria-label="Huvudmeny"
+            aria-label={copy.mainNav}
             class="absolute right-0 mt-2 w-52 bg-panel border border-line rounded-lg shadow-lg p-1.5 flex flex-col"
           >
             {
               nav.map((item) => {
-                const active = path === item.href;
+                const itemPath = normalizePath(item.href);
+                const active = path === itemPath;
                 return (
                   <a
                     href={item.href}
@@ -157,11 +197,16 @@ const jsonLd = [
                 );
               })
             }
+            <div class="flex gap-1 px-3 py-2 text-sm">
+              <a href={lang === 'en' ? (path === '/' ? '/' : path) : altPath} hreflang="en" class={lang === 'en' ? 'font-semibold text-ink' : 'text-muted'}>EN</a>
+              <span class="text-muted/50">·</span>
+              <a href={lang === 'sv' ? path : altPath} hreflang="sv" class={lang === 'sv' ? 'font-semibold text-ink' : 'text-muted'}>SV</a>
+            </div>
             <a
-              href={rooreMailto('grokbot.se meny')}
+              href={rooreMailto('grokbot.se meny', lang)}
               class="mt-1 px-3 py-2 text-sm rounded-md bg-cobalt text-white text-center"
             >
-              Boka 15 min med Roore
+              {copy.book15Roore}
             </a>
           </nav>
         </details>
@@ -179,19 +224,29 @@ const jsonLd = [
         <div class="max-w-xl space-y-3">
           <p class="font-display text-ink text-base font-semibold">grokbot.se</p>
           <p>
-            En guide från
-            <a href={ROORE_URL} class="text-ink underline underline-offset-3 decoration-line hover:decoration-ink"
-              >Roore AB</a
-            >, Stockholm. Vi bygger flöden som förbereder fakturor, ordrar och mejl i era system – ni godkänner
-            innan något går vidare.
-            <a href={rooreMailto('grokbot.se footer')} class="text-cobalt underline underline-offset-3">Boka 15 minuter</a>.
+            {
+              lang === 'en' ? (
+                <>
+                  A guide from{' '}
+                  <a href={ROORE_URL} class="text-ink underline underline-offset-3 decoration-line hover:decoration-ink">Roore AB</a>
+                  , Stockholm. We build flows that prepare invoices, orders and email in your systems — you approve
+                  before anything proceeds.{' '}
+                  <a href={rooreMailto('grokbot.se footer', lang)} class="text-cobalt underline underline-offset-3">{copy.book15Link}</a>.
+                </>
+              ) : (
+                <>
+                  En guide från{' '}
+                  <a href={ROORE_URL} class="text-ink underline underline-offset-3 decoration-line hover:decoration-ink">Roore AB</a>
+                  , Stockholm. Vi bygger flöden som förbereder fakturor, ordrar och mejl i era system – ni godkänner
+                  innan något går vidare.{' '}
+                  <a href={rooreMailto('grokbot.se footer', lang)} class="text-cobalt underline underline-offset-3">{copy.book15Link}</a>.
+                </>
+              )
+            }
           </p>
-          <p class="text-xs">
-            Inofficiellt projekt. Ej affilierat med xAI eller Cursor. Grok och Cursor är varumärken tillhörande sina
-            respektive ägare.
-          </p>
+          <p class="text-xs">{copy.disclaimer}</p>
         </div>
-        <nav aria-label="Sidfot" class="flex flex-wrap gap-x-5 gap-y-2 md:justify-end">
+        <nav aria-label={copy.footerNav} class="flex flex-wrap gap-x-5 gap-y-2 md:justify-end">
           {nav.map((item) => <a href={item.href} class="hover:text-ink">{item.label}</a>)}
           <a href={ROORE_URL} class="hover:text-ink">roore.se ↗</a>
         </nav>

@@ -13,5 +13,10 @@ export const ROORE_PAGES = {
 } as const;
 
 /** Mailto that identifies where the lead came from. */
-export const rooreMailto = (source = 'grokbot.se') =>
-  `mailto:${ROORE_MAIL}?subject=${encodeURIComponent(`15 minuter – via ${source}`)}`;
+export const rooreMailto = (source = 'grokbot.se', lang: 'en' | 'sv' = 'en') => {
+  const subject =
+    lang === 'sv'
+      ? `15 minuter – via ${source}`
+      : `15 minutes – via ${source}`;
+  return `mailto:${ROORE_MAIL}?subject=${encodeURIComponent(subject)}`;
+};

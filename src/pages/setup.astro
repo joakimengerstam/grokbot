@@ -1,0 +1,361 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PersonaCard from '../components/PersonaCard.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
+
+const steps = [
+  { id: 'requirements', label: 'Requirements and plans' },
+  { id: 'download', label: 'Download the app' },
+  { id: 'sign-in', label: 'Sign in' },
+  { id: 'bot', label: 'Create Chief of Staff' },
+  { id: 'task', label: 'First task' },
+  { id: 'tools', label: 'Connect tools' },
+  { id: 'skills', label: 'Skills, then routines' },
+  { id: 'checklist', label: 'Checklist' },
+];
+
+const plans = [
+  ['Cursor', 'Pro, Pro+, Ultra, Teams Standard/Premium', true],
+  ['SuperGrok', 'SuperGrok, Plus, Heavy (linked to Cursor account)', true],
+  ['X Premium+', 'Can be linked as a usage grant', true],
+  ['Enterprise', 'Rolling out. Two weeks free for Grok/Cursor Enterprise from 3 Sep 2026', true],
+  ['Not included', 'SuperGrok Lite, SuperGrok Team/Enterprise linking, Cursor Hobby/free', false],
+] as const;
+
+const platforms = [
+  ['macOS (Apple silicon + Intel)', 'Yes'],
+  ['Windows (x64 + Arm64)', 'Yes'],
+  ['Linux (deb / rpm / AppImage)', 'Yes'],
+  ['iPhone (iOS 18+)', 'Yes'],
+  ['Android 9+', 'Yes, since 2 Sep'],
+  ['iPad', 'No'],
+];
+
+const fiveParts = [
+  ['Outcome', 'What is done when the job is finished?'],
+  ['Sources', 'Which apps, sites, files?'],
+  ['Limits', 'What must it not do?'],
+  ['Delivery', 'What format should you get back?'],
+  ['Review', 'When should it stop and ask you?'],
+];
+
+const checklist = [
+  'Paid Cursor plan, SuperGrok, or X Premium+ (or trial)',
+  'Turn off Legacy Privacy Mode in Cursor',
+  'Install from x.ai/bot',
+  'Sign in with the right Cursor account',
+  'Create a Chief of Staff, pin it, write fences in the description',
+  'One five-part task against a document',
+  'Connect Gmail + Calendar when you need them',
+  'One more task in a real tool, drafts only',
+  'Save as a skill when the flow sticks',
+  'Routine on a weekday morning, with a test run first',
+];
+---
+
+<Layout
+  lang="en"
+  title="How to set up Grok Bot – step by step (the app from x.ai)"
+  description="Install the Grok Bot app, sign in with your Cursor account, create a Chief of Staff, connect plugins, and go from skill to routine. English how-to, updated September 2026."
+>
+  <PageHeader
+    eyebrow="Setup · 8 steps · first evening"
+    title="Set up your first Grok Bot"
+    lede="From a blank install to a Bot with its own cloud computer, a saved workflow, and a weekday-morning routine."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
+    <nav aria-label="Steps" class="hidden lg:block">
+      <ol class="sticky top-24 space-y-1 text-sm">
+        {
+          steps.map((s, i) => (
+            <li>
+              <a
+                href={`#${s.id}`}
+                class="flex items-baseline gap-3 py-1.5 text-muted hover:text-ink transition-colors"
+              >
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span>{s.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="prose-guide max-w-2xl">
+      <Callout kind="note" title="What you are setting up">
+        <p>
+          Grok Bot is <strong>not</strong> the chat on grok.com and not a model inside Cursor. It is its own app:
+          named AI coworkers with a shared cloud computer (browser, filesystem, terminal), that log into your tools,
+          run scheduled jobs, and only interrupt you when something needs approval.
+        </p>
+      </Callout>
+
+      <section id="requirements">
+        <p class="eyebrow mb-2 mt-14">Step 1</p>
+        <h2 class="!mt-0">Requirements and plans</h2>
+        <p>No separate Grok Bot subscription. Access is included with:</p>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
+          {
+            plans.map(([name, body, ok]) => (
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 px-4 py-3">
+                <span class:list={['font-display font-semibold w-28 shrink-0', ok ? '' : 'text-signal']}>{name}</span>
+                <span class="text-[0.95rem] text-ink-soft">{body}</span>
+              </div>
+            ))
+          }
+        </div>
+        <p>
+          There is a <strong>free trial</strong> (usage credit + 7-day window). Credit is consumed by agent steps and
+          tokens, not by message count. A long job can empty it in one run.
+        </p>
+        <p>
+          Grok Bot has its <strong>own weekly quota</strong>, separate from regular Cursor and Grok usage. If you have
+          both Cursor and SuperGrok, the one that gives you more is used. When the quota runs out, work can continue
+          on-demand if that is enabled.
+        </p>
+        <Callout kind="warn" title="Two things you cannot undo">
+          <ul>
+            <li>
+              <strong>Linking SuperGrok / X Premium+ is permanent.</strong> It cannot be moved to another Cursor
+              account. Sign in with the right account first.
+            </li>
+            <li>
+              <strong>Legacy Privacy Mode</strong> in Cursor must be turned off. Grok Bot requires cloud storage and
+              will not start otherwise.
+            </li>
+          </ul>
+        </Callout>
+        <h3>Platforms (September 2026)</h3>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
+          {
+            platforms.map(([p, status]) => (
+              <div class="flex items-baseline justify-between gap-4 px-4 py-2.5 text-[0.95rem]">
+                <span>{p}</span>
+                <span class:list={['font-mono text-[0.75rem]', status === 'No' ? 'text-signal' : 'text-cobalt']}>{status}</span>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="download">
+        <p class="eyebrow mb-2 mt-14">Step 2</p>
+        <h2 class="!mt-0">Download the app</h2>
+        <ol>
+          <li>Go to <a href="https://x.ai/bot" target="_blank" rel="noopener">x.ai/bot</a></li>
+          <li>Pick the right build</li>
+        </ol>
+        <p><strong>macOS.</strong> Apple silicon or Intel (Apple menu → About This Mac: <em>Chip</em> = Apple silicon, <em>Processor</em> = Intel). Open the dmg, drag Grok Bot to Applications. If macOS asks: <strong>Open</strong>.</p>
+        <p><strong>Windows.</strong> Run the installer (x64 or Arm64), open from Start.</p>
+        <p><strong>Linux.</strong> Under <em>More downloads</em> on x.ai/bot. <code>uname -m</code> → <code>x86_64</code> = x64, <code>aarch64</code> = Arm64.</p>
+        <p><strong>iPhone / Android.</strong> App Store / Play. The same Bots and conversations sync.</p>
+      </section>
+
+      <section id="sign-in">
+        <p class="eyebrow mb-2 mt-14">Step 3</p>
+        <h2 class="!mt-0">Sign in</h2>
+        <ol>
+          <li><strong>Get started</strong> on the welcome screen (or <strong>Sign In with Cursor</strong> under Settings)</li>
+          <li>Finish sign-in in the browser window that opens</li>
+          <li>Return to Grok Bot</li>
+        </ol>
+        <p>
+          Sign-in is your <strong>Cursor account</strong>, not a separate Grok Bot account. Companies with SSO use the
+          normal organization login.
+        </p>
+        <p>
+          The first time, the app asks which tools you use. That shapes suggestions for your first teammate, but does
+          not connect the tools for you. If you only have SuperGrok or X Premium+ (no Cursor plan): link the account
+          from Grok Bot’s plans screen after sign-in.
+        </p>
+      </section>
+
+      <section id="bot">
+        <p class="eyebrow mb-2 mt-14">Step 4</p>
+        <h2 class="!mt-0">Create your first Bot: Chief of Staff</h2>
+        <p>
+          The pattern tutorials and X users land on: <strong>one pinned coordinator you talk to</strong>, that
+          delegates to specialists.
+        </p>
+        <ol>
+          <li>Pick a suggested teammate, or <strong>New</strong> (<code>Cmd/Ctrl+N</code>) → <strong>Create new agent</strong></li>
+          <li><strong>Bot actions → Edit Profile:</strong> name, title, description, avatar</li>
+          <li>Pin it</li>
+        </ol>
+        <p>The description is the system prompt. Write it like a job, not a personality.</p>
+        <div class="not-prose my-6">
+          <PersonaCard
+            lang="en"
+            name="Chief of Staff"
+            role="Your only generalist. Pinned. The one you talk to."
+            trigger="On-demand"
+            jobs={[
+              'Talk to me, break down work, delegate to specialist Bots',
+              'Keep answers short',
+              'If nothing changed since last time: send nothing',
+            ]}
+            antiJobs={[
+              'NEVER send, publish, buy, delete, or change production without my approval',
+              'Create NO new Bots without asking first',
+            ]}
+          />
+        </div>
+        <Callout kind="tip" title="The onboarding trick">
+          <p>
+            Dump who you are and how you work, then ask <em>"how would you set up Grok Bot for me?"</em> and approve
+            the plan. Do not create ten Bots on day one. Max 50 Bots + group chats per account.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="task">
+        <p class="eyebrow mb-2 mt-14">Step 5</p>
+        <h2 class="!mt-0">First task: five parts</h2>
+        <p>Official get-started and X users agree on what a good first question contains:</p>
+        <ol class="not-prose !pl-0 space-y-2 my-5">
+          {
+            fiveParts.map(([label, what], i) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums">{i + 1}</span>
+                <span class="font-display font-semibold w-20 shrink-0">{label}</span>
+                <span class="text-[0.95rem] text-ink-soft">{what}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p><strong>First test, no login.</strong> Attach a document:</p>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Summarize the document in five bullets. List dates, decisions, and open questions in their own sections.
+          Cite page/section for each point. Do not change the source file.”
+        </blockquote>
+        <p><strong>Second test, in a real tool:</strong></p>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Open our analytics dashboard and compare new-user activation this week with the previous four. Call out the
+          biggest step that changed and write a short investigation plan with links to the charts. Change no
+          dashboards. Ask me to log in if needed.”
+        </blockquote>
+      </section>
+
+      <section id="tools">
+        <p class="eyebrow mb-2 mt-14">Step 6</p>
+        <h2 class="!mt-0">Connect tools</h2>
+        <h3>Plugins (first choice)</h3>
+        <ol>
+          <li><strong>Settings → Plugins</strong></li>
+          <li><strong>Add</strong> what you need</li>
+          <li>Authenticate in the browser</li>
+          <li>In chat: <code>@</code> for a connector, <code>/</code> for a skill</li>
+        </ol>
+        <p>
+          Start with mail + calendar. The X plugin automatically creates a developer account with starter credits when
+          you connect your X profile. There is a Microsoft plugin for Outlook, Calendar, and OneDrive.
+        </p>
+        <p>Plugins are <strong>account-wide</strong>. One login applies to all Bots.</p>
+        <h3>The browser (when there is no plugin)</h3>
+        <p>When the Bot hits a login, it asks you to take over:</p>
+        <ol>
+          <li>Open <strong>Agent Computer</strong> in the conversation</li>
+          <li>Take control</li>
+          <li>Type passwords / 2FA / CAPTCHA yourself</li>
+          <li>Hand control back</li>
+        </ol>
+        <Callout kind="warn" title="Note">
+          <p>
+            Do <strong>not</strong> paste passwords or one-time codes into the chat. The session is saved on the cloud
+            computer. All of your Bots share that computer: logins, cookies, and files. Screens are not a security
+            boundary.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="skills">
+        <p class="eyebrow mb-2 mt-14">Step 7</p>
+        <h2 class="!mt-0">Skills, then routines</h2>
+        <p>The order in the docs — and what builders on X repeat:</p>
+        <p class="not-prose font-mono text-[0.85rem] text-cobalt bg-cobalt-soft rounded-lg px-4 py-3 my-5">
+          once → make it reliable → save as skill → test → only then schedule
+        </p>
+        <p>
+          A routine inherits every unspoken assumption in the task it was built from. A wrong morning routine can run
+          four days before you notice.
+        </p>
+        <h3>Save a skill</h3>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Save the process we just used as a skill named "Weekly account health". Include source systems, risk
+          definitions, output format, and the rule that customer contact always requires approval.”
+        </blockquote>
+        <p>
+          A good skill says: when to use it, which inputs, step order, how to validate the result, what comes back,
+          what needs approval.
+        </p>
+        <p>
+          <strong>Teach a task</strong> (if the button is visible): open the computer view, record up to 10 minutes,
+          review the draft skill, test on a safe example. No mic audio. Do not show secrets in the recording.
+        </p>
+        <h3>Create a routine</h3>
+        <blockquote
+          class="not-prose my-5 bg-panel border border-line rounded-lg px-5 py-4 font-mono text-[0.85rem] leading-relaxed text-ink-soft"
+        >
+          “Every weekday at 08:00, run skill X against list Y. Post the result in this thread. Contact no one. If the
+          source is down: report the error, do not invent data.”
+        </blockquote>
+        <p>
+          Confirm: owning Bot, timezone, input, expected result, approval boundary, what happens when the source is
+          missing. Then <strong>Test run</strong>. A test does real work, so keep write actions behind approval.
+        </p>
+        <p>
+          Manage routines via the Bot → <strong>View conversation details → Routines</strong> (pause, test, edit,
+          history). One Bot can own 50 routines. The 20 most recent runs are kept. Deletion has no undo.
+        </p>
+        <Callout kind="tip" title="Tip">
+          <p>Keep schedules during <strong>office hours</strong>, not around the clock. That is the most common advice against burning the weekly quota.</p>
+        </Callout>
+      </section>
+
+      <section id="checklist">
+        <p class="eyebrow mb-2 mt-14">Step 8</p>
+        <h2 class="!mt-0">First-evening checklist</h2>
+        <ol class="not-prose !pl-0 space-y-2 my-5">
+          {
+            checklist.map((item, i) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.7rem] text-cobalt tabular-nums w-5">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-[0.95rem]">{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <Callout kind="ok" title="Next steps" class="mt-14">
+        <p>You have a working Grok Bot. Continue with:</p>
+        <ul>
+          <li><a href="/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – approvals, usage, security</li>
+          <li><a href="/examples" class="text-cobalt underline underline-offset-3">Examples</a> – seven bots to copy</li>
+          <li><a href="/news" class="text-cobalt underline underline-offset-3">News</a> – what shipped in recent weeks</li>
+        </ul>
+      </Callout>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta
+      lang="en"
+      heading="Eight steps for you. Zero steps for the company."
+      body="This is what it takes to set up a bot on your own computer. For invoices, orders, and email in your business system, Roore builds the flow — in your systems, with your approval before anything proceeds."
+      source="grokbot.se setup"
+      href={ROORE_PAGES.aiMedarbetare}
+    />
+  </div>
+</Layout>

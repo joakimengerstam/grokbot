@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import PersonaCard from '../components/PersonaCard.astro';
-import Callout from '../components/Callout.astro';
-import RooreCta from '../components/RooreCta.astro';
-import { ROORE_PAGES } from '../lib/roore';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PersonaCard from '../../components/PersonaCard.astro';
+import Callout from '../../components/Callout.astro';
+import RooreCta from '../../components/RooreCta.astro';
+import { ROORE_PAGES } from '../../lib/roore';
 
 const bots = [
   {
@@ -131,6 +131,7 @@ const bots = [
 ---
 
 <Layout
+  lang="sv"
   title="Grok Bot exempel – 7 roller (inbox, sales, SEO m.fl.)"
   description="Kopiera färdiga Grok Bot-roller: Chief of Staff, Inbox, Sales, SEO, Content, Research och Life Admin. Jobb, gör-inte och triggers."
 >
@@ -161,6 +162,7 @@ const bots = [
         bots.map((b) => (
           <section id={b.id} class="scroll-mt-24">
             <PersonaCard
+          lang="sv"
               name={b.name}
               role={b.role}
               trigger={b.trigger}
@@ -174,7 +176,7 @@ const bots = [
               </blockquote>
             )}
             {b.id === 'life-admin' && (
-              <Callout kind="tip" class="mt-4">
+              <Callout kind="tip" title="Tips" class="mt-4">
                 <p>
                   Samma koncept funkar för flytt, bröllop, rekrytering, event – vilket projekt som helst med många
                   beroenden.
@@ -197,6 +199,7 @@ const bots = [
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
     <RooreCta
+      lang="sv"
       heading="Inbox Bot och Sales Bot, i ert affärssystem"
       body="Roore bygger motsvarande flöden för företag: leverantörsfakturor in i Fortnox, order från mejl, svarsutkast som väntar på ert ja. Ett flöde först, fast pris, veckosiffror på vad som faktiskt körs."
       source="grokbot.se exempel"

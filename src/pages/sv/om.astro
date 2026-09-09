@@ -1,9 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import Callout from '../components/Callout.astro';
-import RooreCta from '../components/RooreCta.astro';
-import { rooreMailto, ROORE_URL, ROORE_MAIL, ROORE_PAGES } from '../lib/roore';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Callout from '../../components/Callout.astro';
+import RooreCta from '../../components/RooreCta.astro';
+import { rooreMailto, ROORE_URL, ROORE_MAIL, ROORE_PAGES } from '../../lib/roore';
 
 const disclaimers = [
   {
@@ -47,6 +47,7 @@ const sources = [
 ---
 
 <Layout
+  lang="sv"
   title="Om grokbot.se – Roore AB"
   description="Inofficiell svensk guide till Grok Bot (xAI + Cursor), driven av Roore AB. Källor, disclaimer, kontakt och hur managed automation skiljer sig från att bygga själv."
 >
@@ -92,7 +93,7 @@ const sources = [
       <p>
         Innehållet bygger på officiella docs (docs.x.ai/grok-bot, cursor.com/help/grok-bot) och vad det officiella
         kontot @bot har släppt på X. Senast uppdaterad <strong>6 september 2026</strong>. Produkten ändras vecka för
-        vecka, så kolla <a href="/nyheter">nyheter</a> och källorna nedan om något inte stämmer.
+        vecka, så kolla <a href="/sv/nyheter">nyheter</a> och källorna nedan om något inte stämmer.
       </p>
       <p>
         Guiden drivs av <a href={ROORE_URL} target="_blank" rel="noopener">Roore AB</a>. Strukturen här är samma som
@@ -149,6 +150,7 @@ const sources = [
   </div>
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
-    <RooreCta source="grokbot.se om" href={ROORE_PAGES.home} />
+    <RooreCta
+      lang="sv" source="grokbot.se om" href={ROORE_PAGES.home} />
   </div>
 </Layout>

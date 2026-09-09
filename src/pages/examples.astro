@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PersonaCard from '../components/PersonaCard.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
+
+const bots = [
+  {
+    id: 'chief-of-staff',
+    name: 'Chief of Staff',
+    role: 'Your only generalist. Pinned. The one you talk to — breaks down work and delegates to specialists.',
+    trigger: 'On-demand',
+    jobs: [
+      'Talk to me, break down work, delegate to specialist Bots',
+      'Keep answers short',
+      'Read the board file before you answer, update it after',
+      'If nothing changed since last time: send nothing',
+    ],
+    antiJobs: [
+      'NEVER send, publish, buy, delete, or change production without my approval',
+      'Create NO new Bots without asking first',
+      'Run NO routines yourself — specialists do that',
+    ],
+    output: '/workspace/board.md',
+    prompt:
+      'The description is the system prompt. Paste: "You are my only generalist. You talk to me, break down work, and delegate to specialist Bots. You never send, publish, buy, delete, or change production without my approval. If nothing changed since last time: send nothing. Keep answers short. Do not create new Bots without asking first."',
+  },
+  {
+    id: 'inbox',
+    name: 'Inbox Bot',
+    role: 'Specialist on mail via the Gmail or Outlook plugin. Run as a weekday-morning routine.',
+    trigger: 'Weekdays 8:00',
+    jobs: [
+      'Sort unread mail since the last run by priority and type',
+      'Identify newsletters and suggest filter rules',
+      'Find mail that needs follow-up ("waiting on reply")',
+      'List mail where I am CC\'d but do not need to act',
+      'Draft replies to standard questions; leave them as drafts',
+    ],
+    antiJobs: ['NEVER send email', 'NEVER move mail to trash', 'NEVER unsubscribe from lists', 'Do NOT run against the full backlog on day one'],
+    output: '/workspace/briefs/YYYY-MM-DD.md',
+    prompt:
+      'Routine: "Every weekday at 08:00, run the Inbox-triage skill against unread mail since the last run. Post the result in this thread. Contact no one. If the Gmail plugin does not respond: report the error, do not invent data. If nothing new: send nothing."',
+  },
+  {
+    id: 'sales',
+    name: 'Sales Bot',
+    role: 'Follows up leads and keeps the CRM updated.',
+    trigger: 'Friday 4:00 pm',
+    jobs: [
+      'Check CRM: which leads have not had follow-up in 3+ days?',
+      'Suggest next steps per lead based on the latest interaction',
+      'Draft follow-up emails',
+      'Update status: Waiting on follow-up / Needs quote / Moved on',
+      'Flag leads that have not replied to 2+ follow-ups as Cold',
+    ],
+    antiJobs: [
+      'NEVER send email without my approval',
+      'NEVER delete leads',
+      'NEVER offer discounts or pricing',
+      'NEVER book meetings for me',
+    ],
+    prompt:
+      'Save as skill: "Save the process we just used as a skill named Weekly lead follow-up. Include CRM as the source system, the definition of Cold, output format, and the rule that customer contact always requires approval."',
+  },
+  {
+    id: 'seo',
+    name: 'SEO Bot',
+    role: 'Optimizes content for search engines.',
+    trigger: 'On-demand',
+    jobs: [
+      'Analyze a given text for SEO',
+      'Suggest meta title and meta description',
+      'Identify primary and secondary keywords',
+      'Give concrete improvements: heading structure, keyword density, internal links',
+      'Write an SEO-optimized slug/URL',
+    ],
+    antiJobs: ['NEVER change the text automatically', 'NEVER publish anything directly', 'NEVER sacrifice readability for keywords'],
+  },
+  {
+    id: 'content',
+    name: 'Content Bot',
+    role: 'Writes first drafts and adapts copy for different channels.',
+    trigger: 'On-demand',
+    jobs: [
+      'Write a first draft from keywords or a topic',
+      'Adapt text for blog, LinkedIn, X, and newsletter',
+      'Match the company tone of voice (give examples at setup)',
+      'Format with headings, lists, and bold for readability',
+      'Suggest images or diagrams that improve the text',
+    ],
+    antiJobs: [
+      'NEVER publish directly — always deliver a draft',
+      'NEVER invent facts or statistics',
+      'NEVER use others\' copyrighted material',
+    ],
+  },
+  {
+    id: 'research',
+    name: 'Research Bot',
+    role: 'Gathers data and summarizes information.',
+    trigger: 'On-demand',
+    jobs: [
+      'Search for information on a given topic, company, or person',
+      'Summarize longer articles and papers in bullet form',
+      'Build competitor analyses (what do they do? what is missing?)',
+      'Look for trends in a specific area',
+      'Always cite sources with links',
+    ],
+    antiJobs: ['NEVER invent information', 'NEVER claim something without a source', 'NEVER break copyright', 'NEVER report "nothing new" without listing which sources you actually opened'],
+    prompt:
+      'Ask it to report its inputs, not only findings. A watch that quietly runs out of X credits or hits a changed site layout can report an empty scan for weeks.',
+  },
+  {
+    id: 'life-admin',
+    name: 'Life Admin Bot',
+    role: 'Handles large life projects with many moving parts. Example: kitchen renovation.',
+    trigger: 'Monday 8:00',
+    jobs: [
+      'Track all vendors (carpenter, electrician, plumbing)',
+      'Track deadlines and dependencies ("plumbing must finish before tiling")',
+      'Flag delays early',
+      'Summarize status each week: done, waiting, delayed',
+      'Remind about payments and invoices',
+    ],
+    antiJobs: ['NEVER book vendors without my approval', 'NEVER pay for anything', 'Make NO decisions about materials or design'],
+  },
+];
+---
+
+<Layout
+  lang="en"
+  title="Grok Bot examples – 7 roles (inbox, sales, SEO, and more)"
+  description="Copy ready-made Grok Bot roles: Chief of Staff, Inbox, Sales, SEO, Content, Research, and Life Admin. Jobs, Don'ts, and triggers."
+>
+  <PageHeader
+    eyebrow="Examples · 7 roles"
+    title="Bots to copy and adapt"
+    lede="Same structure every time: jobs, Don'ts, output. Paste into Edit Profile, swap the details for your situation. Also check Marketplace for Bot templates before you build from scratch."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
+    <nav aria-label="Bots" class="hidden lg:block">
+      <ul class="sticky top-24 space-y-1 text-sm">
+        {
+          bots.map((b) => (
+            <li>
+              <a href={`#${b.id}`} class="flex items-baseline justify-between gap-3 py-1.5 text-muted hover:text-ink transition-colors">
+                <span>{b.name}</span>
+                <span class="font-mono text-[0.65rem] text-muted/70 whitespace-nowrap">{b.trigger === 'On-demand' ? 'on-dem.' : 'routine'}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="max-w-3xl space-y-10">
+      {
+        bots.map((b) => (
+          <section id={b.id} class="scroll-mt-24">
+            <PersonaCard
+              lang="en"
+              name={b.name}
+              role={b.role}
+              trigger={b.trigger}
+              jobs={b.jobs}
+              antiJobs={b.antiJobs}
+              output={b.output}
+            />
+            {b.prompt && (
+              <blockquote class="mt-3 bg-panel border border-line rounded-lg px-5 py-3 font-mono text-[0.8rem] leading-relaxed text-ink-soft">
+                {b.prompt}
+              </blockquote>
+            )}
+            {b.id === 'life-admin' && (
+              <Callout kind="tip" title="Tip" class="mt-4">
+                <p>
+                  The same idea works for a move, a wedding, hiring, an event — any project with many dependencies.
+                </p>
+              </Callout>
+            )}
+          </section>
+        ))
+      }
+
+      <Callout kind="note" title="Adapt to your needs" class="mt-14">
+        <p>
+          Copy the structure (jobs + Don'ts + output) and swap the details. Run the task on-demand until it is
+          reliable, save as a skill, Test run, only then a routine. Keep schedules during office hours. Add specialists
+          when you find patterns — and ask Chief of Staff first.
+        </p>
+      </Callout>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta
+      lang="en"
+      heading="Inbox Bot and Sales Bot, in your business system"
+      body="Roore builds the equivalent flows for companies: supplier invoices into Fortnox, orders from email, reply drafts waiting for your yes. One flow first, fixed price, weekly numbers on what actually runs."
+      source="grokbot.se examples"
+      href={ROORE_PAGES.mejlArenden}
+    />
+  </div>
+</Layout>

@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+import { ROORE_PAGES } from '../lib/roore';
+
+const updated = '6 September 2026';
+
+const news = [
+  { date: '5 Sep', what: 'Weekly quotas reset for everyone', why: 'Second time in ten days. Do not count on it every week.' },
+  { date: '4 Sep', what: 'Marketplace for Bot templates. First template: Haggle Bot (procurement)', why: 'Check here before you build a Bot from scratch.' },
+  { date: '3 Sep', what: 'Enterprise live, two weeks free for Grok/Cursor Enterprise', why: 'SSO uses the normal organization login.' },
+  { date: '2 Sep', what: 'Android app (Android 9+)', why: 'Same Bots and conversations sync. iPad is still missing.' },
+  { date: '31 Aug', what: 'Microsoft plugins: Outlook, Calendar, OneDrive', why: 'Plugin before browser. Replace browser flows with Outlook where you can.' },
+  { date: '29 Aug', what: 'Better X support; developer account + credits created automatically on connect', why: 'Credits run out quietly. Ask X-watching Bots to report inputs, not only findings.' },
+  { date: '28 Aug', what: 'Purchases via @link (USA), share Bot templates', why: 'You approve each purchase; the Bot gets a one-time card.' },
+  { date: '26 Aug', what: 'Access for all SuperGrok and Cursor Pro plans', why: 'Quotas were reset at the same time.' },
+];
+---
+
+<Layout
+  lang="en"
+  title="Grok Bot news – what shipped (updated September 2026)"
+  description="Log of what xAI shipped in Grok Bot: quota resets, Marketplace, Enterprise, Android, Microsoft plugins, X support — and what it means for your setup."
+>
+  <PageHeader
+    eyebrow={`News · updated ${updated}`}
+    title="What's new in Grok Bot"
+    lede="From the official @bot account on X. The right-hand column is what it means for you setting up Bots."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12">
+    <div class="max-w-3xl">
+      <div class="bg-panel border border-line rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-line text-left">
+              <th class="eyebrow font-normal px-5 py-3">Date</th>
+              <th class="eyebrow font-normal px-5 py-3">What</th>
+              <th class="eyebrow font-normal px-5 py-3 hidden md:table-cell">Means</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line-soft">
+            {
+              news.map((n) => (
+                <tr class="align-top">
+                  <td class="px-5 py-3.5 font-mono text-[0.78rem] text-cobalt whitespace-nowrap">{n.date}</td>
+                  <td class="px-5 py-3.5 text-ink">{n.what}</td>
+                  <td class="px-5 py-3.5 text-ink-soft hidden md:table-cell">{n.why}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <Callout kind="note" title="Sources" class="mt-8">
+        <p>
+          <a href="https://x.com/bot" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">@bot on X</a>,
+          <a href="https://docs.x.ai/grok-bot/get-started" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">docs.x.ai/grok-bot</a>,
+          <a href="https://cursor.com/help/grok-bot/plans" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">cursor.com/help/grok-bot/plans</a>.
+          Full source list on the <a href="/about#sources" class="text-cobalt underline underline-offset-3">About page</a>.
+        </p>
+      </Callout>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta lang="en" source="grokbot.se news" href={ROORE_PAGES.home} />
+  </div>
+</Layout>

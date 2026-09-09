@@ -1,0 +1,346 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PersonaCard from '../../components/PersonaCard.astro';
+import Callout from '../../components/Callout.astro';
+import Compare from '../../components/Compare.astro';
+import RooreCta from '../../components/RooreCta.astro';
+import { ROORE_PAGES } from '../../lib/roore';
+
+const principles = [
+  { id: 'personas', label: 'Specialiserade roller' },
+  { id: 'anti-jobs', label: 'Tydliga "gör-inte"' },
+  { id: 'trigger', label: 'On-demand vs rutiner' },
+  { id: 'fragor', label: 'Undvik över-frågande' },
+  { id: 'godkannanden', label: 'Godkännanden' },
+  { id: 'ett-jobb', label: 'En bot, ett jobb' },
+  { id: 'state', label: 'State på disk' },
+  { id: 'forbrukning', label: 'Håll nere förbrukningen' },
+  { id: 'sakerhet', label: 'Delad dator' },
+  { id: 'fallgropar', label: 'Vanliga fallgropar' },
+  { id: 'iterera', label: 'Börja litet' },
+];
+
+const burns = [
+  'Långa, pratiga CoS-trådar (hela historiken skickas om)',
+  'En catch-all "General Helper"',
+  'Inbox-triage mot år av backlog dag ett',
+  'Always-on routines',
+  'Webbläsarklick där ett plugin räcker',
+  'Event-lyssnare av typen "varje nytt Slack-meddelande"',
+];
+
+const saves = [
+  'Ett jobb per Bot',
+  'Nya konversationer per uppgift',
+  'Scheman på kontorstid',
+  'Plugin före browser',
+  'Grok Bot som ytterloop (research, drafts, delegering), tunga kodjobb i Cursor',
+  '"Om inget: skicka ingenting" i varje schemalagd Bot',
+  'Titta på Settings → Usage & Billing innan stora jobb',
+];
+
+const pitfalls = [
+  ['Flera Bots ≠ isolering', 'En dator, alla inloggningar. Lägg inte ett lösenord på datorn som en annan Bot inte ska kunna använda.'],
+  ['X-krediter tar slut tyst', 'En Bot som bevakar X kan rapportera "inget nytt" i stället för fel.'],
+  ['Sajtlayout ändras', 'En scraper kan rapportera tom scan i veckor och låta helt lugn. Be den rapportera sina inputs, inte bara fynd.'],
+  ['Dold Bot pausar inte routines', 'Hide tar bara bort den från sidofältet. Pausa routines separat.'],
+  ['Radera lämnar spår', 'Delete tar bort profil, konversation och routines, men filer och inloggningar på den delade datorn kan ligga kvar.'],
+  ['Äldre bloggar ljuger om plattformar', 'Linux och Android finns nu. iPad gör det inte.'],
+  ['Krypto-desk-inlägg', 'Trådar som lovar tusentals i veckan saknar verifierbara kvitton. Behandla som reklam.'],
+];
+---
+
+<Layout
+  lang="sv"
+  title="Grok Bot best practices – godkännanden, förbrukning, säkerhet"
+  description="Tio principer för Grok Bots som funkar: specialicerade roller, gör-inte, Require Approval, en bot per jobb, state på disk, håll nere veckokvoten, delad dator. Uppdaterad september 2026."
+>
+  <PageHeader
+    eyebrow="Best practices · 10 principer"
+    title="Så sätter du upp bots som faktiskt funkar"
+    lede="Från officiella docs och det builders på X upprepar. De flesta handlar om att skriva ner gränser."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[13rem_1fr] gap-12">
+    <nav aria-label="Principer" class="hidden lg:block">
+      <ul class="sticky top-24 space-y-1 text-sm">
+        {
+          principles.map((p) => (
+            <li>
+              <a href={`#${p.id}`} class="flex items-baseline gap-3 py-1.5 text-muted hover:text-ink transition-colors">
+                <span class="w-1.5 h-1.5 rounded-full bg-cobalt shrink-0 translate-y-[-1px]" aria-hidden="true" />
+                <span>{p.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="prose-guide max-w-2xl">
+      <section id="personas">
+        <h2 class="!mt-0">Tighta personas, inte fluffiga beskrivningar</h2>
+        <p>
+          Personan ska vara specifik nog att boten vet exakt vad den ska göra – och vad den <strong>inte</strong> ska
+          göra.
+        </p>
+        <Compare
+          badLabel="Undvik"
+          goodLabel="Gör så här"
+          bad="Du är en hjälpsam assistent som hjälper mig med allt jag behöver."
+          badWhy="För brett. Boten vet inte vad den är bra på."
+          good="Du hanterar min inbox och gör prioritering. Varje morgon läser du de senaste 20 mailen, kategoriserar dem efter prioritet (Akut/Normal/Kan vänta) och listar dem i ett markdown-dokument. Du svarar ALDRIG på mail åt mig."
+          goodWhy="Tydligt scope. Boten vet sitt jobb och sina gränser."
+        />
+      </section>
+
+      <section id="anti-jobs">
+        <h2>Definiera "gör-inte" tydligt</h2>
+        <p>
+          Gör-inte är lika viktiga som jobb. De skyddar dig från oväntade "hjälpsamma" handlingar – boten som
+          skickar mailet den bara skulle skriva utkast till.
+        </p>
+        <div class="not-prose my-6">
+          <PersonaCard
+          lang="sv"
+            name="Sales Bot"
+            role="Följer upp leads och håller CRM uppdaterat."
+            jobs={[
+              'Följ upp leads som inte svarat inom 3 dagar',
+              'Uppdatera CRM med senaste interaktionen',
+              'Föreslå nästa steg baserat på leadens svar',
+            ]}
+            antiJobs={[
+              'Skicka ALDRIG mail utan mitt godkännande',
+              'Radera ALDRIG leads från CRM',
+              'Erbjud ALDRIG rabatter eller specialpriser',
+              'Fatta INGA beslut som påverkar prissättning',
+            ]}
+          />
+        </div>
+      </section>
+
+      <section id="trigger">
+        <h2>On-demand vs rutiner</h2>
+        <p>Välj triggmetod efter uppgiften:</p>
+        <div class="not-prose grid sm:grid-cols-2 gap-4 my-6">
+          <div class="bg-panel border border-line rounded-lg p-5">
+            <p class="font-mono text-[0.7rem] px-2 py-0.5 rounded-md bg-line-soft text-ink-soft inline-block mb-3">On-demand</p>
+            <p class="text-sm text-muted mb-2">Manuell trigger. Använd för:</p>
+            <ul class="space-y-1.5 text-[0.95rem]">
+              <li>Uppgifter som kräver aktuell kontext ("analysera den här konkurrentens sajt")</li>
+              <li>Saker du vill dubbelkolla innan de körs</li>
+              <li>Arbetsflöden du fortfarande testar</li>
+            </ul>
+          </div>
+          <div class="bg-panel border border-line rounded-lg p-5">
+            <p class="font-mono text-[0.7rem] px-2 py-0.5 rounded-md bg-cobalt-soft text-cobalt inline-block mb-3">Rutin</p>
+            <p class="text-sm text-muted mb-2">Schemalagd. Använd för:</p>
+            <ul class="space-y-1.5 text-[0.95rem]">
+              <li>Repetitiva uppgifter som alltid ska hända (morgonens inbox-triagering)</li>
+              <li>Rapporter som genereras regelbundet (veckans sales-sammanfattning)</li>
+              <li>Uppgifter där "glömma bort" är värre än "köra en gång för mycket"</li>
+            </ul>
+          </div>
+        </div>
+        <Callout kind="tip" title="Tips">
+          <p>
+            Ordningen: <strong>en gång → gör den pålitlig → spara som skill → testa → först då schema</strong>. En
+            routine ärver varje outtalat antagande i uppgiften den byggdes av. En felaktig morgonrutin kan köra fyra
+            dagar innan du märker det. Kör alltid <strong>Test run</strong> innan den går live.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="fragor">
+        <h2>Undvik över-frågande</h2>
+        <p>Ett vanligt misstag: be boten om bekräftelse hela tiden. Det dödar poängen med automation.</p>
+        <Compare
+          badLabel="Över-frågande"
+          bad="Kör prioritering på mejlen i min inbox. Fråga mig innan du kategoriserar varje mail. Fråga också om du ska inkludera mail från spamfoldern."
+          badWhy="Boten kan inte jobba självständigt. Du får svara på en massa frågor."
+          goodLabel="Tydliga regler"
+          good="Kör prioritering på mejlen i min inbox. Ignorera spam-foldern. Regler: mail från kunder = Akut, nyhetsbrev = Kan vänta, allt annat = Normal."
+          goodWhy="Boten vet reglerna och jobbar utan att fråga."
+        />
+        <Callout kind="warn" title="När boten ska fråga">
+          <p>
+            Om uppgiften kan få stora konsekvenser – skicka mail till kunder, radera filer, hantera pengar – låt
+            boten fråga innan den agerar. Det är skillnaden mellan över-frågande och ett staket.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="godkannanden">
+        <h2>Godkännanden: två lager</h2>
+        <p>
+          Gör-inte i beskrivningen är lager ett. Lager två är produktens egna regler under
+          <strong>Settings → General → Auto-review</strong>. Sätt <strong>Require Approval</strong> för:
+        </p>
+        <ul class="not-prose flex flex-wrap gap-2 my-5">
+          {
+            ['skicka', 'publicera', 'köpa', 'radera', 'ändra produktion'].map((a) => (
+              <li class="font-mono text-[0.8rem] px-3 py-1.5 rounded-md bg-panel border border-signal/40 text-signal">{a}</li>
+            ))
+          }
+        </ul>
+        <p><strong>Require Approval</strong> vinner över <strong>Always Allow</strong>.</p>
+        <h3>Minsta-behörighet</h3>
+        <ul>
+          <li>Koppla bara de verktyg flödet behöver</li>
+          <li>Börja read-only och drafts</li>
+          <li>Service accounts där källsystemet tillåter det</li>
+          <li>Granska plugins och aktiva routines regelbundet</li>
+        </ul>
+        <p>
+          Grok Bot kan handla på nätet via @link: du godkänner varje köp, Boten får ett engångskort. I skrivande stund
+          USA, rullas ut till mobil.
+        </p>
+      </section>
+
+      <section id="ett-jobb">
+        <h2>En bot, ett jobb</h2>
+        <p>Motstå frestelsen att bygga en superbot som gör allt. Det blir rörigt snabbt.</p>
+        <h3>Varför specialister funkar bättre</h3>
+        <ul>
+          <li><strong>Lättare att felsöka:</strong> när något går fel vet du vilken bot det är</li>
+          <li><strong>Enklare personas:</strong> mindre kontext ger tydligare instruktioner</li>
+          <li><strong>Skalar:</strong> du kan köra flera bots parallellt</li>
+          <li><strong>Snabbare iteration:</strong> ändra en bots persona utan att påverka andra</li>
+        </ul>
+        <h3>Exempel på flotta</h3>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
+          {
+            [
+              ['Chief of Staff', 'Pinnad. Den enda du pratar med. Delegerar.'],
+              ['Inbox / kalender', 'Hanterar bara mail och möten'],
+              ['Research Bot', 'Letar data och sammanfattar'],
+              ['En smal specialist', 'För ditt faktiska jobb'],
+            ].map(([name, job]) => (
+              <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 px-4 py-3">
+                <span class="font-display font-semibold w-36">{name}</span>
+                <span class="text-[0.95rem] text-ink-soft">{job}</span>
+              </div>
+            ))
+          }
+        </div>
+        <p>
+          Säg till CoS innan du skapar flera. Gruppchatt när själva överlämningen ska synas. Duplicera en Bot när samma
+          roll ska ha ny scope (kopian får profil, skills och routines, men inte historik eller memory).
+        </p>
+      </section>
+
+      <section id="state">
+        <h2>State på disk, inte i chatten</h2>
+        <p>
+          Docs: <code>/workspace</code> på molndatorn överlever datoruppdateringar. Builders på X:
+          <em>"Chat is history. That file is memory."</em>
+        </p>
+        <ul>
+          <li>En Bot skriver board-filen, övriga läser</li>
+          <li>Två Bots som skriver samma fil kan tappa en edit utan felmeddelande</li>
+          <li>Ny konversation per uppgift, låt filen bära kontexten</li>
+        </ul>
+      </section>
+
+      <section id="forbrukning">
+        <h2>Håll nere förbrukningen</h2>
+        <p>
+          Det mest dokumenterade klagomålet: veckokvoten tar slut fortare än folk tror. @bot nollställde kvoterna för
+          alla 5 sep 2026, och gjorde samma sak 26 aug när access breddades. Räkna inte med att det händer varje vecka.
+        </p>
+        <div class="not-prose grid sm:grid-cols-2 gap-4 my-6">
+          <div class="bg-panel border border-line rounded-lg p-5">
+            <p class="eyebrow text-signal mb-3">Det som bränner</p>
+            <ul class="space-y-1.5 text-[0.95rem]">
+              {burns.map((b) => <li class="flex gap-3"><span class="mt-[0.55rem] shrink-0 w-3 h-[2px] bg-signal" aria-hidden="true" /><span>{b}</span></li>)}
+            </ul>
+          </div>
+          <div class="bg-panel border border-cobalt/40 rounded-lg p-5">
+            <p class="eyebrow text-cobalt mb-3">Det som håller</p>
+            <ul class="space-y-1.5 text-[0.95rem]">
+              {saves.map((s) => <li class="flex gap-3"><span class="mt-2 shrink-0 w-1.5 h-1.5 rounded-full bg-cobalt" aria-hidden="true" /><span>{s}</span></li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="sakerhet">
+        <h2>Alla Bots delar en dator</h2>
+        <p>
+          Molndatorn är en per konto, inte per Bot. Inloggningar, cookies och filer är gemensamma. Varje Bot får en
+          egen skärm så de kan jobba parallellt, men <strong>skärmarna är inte en säkerhetsgräns</strong>.
+        </p>
+        <ul>
+          <li>Klistra aldrig lösenord eller engångskoder i chatten. Ta över Agent Computer och skriv själv.</li>
+          <li>Plugins är konto-vida: en inloggning gäller alla Bots.</li>
+          <li>Dölj en Bot om du kanske behöver den. Radera tar bort profil, konversation och routines, inte filer och sessioner på datorn.</li>
+          <li>Visa inte hemligheter i en Teach a task-inspelning.</li>
+        </ul>
+      </section>
+
+      <section id="fallgropar">
+        <h2>Vanliga fallgropar</h2>
+        <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-5">
+          {
+            pitfalls.map(([title, body]) => (
+              <div class="px-4 py-3">
+                <p class="font-display font-semibold">{title}</p>
+                <p class="text-[0.95rem] text-ink-soft">{body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id="iterera">
+        <h2>Börja litet, iterera fort</h2>
+        <p>Bygg teamet vecka för vecka:</p>
+        <ol class="not-prose !pl-0 space-y-2 my-5">
+          {
+            [
+              ['Vecka 1', 'Skapa en Chief of Staff, pinna den, skriv staket. En femdelad uppgift mot ett dokument, sedan en i ett riktigt verktyg.'],
+              ['Vecka 2', 'Hitta en uppgift du gör manuellt minst 3 gånger i veckan. Kör den, gör den pålitlig, spara som skill.'],
+              ['Vecka 3', 'Test run, sedan routine på vardagsmorgon. Håll skrivåtgärder bakom approval.'],
+              ['Vecka 4', 'Lägg till en specialist för det du fortfarande gör manuellt. Fråga CoS först.'],
+            ].map(([when, what]) => (
+              <li class="flex items-baseline gap-4 bg-panel border border-line rounded-lg px-4 py-3">
+                <span class="font-mono text-[0.75rem] text-cobalt whitespace-nowrap w-16">{when}</span>
+                <span class="text-[0.95rem]">{what}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <Callout kind="ok" title="Efter en månad">
+          <p>
+            En bot som kör prioritering, 2–3 specialister, och tillräckligt med erfarenhet för att veta vilka uppgifter som
+            går att automatisera.
+          </p>
+        </Callout>
+      </section>
+
+      <section class="mt-16 bg-ink text-white rounded-xl p-6 sm:p-8">
+        <p class="eyebrow text-white/60 mb-3">Sammanfattning</p>
+        <ul class="!pl-0 space-y-2 !text-white/90 list-none">
+          <li>Skriv tighta personas med tydliga jobs <em>och</em> gör-inte</li>
+          <li>En gång → pålitlig → skill → test run → routine</li>
+          <li>Require Approval för skicka, publicera, köpa, radera, ändra produktion</li>
+          <li>En bot per jobb, state i en fil, nya konversationer per uppgift</li>
+          <li>Kontorstid, plugin före browser, "om inget: skicka ingenting"</li>
+          <li>Alla Bots delar en dator. Skärmar är ingen säkerhetsgräns</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta
+      lang="sv"
+      heading="'Gör-inte' är exakt så vi bygger för företag"
+      body="Deterministiskt där svaret ska bli likadant varje gång. Förberett underlag och ert ja där det inte ska gå vidare automatiskt. Om ni har ett faktura-, order- eller mejlflöde som görs för hand varje vecka kan vi bygga det först."
+      source="grokbot.se best practices"
+      href={ROORE_PAGES.aiMedarbetare}
+    />
+  </div>
+</Layout>

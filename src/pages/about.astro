@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Callout from '../components/Callout.astro';
+import RooreCta from '../components/RooreCta.astro';
+import { rooreMailto, ROORE_URL, ROORE_MAIL, ROORE_PAGES } from '../lib/roore';
+
+const disclaimers = [
+  {
+    title: 'Unofficial, not affiliated',
+    body: 'This project is not affiliated with, endorsed by, or in any way connected to xAI, Cursor, or their parent companies. It is a private guide written by a third-party developer.',
+  },
+  {
+    title: 'Trademarks',
+    body: '"Grok" and "Grok Bot" are trademarks of xAI and/or their licensees. "Cursor" is a trademark of Anysphere Inc. Other trademarks belong to their owners. Names are used for descriptive purposes only.',
+  },
+  {
+    title: 'No warranty',
+    body: 'Information is provided as-is without warranties. We do not guarantee that the guides work flawlessly, are complete, or fit your use case. Use at your own risk.',
+  },
+  {
+    title: 'Responsibility for automation',
+    body: 'When you set up automated bots, you are responsible for what they do. Write clear Don\'ts and understand the consequences before you run bots in production. We take no responsibility for damage, data loss, or other problems.',
+  },
+  {
+    title: 'Quota and cost',
+    body: 'Grok Bot is included with paid Cursor, SuperGrok, and X Premium+ plans and has its own weekly quota. When that runs out, on-demand billing can take over if you have enabled it. You are responsible for watching Usage & Billing. Linking SuperGrok/X Premium+ to a Cursor account is permanent.',
+  },
+  {
+    title: 'Data protection',
+    body: 'Grok Bot requires cloud storage (Legacy Privacy Mode must be off). All of your Bots share one cloud computer with logins, cookies, and files. Read xAI\'s and Cursor\'s privacy policies. Never put sensitive data or passwords somewhere you do not understand how they are handled.',
+  },
+];
+
+const sources = [
+  ['Get started', 'https://docs.x.ai/grok-bot/get-started'],
+  ['Create and manage Bots', 'https://docs.x.ai/grok-bot/bots'],
+  ['Skills, routines and automations', 'https://docs.x.ai/grok-bot/skills-routines-and-automations'],
+  ['Computer and apps', 'https://docs.x.ai/grok-bot/computer-and-apps'],
+  ['Approvals, security and privacy', 'https://docs.x.ai/grok-bot/approvals-security-and-privacy'],
+  ['FAQ', 'https://docs.x.ai/grok-bot/faq'],
+  ['Plans and billing (Cursor)', 'https://cursor.com/help/grok-bot/plans'],
+  ['Access widened 26 Aug 2026', 'https://x.ai/news/grok-bot-more-plans'],
+  ['x.ai/bot', 'https://x.ai/bot'],
+  ['@bot on X', 'https://x.com/bot'],
+];
+---
+
+<Layout
+  lang="en"
+  title="About grokbot.se – Roore AB"
+  description="Unofficial English guide to Grok Bot (xAI + Cursor), run by Roore AB. Sources, disclaimer, contact, and how managed automation differs from building it yourself."
+>
+  <PageHeader
+    eyebrow="About the project"
+    title="An unofficial project on desktop automation"
+    lede="Written by Roore AB to share a structure that works in practice — and to show what we build for companies."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid lg:grid-cols-[1fr_2fr] gap-12">
+    <aside class="lg:sticky lg:top-24 self-start">
+      <div class="bg-panel border border-line rounded-xl p-6">
+        <p class="eyebrow mb-3">Behind the site</p>
+        <p class="font-display text-xl font-semibold">Roore AB</p>
+        <p class="text-sm text-muted mt-1">Stockholm</p>
+        <p class="text-[0.95rem] text-ink-soft mt-4 leading-relaxed">
+          We build flows that prepare invoices, orders, and email in the systems you already use — Fortnox, Visma,
+          Bokio, or your business system. You approve before anything is booked or sent.
+        </p>
+        <div class="mt-5 flex flex-col gap-2 text-sm">
+          <a
+            href={rooreMailto('grokbot.se about', 'en')}
+            class="inline-flex items-center justify-center gap-2 bg-ink text-white px-4 py-2.5 rounded-full font-medium hover:bg-cobalt transition-colors"
+            >Book 15 minutes <span aria-hidden="true">→</span></a
+          >
+          <a href={ROORE_PAGES.pilot} target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3 text-center"
+            >Start a pilot on roore.se ↗</a
+          >
+          <a href={ROORE_URL} target="_blank" rel="noopener" class="text-muted underline underline-offset-3 text-center text-xs"
+            >roore.se</a
+          >
+        </div>
+      </div>
+    </aside>
+
+    <div class="prose-guide max-w-2xl">
+      <h2 class="!mt-0">What is grokbot.se?</h2>
+      <p>
+        grokbot.se is a guide to Grok Bot, xAI's app for named AI coworkers with their own cloud computer, signed in
+        via a Cursor account. The goal is to help you set up your own Bots in a structured way: specialized roles,
+        clear jobs and Don'ts, skills before routines, and approvals where it matters.
+      </p>
+      <p>
+        The content is based on official docs (docs.x.ai/grok-bot, cursor.com/help/grok-bot) and what the official
+        @bot account has shipped on X. Last updated <strong>6 September 2026</strong>. The product changes week by
+        week, so check <a href="/news">news</a> and the sources below if something does not match.
+      </p>
+      <p>
+        The guide is run by <a href={ROORE_URL} target="_blank" rel="noopener">Roore AB</a>. The structure here is the
+        same one we use when we build flows for companies: a clear job, clear limits, and a human who approves before
+        anything proceeds. Like the approach but do not want to build it yourself? Then we do it.
+      </p>
+
+      <h2 id="disclaimer">Disclaimer</h2>
+      <div class="not-prose grid sm:grid-cols-2 gap-px bg-line border border-line rounded-xl overflow-hidden my-6">
+        {
+          disclaimers.map((d) => (
+            <div class="bg-panel p-5">
+              <h3 class="font-display font-semibold mb-1.5 flex items-center gap-2">
+                <span class="w-3 h-[2px] bg-signal shrink-0" aria-hidden="true" />
+                {d.title}
+              </h3>
+              <p class="text-sm text-ink-soft leading-relaxed">{d.body}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        {sources.map(([label, href]) => <li><a href={href} target="_blank" rel="noopener">{label}</a></li>)}
+      </ul>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about the site, the guides, or Roore: <a href={`mailto:${ROORE_MAIL}`}>{ROORE_MAIL}</a>. Questions
+        about plans and billing: <a href="https://cursor.com/help/grok-bot/plans" target="_blank" rel="noopener">cursor.com/help</a>.
+        Questions about the app: <a href="https://docs.x.ai/grok-bot/faq" target="_blank" rel="noopener">docs.x.ai</a>.
+      </p>
+
+      <h2>Source code</h2>
+      <p>The site is built with Astro and Tailwind CSS. Source will be published on GitHub when the repo goes public.</p>
+
+      <h2>Changes</h2>
+      <p>
+        Content may be updated, changed, or removed without notice. The guides follow new features in Grok Bot, but
+        are not guaranteed to be current.
+      </p>
+
+      <Callout kind="note" title="Short version" class="mt-10">
+        <ul class="list-disc pl-4">
+          <li>Unofficial project, not connected to xAI or Cursor</li>
+          <li>Guides are provided as-is without warranties</li>
+          <li>You are responsible for what your bots do and what they consume</li>
+          <li>Read xAI's and Cursor's policies before you start</li>
+          <li>All Bots share one cloud computer. Never put anything there that another Bot must not use</li>
+        </ul>
+      </Callout>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
+    <RooreCta lang="en" source="grokbot.se about" href={ROORE_PAGES.home} />
+  </div>
+</Layout>

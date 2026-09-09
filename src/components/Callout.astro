@@ -8,10 +8,10 @@ interface Props {
 const { kind = 'note', title, class: className } = Astro.props;
 
 const styles = {
-  tip: { bar: 'bg-cobalt', label: 'text-cobalt', fallback: 'Tips' },
-  warn: { bar: 'bg-signal', label: 'text-signal', fallback: 'Observera' },
-  ok: { bar: 'bg-moss', label: 'text-moss', fallback: 'Klart' },
-  note: { bar: 'bg-ink', label: 'text-ink', fallback: 'Notera' },
+  tip: { bar: 'bg-cobalt', label: 'text-cobalt', fallback: 'Tip' },
+  warn: { bar: 'bg-signal', label: 'text-signal', fallback: 'Note' },
+  ok: { bar: 'bg-moss', label: 'text-moss', fallback: 'Done' },
+  note: { bar: 'bg-ink', label: 'text-ink', fallback: 'Note' },
 }[kind];
 ---
 

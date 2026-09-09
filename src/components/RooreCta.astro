@@ -4,6 +4,7 @@
  * much structure a good bot needs — Roore builds it in their systems instead.
  */
 import { rooreMailto, ROORE_URL, ROORE_PAGES } from '../lib/roore';
+import type { Lang } from '../lib/i18n';
 
 interface Props {
   heading?: string;
@@ -11,18 +12,40 @@ interface Props {
   source?: string;
   /** Deep-link into a real roore.se page (managed build, not SaaS). */
   href?: string;
+  lang?: Lang;
   class?: string;
 }
 
+const lang: Lang = Astro.props.lang ?? 'en';
+
+const defaults = {
+  en: {
+    heading: "Don't want to build it yourself?",
+    body: 'Roore builds flows that prepare invoices, orders and email in the systems you already use. You approve before anything is booked or sent. Fifteen minutes is enough to see if there is a first job.',
+    eyebrow: 'Roore AB · Stockholm · we build it for you',
+    bullets: ['Fortnox · Visma · Bokio', 'One flow first, fixed price', 'You approve before it proceeds'],
+    cta: 'Book 15 minutes',
+    more: 'Read more on roore.se ↗',
+  },
+  sv: {
+    heading: 'Vill du inte bygga själv?',
+    body: 'Roore bygger flöden som förbereder fakturor, ordrar och mejl i de system ni redan har. Ni godkänner innan något bokförs eller skickas. Femton minuter räcker för att se om det finns ett första jobb.',
+    eyebrow: 'Roore AB · Stockholm · vi bygger det åt er',
+    bullets: ['Fortnox · Visma · Bokio', 'Ett flöde först, fast pris', 'Ni godkänner innan det går vidare'],
+    cta: 'Boka 15 minuter',
+    more: 'Läs mer på roore.se ↗',
+  },
+}[lang];
+
 const {
-  heading = 'Vill du inte bygga själv?',
-  body = 'Roore bygger flöden som förbereder fakturor, ordrar och mejl i de system ni redan har. Ni godkänner innan något bokförs eller skickas. Femton minuter räcker för att se om det finns ett första jobb.',
+  heading = defaults.heading,
+  body = defaults.body,
   source = 'grokbot.se',
   href = ROORE_PAGES.pilot,
   class: className,
 } = Astro.props;
 
-const mailto = rooreMailto(source);
+const mailto = rooreMailto(source, lang);
 const learnMore = href || ROORE_URL;
 ---
 
@@ -33,13 +56,11 @@ const learnMore = href || ROORE_URL;
   ]}
 >
   <div>
-    <p class="eyebrow text-white/60 mb-3">Roore AB · Stockholm · vi bygger det åt er</p>
+    <p class="eyebrow text-white/60 mb-3">{defaults.eyebrow}</p>
     <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">{heading}</h2>
     <p class="mt-4 text-white/80 max-w-xl leading-relaxed">{body}</p>
     <ul class="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/70 font-mono">
-      <li>Fortnox · Visma · Bokio</li>
-      <li>Ett flöde först, fast pris</li>
-      <li>Ni godkänner innan det går vidare</li>
+      {defaults.bullets.map((b) => <li>{b}</li>)}
     </ul>
   </div>
   <div class="flex flex-col items-start lg:items-end gap-3">
@@ -47,14 +68,14 @@ const learnMore = href || ROORE_URL;
       href={mailto}
       class="inline-flex items-center gap-2 bg-white text-ink px-5 py-3 rounded-full text-sm font-medium hover:bg-cobalt hover:text-white transition-colors"
     >
-      Boka 15 minuter <span aria-hidden="true">→</span>
+      {defaults.cta} <span aria-hidden="true">→</span>
     </a>
     <a
       href={learnMore}
       target="_blank"
       rel="noopener"
       class="text-sm text-white/70 hover:text-white underline underline-offset-3 decoration-white/30"
-      >Läs mer på roore.se ↗</a
+      >{defaults.more}</a
     >
   </div>
 </section>

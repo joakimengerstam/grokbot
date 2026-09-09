@@ -8,122 +8,124 @@ import { rooreMailto, ROORE_PAGES } from '../lib/roore';
 const rooreFlows = [
   {
     bot: 'Inbox Bot',
-    flow: 'Mejl & ärenden',
-    body: 'Inkommande post sorteras, sammanfattas och får färdiga svarsutkast. Inget skickas utan er.',
+    flow: 'Email & cases',
+    body: 'Incoming mail is sorted, summarized, and gets ready-made reply drafts. Nothing is sent without you.',
     href: ROORE_PAGES.mejlArenden,
   },
   {
     bot: 'Chief of Staff',
-    flow: 'Fakturor & bokföring',
-    body: 'Leverantörsfakturor tolkas och konteras, kontoutdrag blir verifikationer. Ni godkänner innan det bokförs.',
+    flow: 'Invoices & bookkeeping',
+    body: 'Supplier invoices are parsed and coded; bank statements become vouchers. You approve before anything is booked.',
     href: ROORE_PAGES.leverantorsfakturor,
   },
   {
     bot: 'Sales Bot',
-    flow: 'Order & offert',
-    body: 'Orderrader ur mejl och webbformulär läggs in i affärssystemet. Ni bekräftar.',
+    flow: 'Orders & quotes',
+    body: 'Order lines from email and web forms are entered into your business system. You confirm.',
     href: ROORE_PAGES.orderFranMejl,
   },
   {
     bot: 'Research Bot',
-    flow: 'Bokföring & rapporter',
-    body: 'Dagliga siffror sammanställs och skickas dit de ska, utan att någon klipper och klistrar.',
+    flow: 'Bookkeeping & reports',
+    body: 'Daily numbers are compiled and sent where they belong — no more copy-paste.',
     href: ROORE_PAGES.bokforing,
   },
 ];
 
 const roster = [
-  { name: 'Chief of Staff', job: 'Den du pratar med. Bryter ner arbete, delegerar', trigger: 'Pinnad, när du ber', mode: 'On-demand' },
-  { name: 'Inbox Bot', job: 'Sorterar mail, föreslår filter och utkast', trigger: 'Vardagar 08:00', mode: 'Rutin' },
-  { name: 'Sales Bot', job: 'Följer upp leads, håller CRM uppdaterat', trigger: 'Fredag 16:00', mode: 'Rutin' },
-  { name: 'SEO Bot', job: 'Analyserar text, föreslår meta och keywords', trigger: 'När du ber', mode: 'On-demand' },
-  { name: 'Content Bot', job: 'Skriver första utkast per kanal', trigger: 'När du ber', mode: 'On-demand' },
-  { name: 'Research Bot', job: 'Samlar källor, sammanfattar', trigger: 'När du ber', mode: 'On-demand' },
+  { name: 'Chief of Staff', job: 'The one you talk to. Breaks down work, delegates', trigger: 'Pinned, when you ask', mode: 'On-demand' },
+  { name: 'Inbox Bot', job: 'Sorts mail, suggests filters and drafts', trigger: 'Weekdays 8:00', mode: 'Routine' },
+  { name: 'Sales Bot', job: 'Follows up leads, keeps CRM updated', trigger: 'Friday 4:00 pm', mode: 'Routine' },
+  { name: 'SEO Bot', job: 'Analyzes copy, suggests meta and keywords', trigger: 'When you ask', mode: 'On-demand' },
+  { name: 'Content Bot', job: 'Writes first drafts per channel', trigger: 'When you ask', mode: 'On-demand' },
+  { name: 'Research Bot', job: 'Gathers sources, summarizes', trigger: 'When you ask', mode: 'On-demand' },
 ];
 
 const reasons = [
   {
-    title: 'Automatisera det repetitiva',
-    body: 'Inbox-sortering, rapportsammanfattningar, kalkylark. Du lägger tiden på det som kräver ditt omdöme.',
+    title: 'Automate the repetitive',
+    body: 'Inbox sorting, report summaries, spreadsheets. You spend time on what needs your judgment.',
   },
   {
-    title: 'Specialister, inte generalister',
-    body: 'Varje bot är bra på en sak. SEO-boten optimerar för sökmotorn. Sales-boten följer upp försäljningen. Små och specifika roller ger bättre resultat.',
+    title: 'Specialists, not generalists',
+    body: 'Each bot is good at one thing. The SEO bot optimizes for search. The Sales bot follows up sales. Small, specific roles get better results.',
   },
   {
-    title: 'Boten jobbar när du inte gör det',
-    body: 'Routines på vardagsmorgon, på en molndator som är igång utan att din är det. Du öppnar appen till färdigt resultat.',
+    title: 'The bot works when you don’t',
+    body: 'Routines on weekday mornings, on a cloud computer that runs without yours. You open the app to finished work.',
   },
   {
-    title: 'Bygg ett litet team, inte en superbot',
-    body: 'Börja med en Chief of Staff som du pratar med. Lägg till specialister när du ser mönster som går att automatisera.',
+    title: 'Build a small team, not a superbot',
+    body: 'Start with a Chief of Staff you talk to. Add specialists when you see patterns worth automating.',
   },
 ];
 
 const concepts = [
-  ['Bot', 'En namngiven agent med titel, beskrivning (systemprompt) och egen konversation'],
-  ['Molndatorn', 'En persistent VM med webbläsare, filsystem och terminal. En dator per konto, inte per Bot'],
-  ['Plugins', 'Connectors mot Gmail, Calendar, X, Outlook, Slack m.fl.'],
-  ['Skill', 'Hur en uppgift ska göras: steg, format, gränser'],
-  ['Routine', 'När en skill ska köras: schema eller event'],
-  ['Teach a task', 'Du visar ett flöde på datorn, Boten sparar det som skill (max 10 min)'],
+  ['Bot', 'A named agent with a title, description (system prompt), and its own conversation'],
+  ['Cloud computer', 'A persistent VM with browser, filesystem, and terminal. One computer per account, not per Bot'],
+  ['Plugins', 'Connectors to Gmail, Calendar, X, Outlook, Slack, and more'],
+  ['Skill', 'How a task should be done: steps, format, limits'],
+  ['Routine', 'When a skill should run: schedule or event'],
+  ['Teach a task', 'You show a flow on the computer; the Bot saves it as a skill (max 10 min)'],
 ];
 ---
 
 <Layout
-  title="Sätt upp Grok Bot – guide på svenska (appen från xAI + Cursor)"
-  description="Lär dig sätta upp Grok Bot: appen från xAI med egen molndator, plugins, skills och routines. Svensk steg-för-steg-guide, uppdaterad september 2026. Alternativt bygger Roore flödet åt er."
+  lang="en"
+  title="Set up Grok Bot – English guide (the app from xAI + Cursor)"
+  description="Learn to set up Grok Bot: the xAI app with its own cloud computer, plugins, skills and routines. Step-by-step guide, updated September 2026. Or let Roore build the flow for you."
 >
   <!-- Hero -->
   <section class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
     <div class="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16 items-center">
       <div>
-        <p class="eyebrow mb-5 rise rise-1">Guide · Grok Bot från xAI · på svenska · uppdaterad 6 sep 2026</p>
+        <p class="eyebrow mb-5 rise rise-1">Guide · Grok Bot from xAI · in English</p>
         <h1
           class="font-display text-[2.75rem] sm:text-6xl lg:text-[4.5rem] font-semibold leading-[0.98] rise rise-2"
         >
-          Ge din AI en <span class="text-cobalt">arbets&shy;beskrivning.</span>
+          Give your AI a <span class="text-cobalt">job description.</span>
         </h1>
         <p class="mt-6 text-lg text-muted max-w-lg leading-relaxed rise rise-3">
-          En Grok Bot är en AI-kollega med egen molndator, tydligt jobb, tydliga gränser och ett schema. Du
-          anställer specialister, inte en assistent som frågar om allt.
+          A Grok Bot is an AI coworker with its own cloud computer, a clear job, clear limits, and a schedule. You
+          hire specialists — not an assistant that asks about everything.
         </p>
         <div class="mt-8 flex flex-wrap gap-3 rise rise-4">
           <a
-            href="/installning"
+            href="/setup"
             class="inline-flex items-center gap-2 bg-ink text-white px-5 py-3 rounded-full text-sm font-medium hover:bg-cobalt transition-colors"
           >
-            Sätt upp din första bot
+            Set up your first bot
             <span aria-hidden="true">→</span>
           </a>
           <a
-            href={rooreMailto('grokbot.se hero')}
+            href={rooreMailto('grokbot.se hero', 'en')}
             class="inline-flex items-center px-5 py-3 rounded-full text-sm font-medium border border-line bg-panel hover:border-cobalt hover:text-cobalt transition-colors"
           >
-            Eller låt Roore bygga det
+            Or let Roore build it
           </a>
         </div>
         <p class="mt-6 text-xs text-muted font-mono rise rise-4">
-          Bygg själv: ingår i Cursor Pro / SuperGrok / X Premium+, en kväll · Låt oss bygga: 15 minuters samtal
+          DIY: included with Cursor Pro / SuperGrok / X Premium+, one evening · Let us build: 15-minute call
         </p>
       </div>
 
       <div class="rise rise-3">
         <PersonaCard
+          lang="en"
           name="Inbox Bot"
-          role="En bot, ett jobb. Körs automatiskt varje vardagsmorgon."
-          trigger="Vardagar 08:00"
+          role="One bot, one job. Runs automatically every weekday morning."
+          trigger="Weekdays 8:00"
           jobs={[
-            'Läs de senaste 20 mailen',
-            'Kategorisera: Akut / Normal / Kan vänta',
-            'Flagga deadlines inom 48 timmar',
-            'Om inget har ändrats: skicka ingenting',
+            'Read the latest 20 emails',
+            'Categorize Urgent/Normal/Can wait',
+            'Flag deadlines within 48 hours',
+            'If nothing changed: send nothing',
           ]}
-          antiJobs={['Svara ALDRIG på mail åt mig', 'Radera ALDRIG något', 'Fatta INGA beslut som rör pengar']}
+          antiJobs={['NEVER reply to email for me', 'NEVER delete anything', 'Make NO money decisions']}
           output="/workspace/briefs/YYYY-MM-DD.md"
         />
         <p class="mt-3 text-xs text-muted text-center">
-          Jobs + gör-inte + output. Det är hela strukturen. <span class="cursor-blink text-cobalt">▍</span>
+          Jobs + Don'ts + output. That's the whole structure. <span class="cursor-blink text-cobalt">▍</span>
         </p>
       </div>
     </div>
@@ -132,31 +134,31 @@ const concepts = [
   <!-- What is it -->
   <section class="border-y border-line bg-panel/60">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16">
-      <h2 class="font-display text-3xl font-semibold leading-tight">Vad är en Grok Bot?</h2>
+      <h2 class="font-display text-3xl font-semibold leading-tight">What is a Grok Bot?</h2>
       <div class="prose-guide max-w-2xl">
         <p>
-          Grok Bot är <strong>inte</strong> chatten på grok.com. Det är en separat app från xAI, inloggad med ditt
-          Cursor-konto: namngivna AI-kollegor med en egen molndator, som loggar in i dina verktyg, kör schemalagda jobb
-          och bara stör dig när något behöver godkännas.
+          Grok Bot is <strong>not</strong> the chat on grok.com. It is a separate app from xAI, signed in with your
+          Cursor account: named AI coworkers with their own cloud computer, that log into your tools, run scheduled
+          jobs, and only interrupt you when something needs approval.
         </p>
         <p>
-          Tänk på det som att anställa en specialist. Du definierar vad boten är bra på, vilka verktyg den får
-          använda och vad den <strong>inte</strong> får göra. Sedan triggar du den när du behöver, eller låter den
-          köra på schema.
+          Think of it as hiring a specialist. You define what the bot is good at, which tools it may use, and what it
+          <strong>must not</strong> do. Then you trigger it when you need it, or let it run on a schedule.
         </p>
         <div class="not-prose bg-panel border border-line rounded-lg divide-y divide-line-soft my-6">
           {
             concepts.map(([term, body]) => (
               <div class="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 px-4 py-3">
-                <span class="font-display font-semibold w-28 shrink-0">{term}</span>
+                <span class="font-display font-semibold w-36 shrink-0">{term}</span>
                 <span class="text-[0.95rem] text-ink-soft">{body}</span>
               </div>
             ))
           }
         </div>
         <p class="text-sm text-muted">
-          Alla dina Bots delar samma dator: inloggningar, cookies och filer. Varje Bot får en egen dator i molnet. Ingår i Cursor Pro/Pro+/Ultra, SuperGrok och X Premium+. Finns för macOS, Windows,
-          Linux, iPhone och Android, inte iPad.
+          All of your Bots share the same computer: logins, cookies, and files. Each Bot gets its own screen in the
+          cloud. Included with Cursor Pro/Pro+/Ultra, SuperGrok, and X Premium+. Available for macOS, Windows, Linux,
+          iPhone, and Android — not iPad.
         </p>
       </div>
     </div>
@@ -166,11 +168,12 @@ const concepts = [
   <section class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
     <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
       <div>
-        <p class="eyebrow mb-3">Bemanning</p>
-        <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">Ett typiskt team</h2>
+        <p class="eyebrow mb-3">Roster</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">A typical team</h2>
       </div>
       <p class="text-sm text-muted max-w-sm">
-        En Chief of Staff som du pratar med (pinnad). Routines för det som alltid ska hända. On-demand för det som behöver aktuell kontext.
+        A Chief of Staff you talk to (pinned). Routines for what should always happen. On-demand for work that needs
+        fresh context.
       </p>
     </div>
 
@@ -179,9 +182,9 @@ const concepts = [
         <thead>
           <tr class="border-b border-line text-left">
             <th class="eyebrow font-normal px-5 py-3">Bot</th>
-            <th class="eyebrow font-normal px-5 py-3 hidden sm:table-cell">Jobb</th>
+            <th class="eyebrow font-normal px-5 py-3 hidden sm:table-cell">Job</th>
             <th class="eyebrow font-normal px-5 py-3">Trigger</th>
-            <th class="eyebrow font-normal px-5 py-3 hidden md:table-cell">Läge</th>
+            <th class="eyebrow font-normal px-5 py-3 hidden md:table-cell">Mode</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-line-soft">
@@ -195,11 +198,11 @@ const concepts = [
                   <span
                     class:list={[
                       'inline-flex items-center gap-1.5 font-mono text-[0.7rem] px-2 py-0.5 rounded-md',
-                      r.mode === 'Rutin' ? 'bg-cobalt-soft text-cobalt' : 'bg-line-soft text-ink-soft',
+                      r.mode === 'Routine' ? 'bg-cobalt-soft text-cobalt' : 'bg-line-soft text-ink-soft',
                     ]}
                   >
                     <span
-                      class:list={['w-1.5 h-1.5 rounded-full', r.mode === 'Rutin' ? 'bg-cobalt' : 'bg-muted']}
+                      class:list={['w-1.5 h-1.5 rounded-full', r.mode === 'Routine' ? 'bg-cobalt' : 'bg-muted']}
                       aria-hidden="true"
                     />
                     {r.mode}
@@ -212,15 +215,15 @@ const concepts = [
       </table>
     </div>
     <p class="mt-4 text-sm text-muted">
-      Varje bot har en egen roll. <a href="/exempel" class="text-cobalt underline underline-offset-3">Se alla sju →</a>
+      Each bot has its own role. <a href="/examples" class="text-cobalt underline underline-offset-3">See all seven →</a>
     </p>
   </section>
 
   <!-- Why -->
   <section class="border-t border-line">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
-      <p class="eyebrow mb-3">Varför</p>
-      <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight mb-10">Varför sätta upp en Grok Bot?</h2>
+      <p class="eyebrow mb-3">Why</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight mb-10">Why set up a Grok Bot?</h2>
       <div class="grid sm:grid-cols-2 gap-px bg-line border border-line rounded-xl overflow-hidden">
         {
           reasons.map((r) => (
@@ -239,15 +242,16 @@ const concepts = [
     <div class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
       <div class="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16 mb-10">
         <div>
-          <p class="eyebrow mb-3">Samma princip, i era system</p>
+          <p class="eyebrow mb-3">Same idea, in your company systems</p>
           <h2 class="font-display text-3xl sm:text-4xl font-semibold leading-tight">
-            Det du bygger på din dator bygger vi i ert företag
+            What you build on your computer, we build in your company
           </h2>
         </div>
         <div class="prose-guide max-w-2xl self-end">
           <p>
-            Guiden här lär dig köra bots på din egen dator. Roore gör samma sak för företag: flöden som förbereder
-            underlaget i Fortnox, Visma, Bokio eller det affärssystem ni redan har. Verifiering heter där <strong>"ni godkänner innan något går vidare"</strong>.
+            This guide teaches you to run bots on your own computer. Roore does the same for companies: flows that
+            prepare the work in Fortnox, Visma, Bokio, or the ERP you already use. Verification there is
+            <strong>"you approve before anything proceeds"</strong>.
           </p>
         </div>
       </div>
@@ -269,7 +273,7 @@ const concepts = [
                 {f.flow} <span class="text-muted font-normal text-sm" aria-hidden="true">↗</span>
               </h3>
               <p class="text-[0.95rem] text-ink-soft leading-relaxed">{f.body}</p>
-              <p class="mt-3 text-sm text-cobalt">Vi bygger det åt er →</p>
+              <p class="mt-3 text-sm text-cobalt">We build it for you →</p>
             </a>
           ))
         }
@@ -280,21 +284,22 @@ const concepts = [
   <!-- Funnel CTA -->
   <section class="max-w-6xl mx-auto px-5 sm:px-8 pt-20 pb-8">
     <RooreCta
-      heading="Femton minuter räcker för att se om det finns ett första jobb"
-      body="Vi tittar på ert order-, faktura- eller mejlflöde. Finns det ett återkommande jobb ni gör för hand varje vecka, bygger vi det först, till fast pris. Fungerar det tar vi nästa flöde. Annars stannar det där."
+      lang="en"
+      heading="Fifteen minutes is enough to see if there is a first job"
+      body="We look at your order, invoice, or email flow. If there is a recurring job you do by hand every week, we build that first — fixed price. If it works, we take the next flow. If not, it stops there."
       source="grokbot.se start"
       href={ROORE_PAGES.pilot}
     />
 
     <p class="mt-6 text-sm text-muted">
-      Vill du hellre bygga själv? <a href="/installning" class="text-cobalt underline underline-offset-3">Guiden tar en kväll →</a>
+      Prefer to build it yourself? <a href="/setup" class="text-cobalt underline underline-offset-3">The guide takes one evening →</a>
     </p>
 
-    <Callout kind="warn" title="Viktigt att veta" class="mt-8">
+    <Callout kind="warn" title="Important to know" class="mt-8">
       <p>
-        Detta är ett inofficiellt projekt, inte affilierat med xAI eller Cursor. Guiden är skriven av Joakim
-        Engerstam på Roore AB för att hjälpa andra sätta upp Grok Bots strukturerat. Fullständig
-        disclaimer på <a href="/om" class="text-ink underline underline-offset-3">Om-sidan</a>.
+        This is an unofficial project, not affiliated with xAI or Cursor. The guide is written by Joakim Engerstam at
+        Roore AB to help others set up Grok Bots with structure. Full disclaimer on the
+        <a href="/about" class="text-ink underline underline-offset-3">About page</a>.
       </p>
     </Callout>
   </section>

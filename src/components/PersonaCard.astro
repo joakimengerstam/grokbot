@@ -4,6 +4,8 @@
  * Jobs are marked in cobalt, anti-jobs in signal red — the boundaries
  * are as visible as the duties.
  */
+import type { Lang } from '../lib/i18n';
+
 interface Props {
   name: string;
   role?: string;
@@ -12,10 +14,25 @@ interface Props {
   antiJobs: string[];
   output?: string;
   compact?: boolean;
+  lang?: Lang;
   class?: string;
 }
 
-const { name, role, trigger, jobs, antiJobs, output, compact = false, class: className } = Astro.props;
+const {
+  name,
+  role,
+  trigger,
+  jobs,
+  antiJobs,
+  output,
+  compact = false,
+  lang = 'en',
+  class: className,
+} = Astro.props;
+
+const roleLabel = lang === 'sv' ? 'Roll' : 'Role';
+const antiLabel = lang === 'sv' ? 'Gör-inte' : "Don'ts";
+const highlightRe = /\b(ALDRIG|INGA|INTE|NEVER|NO)\b/g;
 ---
 
 <article
@@ -26,7 +43,7 @@ const { name, role, trigger, jobs, antiJobs, output, compact = false, class: cla
 >
   <header class="px-5 py-4 border-b border-line-soft flex items-start justify-between gap-4">
     <div>
-      <p class="eyebrow mb-1">Roll</p>
+      <p class="eyebrow mb-1">{roleLabel}</p>
       <h3 class="font-display text-xl font-semibold leading-tight">{name}</h3>
       {role && <p class="text-sm text-muted mt-0.5">{role}</p>}
     </div>
@@ -55,13 +72,13 @@ const { name, role, trigger, jobs, antiJobs, output, compact = false, class: cla
     </section>
 
     <section class="px-5 py-4 bg-[linear-gradient(to_bottom,transparent,rgb(216_50_30/0.03))]">
-      <h4 class="eyebrow text-signal mb-3">Gör-inte</h4>
+      <h4 class="eyebrow text-signal mb-3">{antiLabel}</h4>
       <ul class="space-y-2">
         {
           antiJobs.map((job) => (
             <li class="flex gap-3 text-[0.9375rem] leading-snug">
               <span class="mt-[0.55rem] shrink-0 w-3 h-[2px] bg-signal" aria-hidden="true" />
-              <span set:html={job.replace(/\b(ALDRIG|INGA|INTE)\b/g, '<span class="font-mono text-[0.75rem] font-medium text-signal tracking-wide">$1</span>')} />
+              <span set:html={job.replace(highlightRe, '<span class="font-mono text-[0.75rem] font-medium text-signal tracking-wide">$1</span>')} />
             </li>
           ))
         }

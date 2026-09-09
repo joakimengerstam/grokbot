@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import PersonaCard from '../components/PersonaCard.astro';
-import Callout from '../components/Callout.astro';
-import RooreCta from '../components/RooreCta.astro';
-import { ROORE_PAGES } from '../lib/roore';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PersonaCard from '../../components/PersonaCard.astro';
+import Callout from '../../components/Callout.astro';
+import RooreCta from '../../components/RooreCta.astro';
+import { ROORE_PAGES } from '../../lib/roore';
 
 const steps = [
   { id: 'krav', label: 'Krav och plan' },
@@ -57,6 +57,7 @@ const checklist = [
 ---
 
 <Layout
+  lang="sv"
   title="Så sätter du upp Grok Bot – steg-för-steg (appen från x.ai)"
   description="Installera Grok Bot-appen, logga in med Cursor-kontot, skapa en Chief of Staff, koppla plugins och gå från skill till routine. Svensk how-to, uppdaterad september 2026."
 >
@@ -189,6 +190,7 @@ const checklist = [
         <p>Beskrivningen är systemprompten. Skriv den som ett jobb, inte som en personlighet.</p>
         <div class="not-prose my-6">
           <PersonaCard
+          lang="sv"
             name="Chief of Staff"
             role="Din enda generalist. Pinnad. Den du pratar med."
             trigger="On-demand"
@@ -266,7 +268,7 @@ const checklist = [
           <li>Skriv lösenord / 2FA / CAPTCHA själv</li>
           <li>Lämna tillbaka kontrollen</li>
         </ol>
-        <Callout kind="warn">
+        <Callout kind="warn" title="Observera">
           <p>
             Klistra <strong>inte</strong> in lösenord eller engångskoder i chatten. Sessionen sparas på molndatorn.
             Alla dina Bots delar den datorn: inloggningar, cookies och filer. Skärmarna är inte en säkerhetsgräns.
@@ -315,7 +317,7 @@ const checklist = [
           Hantera routines via Boten → <strong>View conversation details → Routines</strong> (pausa, testa, redigera,
           historik). En Bot kan äga 50 routines. 20 senaste körningarna sparas. Borttagning har ingen ångra.
         </p>
-        <Callout kind="tip">
+        <Callout kind="tip" title="Tips">
           <p>Håll scheman på <strong>kontorstid</strong>, inte dygnet runt. Det är det vanligaste rådet mot att bränna veckokvoten.</p>
         </Callout>
       </section>
@@ -338,9 +340,9 @@ const checklist = [
       <Callout kind="ok" title="Nästa steg" class="mt-14">
         <p>Du har en fungerande Grok Bot. Fortsätt med:</p>
         <ul>
-          <li><a href="/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – godkännanden, förbrukning, säkerhet</li>
-          <li><a href="/exempel" class="text-cobalt underline underline-offset-3">Exempel</a> – sju bots att kopiera</li>
-          <li><a href="/nyheter" class="text-cobalt underline underline-offset-3">Nyheter</a> – vad som släppts senaste veckorna</li>
+          <li><a href="/sv/best-practices" class="text-cobalt underline underline-offset-3">Best practices</a> – godkännanden, förbrukning, säkerhet</li>
+          <li><a href="/sv/exempel" class="text-cobalt underline underline-offset-3">Exempel</a> – sju bots att kopiera</li>
+          <li><a href="/sv/nyheter" class="text-cobalt underline underline-offset-3">Nyheter</a> – vad som släppts senaste veckorna</li>
         </ul>
       </Callout>
     </div>
@@ -348,6 +350,7 @@ const checklist = [
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
     <RooreCta
+      lang="sv"
       heading="Åtta steg för dig. Noll steg för företaget."
       body="Det här är vad det tar att sätta upp en bot på din egen dator. För fakturor, ordrar och mejl i ert affärssystem bygger Roore flödet, i era system, med ert godkännande innan något går vidare."
       source="grokbot.se kom igång"

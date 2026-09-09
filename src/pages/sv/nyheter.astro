@@ -1,9 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import Callout from '../components/Callout.astro';
-import RooreCta from '../components/RooreCta.astro';
-import { ROORE_PAGES } from '../lib/roore';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Callout from '../../components/Callout.astro';
+import RooreCta from '../../components/RooreCta.astro';
+import { ROORE_PAGES } from '../../lib/roore';
 
 const updated = '6 september 2026';
 
@@ -20,6 +20,7 @@ const news = [
 ---
 
 <Layout
+  lang="sv"
   title="Grok Bot nyheter – vad som släppts (uppdaterad september 2026)"
   description="Logg över vad xAI släppt i Grok Bot: kvotresets, Marketplace, Enterprise, Android, Microsoft-plugins, X-stöd. Med vad det betyder för din setup."
 >
@@ -59,13 +60,14 @@ const news = [
           <a href="https://x.com/bot" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">@bot på X</a>,
           <a href="https://docs.x.ai/grok-bot/get-started" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">docs.x.ai/grok-bot</a>,
           <a href="https://cursor.com/help/grok-bot/plans" target="_blank" rel="noopener" class="text-cobalt underline underline-offset-3">cursor.com/help/grok-bot/plans</a>.
-          Fullständig källista på <a href="/om#kallor" class="text-cobalt underline underline-offset-3">Om-sidan</a>.
+          Fullständig källista på <a href="/sv/om#kallor" class="text-cobalt underline underline-offset-3">Om-sidan</a>.
         </p>
       </Callout>
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-8">
-    <RooreCta source="grokbot.se nyheter" href={ROORE_PAGES.home} />
+    <RooreCta
+      lang="sv" source="grokbot.se nyheter" href={ROORE_PAGES.home} />
   </div>
 </Layout>
