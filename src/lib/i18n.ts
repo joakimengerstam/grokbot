@@ -18,6 +18,13 @@ export function normalizePath(pathname: string): string {
   return p;
 }
 
+/** Href form. GitHub Pages 301s /setup to /setup/, so every link we emit
+ *  carries the slash and no navigation costs a redirect hop. */
+export function withSlash(pathname: string): string {
+  const p = normalizePath(pathname);
+  return p === '/' ? '/' : p + '/';
+}
+
 export function detectLang(pathname: string): Lang {
   const p = normalizePath(pathname);
   return p === '/sv' || p.startsWith('/sv/') ? 'sv' : 'en';
@@ -56,14 +63,14 @@ export const NAV_SV = [
 export const COPY = {
   en: {
     defaultDescription:
-      "English guide to Grok Bot, xAI's app for AI coworkers with their own cloud computer, plugins, skills and routines. From Roore AB — we build the same flows for invoices, orders and email in your systems.",
+      "English guide to Grok Bot, xAI's app for AI coworkers with their own cloud computer, plugins, skills and routines. From Roore AB, which builds the same flows for invoices, orders and email in your systems.",
     skipToContent: 'Skip to content',
     mainNav: 'Main menu',
     book15: 'Book 15 min',
     book15Roore: 'Book 15 min with Roore',
     menu: 'Menu',
     footerBlurb:
-      'A guide from Roore AB, Stockholm. We build flows that prepare invoices, orders and email in your systems — you approve before anything proceeds.',
+      'A guide from Roore AB, Stockholm. We build flows that prepare invoices, orders and email in your systems. You approve before anything proceeds.',
     book15Link: 'Book 15 minutes',
     disclaimer:
       'Unofficial project. Not affiliated with xAI or Cursor. Grok and Cursor are trademarks of their respective owners.',

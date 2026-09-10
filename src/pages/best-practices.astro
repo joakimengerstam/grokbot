@@ -45,7 +45,7 @@ const pitfalls = [
   ['X credits run out quietly', 'A Bot watching X may report "nothing new" instead of an error.'],
   ['Site layout changes', 'A scraper can report an empty scan for weeks and sound calm. Ask it to report its inputs, not only findings.'],
   ['Hiding a Bot does not pause routines', 'Hide only removes it from the sidebar. Pause routines separately.'],
-  ['Delete leaves traces', 'Delete removes profile, conversation, and routines — but files and logins on the shared computer may remain.'],
+  ['Delete leaves traces', 'Delete removes profile, conversation, and routines, but files and logins on the shared computer may remain.'],
   ['Older blogs lie about platforms', 'Linux and Android exist now. iPad still does not.'],
   ['Crypto-desk posts', 'Threads promising thousands a week lack verifiable receipts. Treat as ads.'],
 ];
@@ -54,7 +54,10 @@ const pitfalls = [
 <Layout
   lang="en"
   title="Grok Bot best practices – approvals, usage, security"
-  description="Ten principles for Grok Bots that work: specialized roles, Don'ts, Require Approval, one bot per job, state on disk, keep the weekly quota down, shared computer. Updated September 2026."
+  description="Ten principles for Grok Bots that work: specialized roles, Don'ts, Require Approval, one bot per job, state on disk, and keeping the weekly quota down."
+  datePublished="2026-09-05"
+  dateModified="2026-09-10"
+  breadcrumb="Best practices"
 >
   <PageHeader
     eyebrow="Best practices · 10 principles"
@@ -82,7 +85,7 @@ const pitfalls = [
       <section id="personas">
         <h2 class="!mt-0">Tight personas, not fluffy descriptions</h2>
         <p>
-          The persona should be specific enough that the bot knows exactly what to do — and what it
+          The persona should be specific enough that the bot knows exactly what to do, and what it
           <strong>must not</strong> do.
         </p>
         <Compare
@@ -96,7 +99,7 @@ const pitfalls = [
       <section id="anti-jobs">
         <h2>Define Don'ts clearly</h2>
         <p>
-          Don'ts are as important as jobs. They protect you from unexpected "helpful" actions — the bot that sends the
+          Don'ts are as important as jobs. They protect you from unexpected "helpful" actions, the bot that sends the
           email it was only supposed to draft.
         </p>
         <div class="not-prose my-6">
@@ -164,7 +167,7 @@ const pitfalls = [
         />
         <Callout kind="warn" title="When the bot should ask">
           <p>
-            If the task can have large consequences — emailing customers, deleting files, handling money — let the bot
+            If the task can have large consequences (emailing customers, deleting files, handling money), let the bot
             ask before it acts. That is the difference between over-asking and a fence.
           </p>
         </Callout>
@@ -225,7 +228,7 @@ const pitfalls = [
         </div>
         <p>
           Tell CoS before you create several. Use group chat when the handoff itself should be visible. Duplicate a Bot
-          when the same role needs a new scope (the copy gets profile, skills, and routines — but not history or
+          when the same role needs a new scope (the copy gets profile, skills, and routines, but not history or
           memory).
         </p>
       </section>
@@ -274,7 +277,7 @@ const pitfalls = [
         <ul>
           <li>Never paste passwords or one-time codes into the chat. Take over Agent Computer and type yourself.</li>
           <li>Plugins are account-wide: one login applies to all Bots.</li>
-          <li>Hide a Bot if you might need it. Delete removes profile, conversation, and routines — not files and sessions on the computer.</li>
+          <li>Hide a Bot if you might need it. Delete removes profile, conversation, and routines, not files and sessions on the computer.</li>
           <li>Do not show secrets in a Teach a task recording.</li>
         </ul>
       </section>

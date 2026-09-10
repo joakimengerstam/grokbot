@@ -1,7 +1,7 @@
 export const ROORE_URL = 'https://roore.se';
 export const ROORE_MAIL = 'joakim.engerstam@roore.se';
 
-/** Real public pages on roore.se — do not invent paths. */
+/** Real public pages on roore.se. Do not invent paths. */
 export const ROORE_PAGES = {
   home: 'https://roore.se/',
   aiMedarbetare: 'https://roore.se/ai-medarbetare/',

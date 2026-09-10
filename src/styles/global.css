@@ -66,7 +66,7 @@ body {
   color: var(--color-muted);
 }
 
-/* Long-form content — in the components layer so utilities can override */
+/* Long-form content, in the components layer so utilities can override */
 @layer components {
 .prose-guide {
   line-height: 1.65;
