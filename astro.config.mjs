@@ -9,25 +9,20 @@ import tailwindcss from '@tailwindcss/vite';
  *  content change does not claim the content changed. */
 const LASTMOD = '2026-09-10';
 
+/** Pre-i18n Swedish URLs, kept alive as permanent-move stubs. */
+const MOVED = ['/installning/', '/exempel/', '/om/', '/nyheter/'];
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://grokbot.se',
   output: 'static',
   trailingSlash: 'always',
 
-  /** The i18n move (commit 77f9efe) put the Swedish pages under /sv/ and left
-   *  their old root URLs dead. Those four are exactly what Google has indexed,
-   *  so they 404 in live search results. GitHub Pages cannot serve a 301, so
-   *  these become meta-refresh pages with a canonical, which Google reads as a
-   *  permanent redirect. Keep them: old URLs stay linked from the outside. */
-  redirects: {
-    '/installning/': '/sv/installning/',
-    '/exempel/': '/sv/exempel/',
-    '/om/': '/sv/om/',
-    '/nyheter/': '/sv/nyheter/',
-  },
   integrations: [
     sitemap({
+      // the four /installning/ /exempel/ /om/ /nyheter/ stubs are permanent-move
+      // pages, not content. they must not be advertised as canonical URLs.
+      filter: (page) => !MOVED.some((p) => page === `https://grokbot.se${p}`),
       serialize(item) {
         item.lastmod = LASTMOD;
         return item;

@@ -1,0 +1,35 @@
+---
+/**
+ * Permanent-move stub for a URL that changed in the i18n restructure.
+ *
+ * GitHub Pages cannot serve a 301, so the pair Google documents for static
+ * hosts is a zero-delay meta refresh plus a canonical to the new URL.
+ *
+ * Deliberately NO `noindex`. Astro's built-in `redirects:` config adds one,
+ * and that fights the canonical: the canonical says "consolidate this URL into
+ * that one", `noindex` says "drop this URL". Google can honour the second and
+ * skip the transfer, which loses whatever the old URL had earned. These four
+ * URLs are the only ones Google has indexed for the Swedish side, so the
+ * consolidation is the whole point.
+ */
+interface Props {
+  to: string;
+  label: string;
+}
+const { to, label } = Astro.props;
+const canonical = new URL(to, Astro.site ?? 'https://grokbot.se').href;
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sidan har flyttat: {label}</title>
+    <meta http-equiv="refresh" content={`0;url=${to}`} />
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body>
+    <p>Sidan har flyttat till <a href={to}>{label}</a>.</p>
+  </body>
+</html>

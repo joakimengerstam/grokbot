@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { NAV_EN, NAV_SV, withSlash } from '../lib/i18n';
+
+const blurb: Record<string, string> = {
+  '/': 'What a Grok Bot is, and why you would set one up.',
+  '/setup': 'Install the app, sign in, and get a first bot running.',
+  '/best-practices': 'Ten principles for bots that hold up in daily use.',
+  '/examples': 'Seven roles to copy: Chief of Staff, Inbox, Sales, and more.',
+  '/news': 'What xAI shipped, and what each change means for your setup.',
+  '/about': 'Who runs this, the sources, and the disclaimer.',
+};
+const blurbSv: Record<string, string> = {
+  '/sv': 'Vad en Grok Bot är, och varför du sätter upp en.',
+  '/sv/installning': 'Installera appen, logga in och få igång din första bot.',
+  '/sv/best-practices': 'Tio principer för bots som håller i daglig drift.',
+  '/sv/exempel': 'Sju roller att kopiera: Chief of Staff, Inbox, Sales med flera.',
+  '/sv/nyheter': 'Vad xAI släppt, och vad varje ändring betyder för din setup.',
+  '/sv/om': 'Vem som driver sidan, källorna och disclaimern.',
+};
+---
+
+<Layout lang="en" title="Page not found – grokbot.se" description="That address does not exist on grokbot.se. The guide pages are listed here." noindex>
+  <PageHeader
+    eyebrow="404"
+    title="That page does not exist."
+    lede="The address leads nowhere. Everything the guide covers is listed below."
+  />
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid gap-10 md:grid-cols-2">
+    <section>
+      <h2 class="eyebrow mb-4">English</h2>
+      <ul class="space-y-3">
+        {
+          NAV_EN.map((item) => (
+            <li>
+              <a href={withSlash(item.href)} class="text-cobalt underline underline-offset-3 font-medium">{item.label}</a>
+              <span class="block text-sm text-muted">{blurb[item.href]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="eyebrow mb-4">Svenska</h2>
+      <ul class="space-y-3">
+        {
+          NAV_SV.map((item) => (
+            <li>
+              <a href={withSlash(item.href)} hreflang="sv" lang="sv" class="text-cobalt underline underline-offset-3 font-medium">{item.label}</a>
+              <span class="block text-sm text-muted" lang="sv">{blurbSv[item.href]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Layout>
